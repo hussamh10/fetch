@@ -9,19 +9,25 @@ def main():
     indexFilePath = os.path.join(rootDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):
-        print("Indexing, this only happens the first time, kindly repot back the number below (when it appears")
         index()
 
-    folders = utils.initFoldersList(indexFilePath)
+    old_len = 0
+    curr_len = 0
 
-    exit = False
-    q = ''
-    result = 'None'
+    while True:
+        if(not old_len < curr_len):
+            folders = utils.initFoldersList(indexFilePath)
+            print('BS detected')
 
-    while not exit:
+        result = 'None'
+
+        q = input()
+
+        old_len = curr_len
+        curr_len = len(q)
+
         print(":")
-        char = chr(ord(getch()))
-        q = q + char
+		
         basic_rx = utils.generateBasicRegex(q)
         sub_rx = utils.generateSubRegex(q)
 
