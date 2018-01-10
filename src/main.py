@@ -26,8 +26,6 @@ def main():
         old_len = curr_len
         curr_len = len(q)
 
-        print(":")
-		
         basic_rx = utils.generateBasicRegex(q)
         sub_rx = utils.generateSubRegex(q)
 
