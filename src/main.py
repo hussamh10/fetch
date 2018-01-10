@@ -24,6 +24,7 @@ def main():
         basic_rx = utils.generateBasicRegex(q)
         sub_rx = utils.generateSubRegex(q)
 
+        '''
         if char == '\r':
             if len(folders) == 0:
                 print("Folder not found")
@@ -31,6 +32,7 @@ def main():
                 folder = folders[0]
                 utils.openFolder(folder)
             exit = True
+        '''
 
         folders = scores.updateScores(basic_rx, sub_rx, folders)
         folders = scores.advancedScoreUpdate(q, folders)
