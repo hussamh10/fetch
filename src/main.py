@@ -19,8 +19,8 @@ def main():
     result = 'None'
 
     while not exit:
-        print(":")
         char = chr(ord(getch()))
+        print(":")
         q = q + char
         basic_rx = utils.generateBasicRegex(q)
         sub_rx = utils.generateSubRegex(q)
