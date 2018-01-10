@@ -19,6 +19,7 @@ def main():
     result = 'None'
 
     while not exit:
+        print(":")
         char = chr(ord(getch()))
         q = q + char
         basic_rx = utils.generateBasicRegex(q)
