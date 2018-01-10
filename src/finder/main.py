@@ -17,12 +17,12 @@ def main():
     while True:
         if(not old_len < curr_len):
             folders = utils.initFoldersList(indexFilePath)
-            print('BS detected')
 
         result = 'None'
 
         q = input()
-
+        print(":")
+        
         old_len = curr_len
         curr_len = len(q)
 
