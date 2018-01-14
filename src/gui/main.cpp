@@ -2,10 +2,17 @@
 #include <windows.h>
 #include <QApplication>
 
+int main(int argc, char *argv[])  {
 
-int main(int argc, char *argv[])
-{
 	QApplication a(argc, argv);
 	FinderWindow w;
-    return a.exec();
+
+	if (w.isAlreadyRunning()) {
+		return 0;
+	}
+
+	w.init();
+	w.startListening();
+
+	return a.exec();
 }

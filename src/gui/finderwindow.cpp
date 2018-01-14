@@ -8,18 +8,23 @@
 #include <qdesktopservices.h>
 #include <qurl.h>
 #include <QKeyEvent>
-#include <iostream>
+
+const QString FinderWindow::name = "fuzzyfinder";
 
 FinderWindow::FinderWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::FinderWindow)
 {
 	ui->setupUi(this);
+}
+
+void FinderWindow::init() {
 	initWindowSize();
 	initUI();
 	initTray();
 	initFont();
 	initPyProcess();
+	initLocalServer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
 
 	ignoreResults = false;
@@ -33,10 +38,18 @@ void FinderWindow::initPyProcess() {
 	connect(pyproc, SIGNAL(readyReadStandardOutput()), this, SLOT(searchResult()));
 }
 
+void FinderWindow::initLocalServer() {
+	connect(&localServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+}
+
+void FinderWindow::newConnection() {
+	toggleWindow();
+}
+
 void FinderWindow::keyPressEvent(QKeyEvent* event) {
 	QMainWindow::keyPressEvent(event);
 	if (event->key() == Qt::Key_Escape) {
-		revertSearch();
+		toggleWindow();
 	}
 }
 
@@ -60,8 +73,7 @@ void FinderWindow::initTray() {
 void FinderWindow::initWindowSize() {
 	QScreen* screen = QGuiApplication::primaryScreen();
 	QRect screenGeometry = screen->geometry();
-	setFixedHeight(80);
-	setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 3, screenGeometry.width() / 2, 400);
+	setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 3, screenGeometry.width() / 2, 80);
 }
 
 void FinderWindow::addResult(QString name, QString path) {
@@ -95,21 +107,30 @@ bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long 
 	Q_UNUSED(eventType);
 	Q_UNUSED(result);
 	MSG *msg = static_cast<MSG*>(message);
-	if(msg->message == WM_HOTKEY)
-	{
-		if (this->isHidden()) {
-			this->show();
-			this->activateWindow();
-		} else {
-			this->hide();
-		}
+	if(msg->message == WM_HOTKEY) {
+		toggleWindow();
 		return true;
 	}
 	return false;
 }
 
+bool FinderWindow::isAlreadyRunning() {
+	QLocalSocket socket;
+	socket.connectToServer(name, QLocalSocket::ReadWrite);
+	if (socket.waitForConnected()) {
+		return true;
+	}
+	return false;
+}
+
+void FinderWindow::startListening() {
+	localServer.removeServer(name);
+	localServer.listen(name);
+}
+
 FinderWindow::~FinderWindow() {
 	killProcess();
+	localServer.close();
 	delete ui;
 }
 
@@ -147,6 +168,16 @@ void FinderWindow::revertSearch() {
 	ui->searchBar->setText("");
 	ui->searchBar->setFocus();
 	ui->scroll_area_container->hide();
+}
+
+void FinderWindow::toggleWindow() {
+	if (this->isHidden()) {
+		this->show();
+		this->activateWindow();
+	} else {
+		revertSearch();
+		this->hide();
+	}
 }
 
 void FinderWindow::on_searchBar_textEdited(const QString &arg1) {

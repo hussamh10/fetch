@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QProcess>
+#include <QtNetwork/QLocalServer>
+#include <QtNetwork/QLocalSocket>
+
 
 namespace Ui {
 class FinderWindow;
@@ -17,11 +20,14 @@ public:
 	explicit FinderWindow(QWidget *parent = 0);
     ~FinderWindow();
 	bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+	bool isAlreadyRunning();
+	void startListening();
+	void init();
 
 private slots:
 	void searchResult();
 	void launch();
-
+	void newConnection();
 	void on_searchBar_textEdited(const QString &arg1);
 
 private:
@@ -34,6 +40,7 @@ private:
 	void initTray();
 	void initFont();
 	void initPyProcess();
+	void initLocalServer();
 
 	void clearResults();
 	void search(QString query);
@@ -41,11 +48,18 @@ private:
 
 	void killProcess();
 	void revertSearch();
+	void toggleWindow();
 	void keyPressEvent(QKeyEvent*);
 
 	QFont resultFont;
 	QProcess *pyproc;
 	QSystemTrayIcon *trayIcon;
+
+	QLocalServer localServer;
+	QLocalSocket *localSocket;
+
+	static const QString name;
+
 };
 
 #endif // FINDERWINDOW_H
