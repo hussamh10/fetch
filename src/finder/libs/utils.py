@@ -3,10 +3,17 @@ import os
 import re
 
 def generateBasicRegex(q):
+    q = q.split(' ')[-1]
     basic_ptrn = '.*'.join(q)
     return re.compile(basic_ptrn)
 
 def generateSubRegex(q):
+    q = q.split(' ')[-1]
+    return re.compile(q)
+
+def generateSpaceRegex(q):
+    q = q.split()
+    q = q[0]
     return re.compile(q)
 
 def readFile(file_name):
@@ -30,7 +37,7 @@ def foldersString(f):
     return string
 
 def printFolders(f):
-    temp = f[0:3]
+    temp = f[:]
     for t in temp:
         print(t.name[:-1] + "|" + t.path[:-1])
 

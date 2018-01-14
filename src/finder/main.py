@@ -14,20 +14,24 @@ def main():
     old_len = 0
     curr_len = 0
 
-    while True:
-        if(not old_len < curr_len):
-            folders = utils.initFoldersList(indexFilePath)
-            print('BS detected')
+    folders = utils.initFoldersList(indexFilePath)
 
+    while True:
         result = 'None'
 
         q = input()
-
+        print(":")
+        
         old_len = curr_len
         curr_len = len(q)
 
+        if(not old_len < curr_len or ' ' in q):
+            folders = utils.initFoldersList(indexFilePath)
+            print('BS detected')
+
         basic_rx = utils.generateBasicRegex(q)
         sub_rx = utils.generateSubRegex(q)
+        space_rx = utils.generateSpaceRegex(q)
 
         '''
         if char == '\r':
@@ -39,8 +43,9 @@ def main():
             exit = True
         '''
 
-        folders = scores.updateScores(basic_rx, sub_rx, folders)
-        folders = scores.advancedScoreUpdate(q, folders)
+        folders = scores.updateScores(basic_rx, sub_rx, folders) # chooses that match post space q
+        folders = scores.advancedScoreUpdate(q, folders) # no idea what this does
+        folders = scores.SpaceScores(q, space_rx, folders) # chooses only paths that match pre space q
         folders = utils.sort(folders)
 
         utils.printFolders(folders)
