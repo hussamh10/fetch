@@ -8,6 +8,7 @@
 #include <qdesktopservices.h>
 #include <qurl.h>
 #include <QKeyEvent>
+#include <QMenu>
 
 const QString FinderWindow::name = "fuzzyfinder";
 
@@ -46,26 +47,26 @@ void FinderWindow::newConnection() {
 	toggleWindow();
 }
 
-void FinderWindow::keyPressEvent(QKeyEvent* event) {
-	QMainWindow::keyPressEvent(event);
-	if (event->key() == Qt::Key_Escape) {
-		toggleWindow();
-	}
-}
-
 void FinderWindow::initFont() {
 	resultFont.setFamily("Segoe UI");
 	resultFont.setPixelSize(14);
 }
 
 void FinderWindow::initUI() {
-	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	setWindowFlags(Qt::Window | Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint | Qt::Popup | Qt::NoDropShadowWindowHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 void FinderWindow::initTray() {
 	trayIcon = new QSystemTrayIcon(this);
-	trayIcon->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
+	trayIcon->setIcon(QIcon("res\\fuzzy.ico"));
+
+	QMenu *menu = new QMenu(this);
+	QAction *exit = new QAction("Exit", this);
+	connect(exit, SIGNAL(triggered(bool)), this, SLOT(exit()));
+	menu->addAction(exit);
+
+	trayIcon->setContextMenu(menu);
 	trayIcon->show();
 	trayIcon->showMessage("Fuzzy Finder is running", "Press F9 to open the finder window");
 }
@@ -88,7 +89,6 @@ void FinderWindow::addResult(QString name, QString path) {
 	resultCount++;
 	int calc_height = 80 + resultCount * 50;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
-
 }
 
 void FinderWindow::clearResults() {
@@ -99,7 +99,7 @@ void FinderWindow::clearResults() {
 
 void FinderWindow::launch() {
 	QDesktopServices::openUrl(QUrl::fromLocalFile(QObject::sender()->property("path").toString()));
-	this->hide();
+	toggleWindow();
 }
 
 bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
@@ -172,10 +172,11 @@ void FinderWindow::revertSearch() {
 
 void FinderWindow::toggleWindow() {
 	if (this->isHidden()) {
+		revertSearch();
 		this->show();
 		this->activateWindow();
+		ui->searchBar->setFocus();
 	} else {
-		revertSearch();
 		this->hide();
 	}
 }
@@ -192,5 +193,10 @@ void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
 	}
 	ui->scroll_area_container->show();
 	search(ui->searchBar->text());
+	setFixedHeight(150);
+}
+
+void FinderWindow::exit() {
+	QApplication::quit();
 }
 

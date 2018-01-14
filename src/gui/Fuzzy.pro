@@ -36,3 +36,5 @@ LIBS += -lUser32
 
 DISTFILES +=
 QMAKE_LFLAGS += -static
+
+RC_FILE = res.rc

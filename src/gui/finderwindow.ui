@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>FinderWindow</class>
  <widget class="QMainWindow" name="FinderWindow">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -26,7 +23,7 @@
    </size>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::NoFocus</enum>
+   <enum>Qt::WheelFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Fuzzy Finder</string>
@@ -83,6 +80,9 @@ border-radius: 5px;</string>
     </item>
     <item>
      <widget class="QScrollArea" name="scroll_area_container">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">#scroll_area_container {
 background: transparent;
@@ -149,6 +149,10 @@ QPushButton:focus {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>searchBar</tabstop>
+  <tabstop>scroll_area_container</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

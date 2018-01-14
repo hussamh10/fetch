@@ -29,6 +29,7 @@ private slots:
 	void launch();
 	void newConnection();
 	void on_searchBar_textEdited(const QString &arg1);
+	void exit();
 
 private:
     Ui::FinderWindow *ui;
@@ -49,7 +50,6 @@ private:
 	void killProcess();
 	void revertSearch();
 	void toggleWindow();
-	void keyPressEvent(QKeyEvent*);
 
 	QFont resultFont;
 	QProcess *pyproc;
