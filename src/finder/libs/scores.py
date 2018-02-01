@@ -3,7 +3,8 @@ import re
 def updateScores(basic_rx, sub_rx, folders):
     temp = []
     for folder in folders:
-        folder.score += getScore(basic_rx, sub_rx, folder.name.lower())
+        folder.score = getScore(basic_rx, sub_rx, folder.name.lower())
+        #folder.score += getScore(basic_rx, sub_rx, folder.name.lower()) removed for better results on all match
 
         if folder.score > 0:
             temp.append(folder)
@@ -26,7 +27,7 @@ def advancedScoreUpdate(q, folders):
 
     return folders
 
-def SpaceScores(q, r, folders):
+def spaceScores(q, r, folders):
     if ' ' not in q:
         return folders
     

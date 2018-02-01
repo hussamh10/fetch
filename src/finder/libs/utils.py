@@ -30,7 +30,7 @@ def sort(f):
     return sorted(f, key=lambda x: x.score, reverse=True)
 
 def foldersString(f):
-    temp = f[0:3]
+    temp = f[:10]
     string = ''
     for t in temp:
         string = string + (t.path) + '\n'
