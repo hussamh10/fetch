@@ -37,7 +37,7 @@ def foldersString(f):
     return string
 
 def printFolders(f):
-    temp = f[:]
+    temp = f[:10]
     for t in temp:
         print(t.name[:-1] + "|" + t.path[:-1])
 
