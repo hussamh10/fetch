@@ -3,7 +3,6 @@ from msvcrt import getch
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
-from time import time
 
 def main():
     rootDir = os.environ["HOMEPATH"]
@@ -18,7 +17,6 @@ def main():
     folders = utils.initFoldersList(indexFilePath)
 
     while True:
-        t = time()
         result = 'None'
 
         q = input()
@@ -41,7 +39,5 @@ def main():
 
         utils.printFolders(folders)
         result = utils.foldersString(folders)
-
-        print(time() - t)
 
 main()
