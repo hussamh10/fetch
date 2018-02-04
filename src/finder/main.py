@@ -1,5 +1,4 @@
 import os
-from msvcrt import getch
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
