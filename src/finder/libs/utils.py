@@ -39,7 +39,7 @@ def foldersString(f):
 def printFolders(f):
     temp = f[:10]
     for t in temp:
-        print(t.name[:-1] + "|" + t.path[:-1])
+        print(t.name[:-1] + "|" + " C:" + t.path[:-1])
 
 def openFolder(folder):
     os.system('explorer \"' + folder.path + '\"')
