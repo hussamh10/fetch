@@ -2,11 +2,13 @@
 #define FINDERWINDOW_H
 
 #include <QMainWindow>
-#include <QSystemTrayIcon>
-#include <QProcess>
-#include <QtNetwork/QLocalServer>
-#include <QtNetwork/QLocalSocket>
+#include <QLocalServer>
 
+class QPushButton;
+class QProcess;
+class QSystemTrayIcon;
+class QLocalSocket;
+class QTimer;
 
 namespace Ui {
 class FinderWindow;
@@ -25,23 +27,30 @@ public:
 	void init();
 
 private slots:
+    void initWindowSize();
 	void searchResult();
 	void launch();
 	void newConnection();
 	void on_searchBar_textEdited(const QString &arg1);
 	void exit();
+    void reindex();
+
+    void on_searchBar_returnPressed();
+
+protected:
+    void keyPressEvent(QKeyEvent* e);
 
 private:
     Ui::FinderWindow *ui;
 	bool ignoreResults;
 	int resultCount;
 
-	void initWindowSize();
 	void initUI();
 	void initTray();
 	void initFont();
 	void initPyProcess();
 	void initLocalServer();
+    void initIndexer();
 
 	void clearResults();
 	void search(QString query);
@@ -51,6 +60,8 @@ private:
 	void revertSearch();
 	void toggleWindow();
 
+    void stylizeButton(QPushButton *btn, QString text, QString subtext);
+
 	QFont resultFont;
 	QProcess *pyproc;
 	QSystemTrayIcon *trayIcon;
@@ -58,7 +69,10 @@ private:
 	QLocalServer localServer;
 	QLocalSocket *localSocket;
 
+    QTimer *timer;
+
 	static const QString name;
+    bool indexed;
 
 };
 

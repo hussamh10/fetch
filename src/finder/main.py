@@ -10,6 +10,8 @@ def main():
     if not os.path.isfile(indexFilePath):
         index()
 
+    print(":indexed")
+    
     old_len = 0
     curr_len = 0
 
