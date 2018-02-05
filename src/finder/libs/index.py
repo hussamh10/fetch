@@ -21,7 +21,5 @@ def index():
             if hidden(dir):
                 subdirList.remove(dir)
 
-    print(time() - start)
-
 if __name__ == '__main__':
     index()

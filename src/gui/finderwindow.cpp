@@ -18,8 +18,6 @@
 #include <QPainter>
 #include <QTimer>
 
-#include <iostream>
-
 const QString FinderWindow::name = "fuzzyfinder";
 
 FinderWindow::FinderWindow(QWidget *parent) :
@@ -87,7 +85,7 @@ void FinderWindow::initTray() {
     menu->addAction(recenter);
 	menu->addAction(exit);
 
-	trayIcon->setContextMenu(menu);
+    trayIcon->setContextMenu(menu);
     trayIcon->show();
 }
 
@@ -135,8 +133,8 @@ void FinderWindow::clearResults() {
 }
 
 void FinderWindow::launch() {
-	QDesktopServices::openUrl(QUrl::fromLocalFile(QObject::sender()->property("path").toString()));
-	toggleWindow();
+    toggleWindow();
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QObject::sender()->property("path").toString()));
 }
 
 void FinderWindow::reindex() {
@@ -155,8 +153,7 @@ void FinderWindow::keyPressEvent(QKeyEvent *e) {
     QMainWindow::keyPressEvent(e);
 }
 
-bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
-{
+bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
 	Q_UNUSED(eventType);
 	Q_UNUSED(result);
 	MSG *msg = static_cast<MSG*>(message);
@@ -197,12 +194,12 @@ void FinderWindow::searchResult() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
         if (!indexed && str.trimmed() == ":indexed") {
+            trayIcon->showMessage("Fuzzy Finder", "Fuzzy Finder is running.");
             indexed = true;
-            trayIcon->showMessage("Fuzzy Finder", "Indexing has finished. Press F9 to launch Fuzzy.");
         } else if (str.trimmed() == ":") {
 			ignoreResults = false;
 			clearResults();
-		} else if (!ignoreResults) {
+        } else if (indexed && !ignoreResults) {
 			QList<QString> list = str.split('|');
             ui->scroll_area_container->show();
             setFixedHeight(150);
@@ -231,8 +228,7 @@ void FinderWindow::revertSearch() {
 void FinderWindow::toggleWindow() {
     if (!indexed) {
         trayIcon->showMessage("Fuzzy Finder", "Your directories are currently being indexed. Please wait.");
-    }
-    else if (this->isHidden()) {
+    } else if (this->isHidden()) {
 		revertSearch();
 		this->show();
 		this->activateWindow();
