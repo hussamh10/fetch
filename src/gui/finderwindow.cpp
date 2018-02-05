@@ -154,6 +154,7 @@ void FinderWindow::searchResult() {
 			clearResults();
 		} else if (!ignoreResults) {
 			QList<QString> list = str.split('|');
+            setFixedHeight(150);
 			addResult(list[0], list[1].trimmed());
 		}
 	}
@@ -197,11 +198,14 @@ void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
 		return;
     }
 	ui->scroll_area_container->show();
-	search(ui->searchBar->text());
-	setFixedHeight(150);
+    search(ui->searchBar->text());
 }
 
 void FinderWindow::exit() {
 	QApplication::quit();
 }
 
+
+void FinderWindow::on_searchBar_returnPressed() {
+    ((QPushButton*)ui->scroll_area->layout()->itemAt(0)->widget())->animateClick();
+}

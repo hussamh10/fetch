@@ -32,6 +32,8 @@ private slots:
 	void on_searchBar_textEdited(const QString &arg1);
 	void exit();
 
+    void on_searchBar_returnPressed();
+
 private:
     Ui::FinderWindow *ui;
 	bool ignoreResults;
