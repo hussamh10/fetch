@@ -8,6 +8,7 @@ class QPushButton;
 class QProcess;
 class QSystemTrayIcon;
 class QLocalSocket;
+class QTimer;
 
 namespace Ui {
 class FinderWindow;
@@ -32,6 +33,7 @@ private slots:
 	void newConnection();
 	void on_searchBar_textEdited(const QString &arg1);
 	void exit();
+    void reindex();
 
     void on_searchBar_returnPressed();
 
@@ -48,6 +50,7 @@ private:
 	void initFont();
 	void initPyProcess();
 	void initLocalServer();
+    void initIndexer();
 
 	void clearResults();
 	void search(QString query);
@@ -65,6 +68,8 @@ private:
 
 	QLocalServer localServer;
 	QLocalSocket *localSocket;
+
+    QTimer *timer;
 
 	static const QString name;
     bool indexed;

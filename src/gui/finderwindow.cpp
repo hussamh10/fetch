@@ -16,6 +16,7 @@
 #include <QMenu>
 #include <QTextDocument>
 #include <QPainter>
+#include <QTimer>
 
 #include <iostream>
 
@@ -36,6 +37,7 @@ void FinderWindow::init() {
 	initFont();
 	initPyProcess();
 	initLocalServer();
+    initIndexer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
 
 	ignoreResults = false;
@@ -47,6 +49,12 @@ void FinderWindow::initPyProcess() {
 	pyproc = new QProcess(this);
 	pyproc->start("python main.py");
 	connect(pyproc, SIGNAL(readyReadStandardOutput()), this, SLOT(searchResult()));
+}
+
+void FinderWindow::initIndexer() {
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(reindex()));
+    timer->start(60 * 60 * 1000);
 }
 
 void FinderWindow::initLocalServer() {
@@ -116,7 +124,7 @@ void FinderWindow::addResult(QString name, QString path) {
     connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
     ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
-	int calc_height = 80 + resultCount * 50;
+    int calc_height = 80 + resultCount * 60;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
 }
 
@@ -131,8 +139,12 @@ void FinderWindow::launch() {
 	toggleWindow();
 }
 
+void FinderWindow::reindex() {
+    (new QProcess(this))->start("python libs/index.py");
+}
+
 void FinderWindow::keyPressEvent(QKeyEvent *e) {
-    if (e->key() == Qt::Key_Escape) {
+    if (e->key() == Qt::Key_Escape && !ui->searchBar->hasFocus()) {
         revertSearch();
         return;
     } else if (e->key() == Qt::Key_Down) {
@@ -192,6 +204,7 @@ void FinderWindow::searchResult() {
 			clearResults();
 		} else if (!ignoreResults) {
 			QList<QString> list = str.split('|');
+            ui->scroll_area_container->show();
             setFixedHeight(150);
 			addResult(list[0], list[1].trimmed());
 		}
@@ -210,7 +223,7 @@ void FinderWindow::revertSearch() {
 	ignoreResults = true;
 	clearResults();
 	setFixedHeight(80);
-	ui->searchBar->setText("");
+    ui->searchBar->clear();
 	ui->searchBar->setFocus();
 	ui->scroll_area_container->hide();
 }
@@ -235,7 +248,6 @@ void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
 		revertSearch();
 		return;
     }
-	ui->scroll_area_container->show();
     search(ui->searchBar->text());
 }
 
