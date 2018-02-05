@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::WheelFocus</enum>
+   <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Fuzzy Finder</string>
@@ -119,6 +119,9 @@ border: none;
          <pointsize>12</pointsize>
         </font>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="styleSheet">
         <string notr="true">#scroll_area {
 	background: transparent;
@@ -128,17 +131,12 @@ QPushButton {
 	padding: 10px;
 	background: rgba(0,0,0,0.5);
 	color: white;
-	margin: 0px;
 	border: none;
+	text-align: left;
 }
 
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 	background: rgba(0,0,0,1);
-}
-
-QPushButton:focus {
-	background: rgba(255,255,255,1);
-	color: black;
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2"/>

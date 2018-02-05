@@ -1,14 +1,23 @@
 #include "finderwindow.h"
 #include "ui_finderwindow.h"
 #include <windows.h>
-#include <qscreen.h>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <qlayout.h>
-#include <qdesktopservices.h>
-#include <qurl.h>
+#include <QMainWindow>
+#include <QSystemTrayIcon>
+#include <QProcess>
+#include <QtNetwork/QLocalServer>
+#include <QtNetwork/QLocalSocket>
+#include <QScreen>
+#include <QPushButton>
+#include <QAction>
+#include <QLayout>
+#include <QDesktopServices>
+#include <QUrl>
 #include <QKeyEvent>
 #include <QMenu>
+#include <QTextDocument>
+#include <QPainter>
+
+#include <iostream>
 
 const QString FinderWindow::name = "fuzzyfinder";
 
@@ -76,19 +85,36 @@ void FinderWindow::initTray() {
 
 void FinderWindow::initWindowSize() {
 	QScreen* screen = QGuiApplication::primaryScreen();
-	QRect screenGeometry = screen->geometry();
-	setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 3, screenGeometry.width() / 2, 80);
+    QRect screenGeometry = screen->geometry();
+    setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 8, screenGeometry.width() / 2, 80);
+}
+
+void FinderWindow::stylizeButton(QPushButton* button, QString maintext, QString subtext) {
+    QTextDocument Text;
+    Text.setHtml("<h2><font face='Segoe UI' color=#fff size=5>" +
+                 maintext +
+                 "</font>&nbsp;<font face='Segoe UI' color=#ddd size=3><i>"+
+                 subtext +
+                 "</i></font></h2>");
+
+    // crop so it fits inside the button
+    QPixmap pixmap(this->size().width() * 0.9, Text.size().height());
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    Text.drawContents(&painter, pixmap.rect());
+
+    QIcon ButtonIcon(pixmap);
+    button->setIcon(ButtonIcon);
+    button->setIconSize(pixmap.size());
 }
 
 void FinderWindow::addResult(QString name, QString path) {
-	QPushButton *btn = new QPushButton(this);
-	btn->setText(name);
-	btn->setFont(resultFont);
-	btn->setProperty("path", path);
-	btn->setDefault(true);
-	connect(btn, SIGNAL(pressed()), this, SLOT(launch()));
-	ui->scroll_area->layout()->addWidget(btn);
-
+    QPushButton *btn = new QPushButton(this);
+    stylizeButton(btn, name, path);
+    btn->setProperty("path", path);
+    btn->setDefault(true);
+    connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
+    ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
 	int calc_height = 80 + resultCount * 50;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
@@ -103,6 +129,18 @@ void FinderWindow::clearResults() {
 void FinderWindow::launch() {
 	QDesktopServices::openUrl(QUrl::fromLocalFile(QObject::sender()->property("path").toString()));
 	toggleWindow();
+}
+
+void FinderWindow::keyPressEvent(QKeyEvent *e) {
+    if (e->key() == Qt::Key_Escape) {
+        revertSearch();
+        return;
+    } else if (e->key() == Qt::Key_Down) {
+        if (ui->searchBar->hasFocus() && resultCount > 0) {
+            ui->scroll_area->layout()->itemAt(0)->widget()->setFocus();
+        }
+    }
+    QMainWindow::keyPressEvent(e);
 }
 
 bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)

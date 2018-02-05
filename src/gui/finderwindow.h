@@ -2,11 +2,12 @@
 #define FINDERWINDOW_H
 
 #include <QMainWindow>
-#include <QSystemTrayIcon>
-#include <QProcess>
-#include <QtNetwork/QLocalServer>
-#include <QtNetwork/QLocalSocket>
+#include <QLocalServer>
 
+class QPushButton;
+class QProcess;
+class QSystemTrayIcon;
+class QLocalSocket;
 
 namespace Ui {
 class FinderWindow;
@@ -34,6 +35,9 @@ private slots:
 
     void on_searchBar_returnPressed();
 
+protected:
+    void keyPressEvent(QKeyEvent* e);
+
 private:
     Ui::FinderWindow *ui;
 	bool ignoreResults;
@@ -52,6 +56,8 @@ private:
 	void killProcess();
 	void revertSearch();
 	void toggleWindow();
+
+    void stylizeButton(QPushButton *btn, QString text, QString subtext);
 
 	QFont resultFont;
 	QProcess *pyproc;
