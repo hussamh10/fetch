@@ -12,8 +12,8 @@ def deleteAndRename():
     oldFile = os.path.join(rootDir, 'indexed')
 
     newFile = os.path.join(rootDir, 'indexed_temp')
-
-    os.remove(oldFile)
+    if os.path.exists(oldFile):
+        os.remove(oldFile)
     os.rename(newFile, oldFile)
 
 
