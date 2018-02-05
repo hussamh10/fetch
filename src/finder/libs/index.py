@@ -1,5 +1,4 @@
 import os
-from time import time
 
 def hidden(dir):
     useless = ['.', 'lib', 'bin', 'envs', 'include', 'pkgs', 'build', 'sdk', 'appdata', 'notmnist_large', 'notmnist_small', 'RTTTL']
@@ -8,7 +7,6 @@ def hidden(dir):
     return False
 
 def index():
-    start = time()
 
     rootDir = os.environ["HOMEPATH"]
     indexFilePath = os.path.join(rootDir, 'indexed')
