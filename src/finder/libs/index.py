@@ -7,11 +7,21 @@ def hidden(dir):
         return True
     return False
 
-def index():
-    start = time()
-
+def deleteAndRename():
     rootDir = os.environ["HOMEPATH"]
-    indexFilePath = os.path.join(rootDir, 'indexed')
+    oldFile = os.path.join(rootDir, 'indexed')
+
+    newFile = os.path.join(rootDir, 'indexed_temp')
+
+    os.remove(oldFile)
+    os.rename(newFile, oldFile)
+
+
+
+
+def index():
+    rootDir = os.environ["HOMEPATH"]
+    indexFilePath = os.path.join(rootDir, 'indexed_temp')
     file = open(indexFilePath, 'w')
 
     for dirName, subdirList, fileList in os.walk(rootDir):
@@ -21,7 +31,9 @@ def index():
             if hidden(dir):
                 subdirList.remove(dir)
 
-    print(time() - start)
+    file.close()
+
+    deleteAndRename()
 
 if __name__ == '__main__':
     index()
