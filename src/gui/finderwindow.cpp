@@ -29,12 +29,12 @@ FinderWindow::FinderWindow(QWidget *parent) :
 }
 
 void FinderWindow::init() {
+    initLocalServer();
 	initWindowSize();
-	initUI();
+    initUI();
 	initTray();
 	initFont();
-	initPyProcess();
-	initLocalServer();
+    initPyProcess();
     initIndexer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
 
@@ -87,6 +87,7 @@ void FinderWindow::initTray() {
 
     trayIcon->setContextMenu(menu);
     trayIcon->show();
+    trayIcon->showMessage("Fuzzy Finder", "Fuzzy Finder is indexing your directories.");
 }
 
 void FinderWindow::initWindowSize() {
@@ -194,7 +195,7 @@ void FinderWindow::searchResult() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
         if (!indexed && str.trimmed() == ":indexed") {
-            trayIcon->showMessage("Fuzzy Finder", "Fuzzy Finder is running.");
+            trayIcon->showMessage("Fuzzy Finder", "Indexing complete. Press F9 to open the finder window.");
             indexed = true;
         } else if (str.trimmed() == ":") {
 			ignoreResults = false;
