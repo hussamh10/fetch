@@ -17,6 +17,7 @@ FinderWindow::FinderWindow(QWidget *parent) :
 	ui(new Ui::FinderWindow)
 {
 	ui->setupUi(this);
+    indexed = false;
 }
 
 void FinderWindow::init() {
@@ -59,16 +60,18 @@ void FinderWindow::initUI() {
 
 void FinderWindow::initTray() {
 	trayIcon = new QSystemTrayIcon(this);
-	trayIcon->setIcon(QIcon("res\\fuzzy.ico"));
+    trayIcon->setIcon(QIcon(":/res/fuzzy.ico"));
 
 	QMenu *menu = new QMenu(this);
+    QAction *recenter = new QAction("Recenter", this);
 	QAction *exit = new QAction("Exit", this);
+    connect(recenter, SIGNAL(triggered(bool)), this, SLOT(initWindowSize()));
 	connect(exit, SIGNAL(triggered(bool)), this, SLOT(exit()));
+    menu->addAction(recenter);
 	menu->addAction(exit);
 
 	trayIcon->setContextMenu(menu);
-	trayIcon->show();
-	trayIcon->showMessage("Fuzzy Finder is running", "Press F9 to open the finder window");
+    trayIcon->show();
 }
 
 void FinderWindow::initWindowSize() {
@@ -143,7 +146,10 @@ void FinderWindow::search(QString query) {
 void FinderWindow::searchResult() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
-		if (str.trimmed() == ":") {
+        if (!indexed && str.trimmed() == ":indexed") {
+            indexed = true;
+            trayIcon->showMessage("Fuzzy Finder", "Indexing has finished. Press F9 to launch Fuzzy.");
+        } else if (str.trimmed() == ":") {
 			ignoreResults = false;
 			clearResults();
 		} else if (!ignoreResults) {
@@ -171,7 +177,10 @@ void FinderWindow::revertSearch() {
 }
 
 void FinderWindow::toggleWindow() {
-	if (this->isHidden()) {
+    if (!indexed) {
+        trayIcon->showMessage("Fuzzy Finder", "Your directories are currently being indexed. Please wait.");
+    }
+    else if (this->isHidden()) {
 		revertSearch();
 		this->show();
 		this->activateWindow();
@@ -186,11 +195,7 @@ void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
 	if (arg1.isEmpty()) {
 		revertSearch();
 		return;
-	}
-	if (arg1.contains(' ')) {
-		QString string = arg1;
-		ui->searchBar->setText(string.remove(' '));
-	}
+    }
 	ui->scroll_area_container->show();
 	search(ui->searchBar->text());
 	setFixedHeight(150);

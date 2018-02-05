@@ -37,4 +37,6 @@ LIBS += -lUser32
 DISTFILES +=
 QMAKE_LFLAGS += -static
 
-RC_FILE = res.rc
+RC_ICONS = res/fuzzy.ico
+
+RESOURCES += resources.qrc

@@ -25,6 +25,7 @@ public:
 	void init();
 
 private slots:
+    void initWindowSize();
 	void searchResult();
 	void launch();
 	void newConnection();
@@ -36,7 +37,6 @@ private:
 	bool ignoreResults;
 	int resultCount;
 
-	void initWindowSize();
 	void initUI();
 	void initTray();
 	void initFont();
@@ -59,6 +59,7 @@ private:
 	QLocalSocket *localSocket;
 
 	static const QString name;
+    bool indexed;
 
 };
 
