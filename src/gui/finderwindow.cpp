@@ -52,7 +52,7 @@ void FinderWindow::initPyProcess() {
 void FinderWindow::initIndexer() {
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(reindex()));
-    timer->start(60 * 60 * 1000);
+    timer->start(10);
 }
 
 void FinderWindow::initLocalServer() {
