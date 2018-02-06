@@ -1,6 +1,6 @@
 import os
 from time import time
-import win32api
+import subprocess
 
 def hidden(dir):
     useless = ['.', 'lib', 'bin', 'envs', 'include', 'pkgs', 'build', 'sdk', 'appdata', 'notmnist_large', 'notmnist_small', 'RTTTL']
@@ -20,13 +20,17 @@ def deleteAndRename():
 def getRoots():
     home = os.environ["HOMEPATH"]
 
-    roots = win32api.GetLogicalDriveStrings()
-    roots = roots.split('\000')[:-1]
-    roots.remove("C:\\")
-    roots.append(home)
-    print(roots)
+    roots = subprocess.check_output(['fsutil', 'fsinfo', 'drives'])
+    roots = str(roots)
+    roots = roots.split()
+    roots = roots[1:-1]
+    rts = []
+    for root in roots:
+        rts.append(root[:-1])
+    rts.remove("C:\\")
+    rts.append("C:" + home)
+    return rts
 
-    return roots
 
 def index():
     rootDir = os.environ["HOMEPATH"]
