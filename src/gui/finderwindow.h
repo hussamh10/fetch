@@ -73,6 +73,8 @@ private:
     QTimer *timer;
 
 	static const QString name;
+	QKeyEvent *tab;
+	QKeyEvent *shift_tab;
     bool indexed;
 
 };

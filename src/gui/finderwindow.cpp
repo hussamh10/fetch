@@ -17,6 +17,7 @@
 #include <QTextDocument>
 #include <QPainter>
 #include <QTimer>
+#include <QScrollBar>
 
 const QString FinderWindow::name = "fuzzyfinder";
 
@@ -40,6 +41,8 @@ void FinderWindow::init() {
 
 	ignoreResults = false;
 	resultCount = 0;
+	tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+	shift_tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
 	resetSize();
 }
 
@@ -146,11 +149,15 @@ void FinderWindow::keyPressEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_Escape && !ui->searchBar->hasFocus()) {
         revertSearch();
         return;
-    } else if (e->key() == Qt::Key_Down) {
-        if (ui->searchBar->hasFocus() && resultCount > 0) {
-            ui->scroll_area->layout()->itemAt(0)->widget()->setFocus();
-        }
-    }
+	} else if (e->key() == Qt::Key_Down) {
+		if (ui->searchBar->hasFocus() && resultCount > 0) {
+			QCoreApplication::postEvent(this, tab);
+		}
+	} else if (e->key() == Qt::Key_Up) {
+		if (ui->searchBar->hasFocus() && resultCount > 0) {
+			QCoreApplication::postEvent(this, shift_tab);
+		}
+	}
     QMainWindow::keyPressEvent(e);
 }
 
