@@ -35,12 +35,6 @@
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -79,6 +73,22 @@ border-radius: 4px;</string>
      </widget>
     </item>
     <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <widget class="QScrollArea" name="scroll_area_container">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -102,7 +112,7 @@ border: none;
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>311</y>
+         <y>295</y>
          <width>482</width>
          <height>18</height>
         </rect>

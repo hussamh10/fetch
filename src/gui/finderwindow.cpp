@@ -239,7 +239,7 @@ void FinderWindow::toggleWindow() {
 }
 
 void FinderWindow::resetSize() {
-    setFixedHeight(80);
+	setFixedHeight(80);
 	ui->scroll_area_container->hide();
 }
 
