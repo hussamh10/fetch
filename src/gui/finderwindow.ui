@@ -147,6 +147,11 @@ QPushButton {
 
 QPushButton:hover, QPushButton:focus {
 	background: rgba(0,0,0,1);
+}
+
+QPushButton:focus {
+	border: none;
+	outline: none;
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2"/>
