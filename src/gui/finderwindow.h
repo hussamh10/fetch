@@ -59,6 +59,7 @@ private:
 	void killProcess();
 	void revertSearch();
 	void toggleWindow();
+    void resetSize();
 
     void stylizeButton(QPushButton *btn, QString text, QString subtext);
 
