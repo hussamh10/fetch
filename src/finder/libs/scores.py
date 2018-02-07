@@ -1,5 +1,14 @@
 import re 
 
+def getCandidateFolders(prefic_rx, folders):
+    temp = []
+    for folder in folders:
+        match = prefic_rx.search(folder.path.lower())
+        if not match == None:
+            temp.append(folder)
+
+    return temp
+
 def updateScores(basic_rx, sub_rx, folders):
     temp = []
     for folder in folders:

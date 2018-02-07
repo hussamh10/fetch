@@ -1,6 +1,11 @@
 from libs.folder import Folder
+import libs.scores as scores
 import os
 import re
+
+def generatePreficRegex(q):
+    q = ".*" + q + ".*"
+    return re.compile(q)
 
 def generateBasicRegex(q):
     q = q.split(' ')[-1]
@@ -24,6 +29,13 @@ def initFoldersList(file_name):
     folders = []
     for path in file:
         folders.append(Folder(path))
+
+    return folders
+
+def initFoldersListWithPrefix(file_name, prefix):
+    prefix_rx = generatePreficRegex(prefix)
+    folders = initFoldersList(file_name)
+    folders = scores.getCandidateFolders(prefix_rx, folders)
     return folders
 
 def sort(f):

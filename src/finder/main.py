@@ -20,7 +20,7 @@ def main():
     while True:
         result = 'None'
 
-        q = input()
+        q = input().lower()
         print(":")
         
         old_len = curr_len
