@@ -59,6 +59,7 @@ private:
 	void killProcess();
 	void revertSearch();
 	void toggleWindow();
+    void resetSize();
 
     void stylizeButton(QPushButton *btn, QString text, QString subtext);
 
@@ -72,6 +73,8 @@ private:
     QTimer *timer;
 
 	static const QString name;
+	QKeyEvent *tab;
+	QKeyEvent *shift_tab;
     bool indexed;
 
 };

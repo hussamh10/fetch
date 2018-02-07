@@ -17,6 +17,7 @@
 #include <QTextDocument>
 #include <QPainter>
 #include <QTimer>
+#include <QScrollBar>
 
 const QString FinderWindow::name = "fuzzyfinder";
 
@@ -40,7 +41,9 @@ void FinderWindow::init() {
 
 	ignoreResults = false;
 	resultCount = 0;
-	ui->scroll_area_container->hide();
+	tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+	shift_tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
+	resetSize();
 }
 
 void FinderWindow::initPyProcess() {
@@ -146,11 +149,15 @@ void FinderWindow::keyPressEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_Escape && !ui->searchBar->hasFocus()) {
         revertSearch();
         return;
-    } else if (e->key() == Qt::Key_Down) {
-        if (ui->searchBar->hasFocus() && resultCount > 0) {
-            ui->scroll_area->layout()->itemAt(0)->widget()->setFocus();
-        }
-    }
+	} else if (e->key() == Qt::Key_Down) {
+		if (ui->searchBar->hasFocus() && resultCount > 0) {
+			QCoreApplication::postEvent(this, tab);
+		}
+	} else if (e->key() == Qt::Key_Up) {
+		if (ui->searchBar->hasFocus() && resultCount > 0) {
+			QCoreApplication::postEvent(this, shift_tab);
+		}
+	}
     QMainWindow::keyPressEvent(e);
 }
 
@@ -220,10 +227,9 @@ void FinderWindow::killProcess() {
 void FinderWindow::revertSearch() {
 	ignoreResults = true;
 	clearResults();
-	setFixedHeight(80);
+	resetSize();
     ui->searchBar->clear();
 	ui->searchBar->setFocus();
-	ui->scroll_area_container->hide();
 }
 
 void FinderWindow::toggleWindow() {
@@ -236,13 +242,19 @@ void FinderWindow::toggleWindow() {
 		ui->searchBar->setFocus();
 	} else {
 		this->hide();
-	}
+    }
+}
+
+void FinderWindow::resetSize() {
+	setFixedHeight(80);
+	ui->scroll_area_container->hide();
 }
 
 void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
-	ignoreResults = true;
-	if (arg1.isEmpty()) {
-		revertSearch();
+    ignoreResults = true;
+	resetSize();
+    if (arg1.isEmpty()) {
+        revertSearch();
 		return;
     }
     search(ui->searchBar->text());
