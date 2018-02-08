@@ -1,10 +1,23 @@
 import os
 import sys
 
+import subprocess
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
-        
+from msvcrt import getch
+
+
+def start(path):
+    subprocess.call(['explorer.exe', path])
+
+def printFolders(folders, cd):
+    i = 1
+    prefix = os.getcwd().lower()
+    for f in folders:
+        print(str(i) + '> ' + f.name[:-1] + ' - ' + f.path.lower().replace(cd, '.'))
+        i+=1
+
 def main():
     q = sys.argv[1:]
     q = " ".join(q)
@@ -16,8 +29,8 @@ def main():
     rootDir = os.environ["HOMEPATH"]
     indexFilePath = os.path.join(rootDir, 'indexed')
     
-    prefix = os.getcwd().lower()
-    prefix = prefix.replace("\\", "\\\\")
+    cd = os.getcwd().lower()
+    prefix = cd.replace("\\", "\\\\")
 
     folders = utils.initFoldersListWithPrefix(indexFilePath, prefix)
 
@@ -30,7 +43,21 @@ def main():
     folders = scores.spaceScores(q, space_rx, folders) # chooses only paths that match pre space q
     folders = utils.sort(folders)
 
-    utils.printFolders(folders)
-    result = utils.foldersString(folders)
+    printFolders(folders, cd)
+
+    exit = False
+
+    if len(folders) == 0:
+        return
+
+    while(not exit):
+        num = ord(getch()) - 48
+        if (num > 0 and num <= len(folders) and num < 10):
+            start(folders[num-1].path)
+            exit = True
+
+        elif (num + 48) == 27:
+            exit = True
+
 
 main()
