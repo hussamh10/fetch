@@ -33,9 +33,9 @@ def main():
         sub_rx = utils.generateSubRegex(q)
         space_rx = utils.generateSpaceRegex(q)
 
+        folders = scores.spaceScores(q, space_rx, folders) # chooses only paths that match pre space q
         folders = scores.updateScores(basic_rx, sub_rx, folders) # chooses that match post space q
         folders = scores.advancedScoreUpdate(q, folders) # no idea what this does
-        folders = scores.spaceScores(q, space_rx, folders) # chooses only paths that match pre space q
         folders = utils.sort(folders)
 
         utils.printFolders(folders)

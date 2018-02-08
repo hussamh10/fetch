@@ -17,8 +17,14 @@ def generateSubRegex(q):
     return re.compile(q)
 
 def generateSpaceRegex(q):
-    q = q.split()
-    q = q[0]
+    if ' ' not in q:
+        return None
+
+    q = q.split(' ')[:-1]
+    q = ' '.join(q)
+    q = '.*'.join(q)
+    q = q.replace(' ', '\\\\*')
+    print("this:", q)
     return re.compile(q)
 
 def readFile(file_name):
