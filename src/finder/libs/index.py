@@ -8,8 +8,7 @@ def hidden(dir):
         return True
     return False
 
-def deleteAndRename():
-    rootDir = os.environ["HOMEPATH"]
+def deleteAndRename(rootDir):
     oldFile = os.path.join(rootDir, 'indexed')
 
     newFile = os.path.join(rootDir, 'indexed_temp')
@@ -48,7 +47,7 @@ def index():
                     subdirList.remove(dir)
 
     file.close()
-    deleteAndRename()
+    deleteAndRename(rootDir)
 
 if __name__ == '__main__':
     index()
