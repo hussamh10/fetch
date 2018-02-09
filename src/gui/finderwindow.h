@@ -47,7 +47,6 @@ private:
 
 	void initUI();
 	void initTray();
-	void initFont();
 	void initPyProcess();
 	void initLocalServer();
     void initIndexer();
@@ -60,10 +59,10 @@ private:
 	void revertSearch();
 	void toggleWindow();
     void resetSize();
+	QLayout* createLayout();
 
     void stylizeButton(QPushButton *btn, QString text, QString subtext);
 
-	QFont resultFont;
 	QProcess *pyproc;
 	QSystemTrayIcon *trayIcon;
 

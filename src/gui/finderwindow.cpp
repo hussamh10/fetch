@@ -17,6 +17,7 @@
 #include <QTextDocument>
 #include <QPainter>
 #include <QTimer>
+#include <QGraphicsDropShadowEffect>
 #include <QScrollBar>
 
 const QString FinderWindow::name = "fuzzyfinder";
@@ -34,7 +35,6 @@ void FinderWindow::init() {
 	initWindowSize();
     initUI();
 	initTray();
-	initFont();
     initPyProcess();
     initIndexer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
@@ -66,14 +66,22 @@ void FinderWindow::newConnection() {
 	toggleWindow();
 }
 
-void FinderWindow::initFont() {
-	resultFont.setFamily("Segoe UI");
-	resultFont.setPixelSize(14);
-}
-
 void FinderWindow::initUI() {
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint | Qt::Popup | Qt::NoDropShadowWindowHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
+
+	QGraphicsDropShadowEffect* searchBarEffect = new QGraphicsDropShadowEffect();
+	searchBarEffect->setBlurRadius(10);
+	searchBarEffect->setOffset(0,0);
+	searchBarEffect->setColor(QColor(0,0,0,200));
+
+	QGraphicsDropShadowEffect* scrollAreaEffect = new QGraphicsDropShadowEffect();
+	scrollAreaEffect->setBlurRadius(10);
+	scrollAreaEffect->setOffset(0,0);
+	scrollAreaEffect->setColor(QColor(0,0,0,100));
+
+	ui->searchBar->setGraphicsEffect(searchBarEffect);
+	ui->scroll_area_container->setGraphicsEffect(scrollAreaEffect);
 }
 
 void FinderWindow::initTray() {
@@ -96,16 +104,16 @@ void FinderWindow::initTray() {
 void FinderWindow::initWindowSize() {
 	QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 8, screenGeometry.width() / 2, 80);
+	setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 8, screenGeometry.width() / 2, 150);
 }
 
 void FinderWindow::stylizeButton(QPushButton* button, QString maintext, QString subtext) {
     QTextDocument Text;
-    Text.setHtml("<h2><font face='Segoe UI' color=#fff size=5>" +
+	Text.setHtml("<font face='Roboto Cn' color=#000 size=5>" +
                  maintext +
-                 "</font>&nbsp;<font face='Segoe UI' color=#ddd size=3><i>"+
+				 "</font>&nbsp;<font face='Roboto' color=#777 size=3><i>"+
                  subtext +
-                 "</i></font></h2>");
+				 "</i></font>");
 
     // crop so it fits inside the button
     QPixmap pixmap(this->size().width() * 0.9, Text.size().height());
@@ -122,18 +130,18 @@ void FinderWindow::addResult(QString name, QString path) {
     QPushButton *btn = new QPushButton(this);
     stylizeButton(btn, name, path);
     btn->setProperty("path", path);
-    btn->setDefault(true);
+	btn->setDefault(true);
     connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
     ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
-    int calc_height = 80 + resultCount * 60;
+	int calc_height = 100 + resultCount * 50;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
 }
 
 void FinderWindow::clearResults() {
 	resultCount = 0;
 	qDeleteAll(ui->scroll_area->children());
-	ui->scroll_area->setLayout(new QVBoxLayout());
+	ui->scroll_area->setLayout(createLayout());
 }
 
 void FinderWindow::launch() {
@@ -209,8 +217,8 @@ void FinderWindow::searchResult() {
 			clearResults();
         } else if (indexed && !ignoreResults) {
 			QList<QString> list = str.split('|');
-            ui->scroll_area_container->show();
-            setFixedHeight(150);
+			resetSize();
+			ui->scroll_area_container->show();
 			addResult(list[0], list[1].trimmed());
 		}
 	}
@@ -246,8 +254,14 @@ void FinderWindow::toggleWindow() {
 }
 
 void FinderWindow::resetSize() {
-	setFixedHeight(80);
+	setFixedHeight(81);
 	ui->scroll_area_container->hide();
+}
+
+QLayout *FinderWindow::createLayout() {
+	QVBoxLayout *layout = new QVBoxLayout();
+	layout->setSpacing(0);
+	return layout;
 }
 
 void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
