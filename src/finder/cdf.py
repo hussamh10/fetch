@@ -9,7 +9,7 @@ from msvcrt import getch
 
 
 def start(path):
-    subprocess.call(['explorer.exe', path])
+    subprocess.call(['explorer.py', path])
 
 def printFolders(folders, cd):
     i = 1
@@ -26,7 +26,7 @@ def main():
         print('Enter a query after cdf.')
         return
 
-    rootDir = os.environ["HOMEPATH"]
+    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
     indexFilePath = os.path.join(rootDir, 'indexed')
     
     cd = os.getcwd().lower()

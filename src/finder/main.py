@@ -4,7 +4,7 @@ import libs.scores as scores
 import libs.utils as utils
 
 def main():
-    rootDir = os.environ["HOMEPATH"]
+    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
     indexFilePath = os.path.join(rootDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):
