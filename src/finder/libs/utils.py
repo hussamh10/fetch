@@ -24,7 +24,6 @@ def generateSpaceRegex(q):
     q = ' '.join(q)
     q = '.*'.join(q)
     q = q.replace(' ', '\\\\*')
-    print("this:", q)
     return re.compile(q)
 
 def readFile(file_name):
