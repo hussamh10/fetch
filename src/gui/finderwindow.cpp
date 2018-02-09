@@ -109,9 +109,9 @@ void FinderWindow::initWindowSize() {
 
 void FinderWindow::stylizeButton(QPushButton* button, QString maintext, QString subtext) {
     QTextDocument Text;
-	Text.setHtml("<font face='Roboto Lt' color=#000 size=5>" +
+	Text.setHtml("<font face='Roboto Cn' color=#000 size=5>" +
                  maintext +
-				 "</font>&nbsp;<font face='Roboto Th' color=#333 size=3><i>"+
+				 "</font>&nbsp;<font face='Roboto' color=#777 size=3><i>"+
                  subtext +
 				 "</i></font>");
 
@@ -134,7 +134,7 @@ void FinderWindow::addResult(QString name, QString path) {
     connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
     ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
-	int calc_height = 90 + resultCount * 60;
+	int calc_height = 100 + resultCount * 50;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
 }
 

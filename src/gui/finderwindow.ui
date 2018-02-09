@@ -48,7 +48,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Roboto Lt</family>
+        <family>Roboto Cn</family>
         <pointsize>16</pointsize>
         <weight>50</weight>
         <bold>false</bold>
@@ -132,14 +132,14 @@
 	padding: 10px;
 	outline: none;
 	border: none;
-	border-bottom: 1px solid rgb(200,200,200);
+	border-bottom: 1px solid #ddd;
 	border-radius: 3px;
 	background: white;
 	margin: 0;
 }
 
 QPushButton:hover, QPushButton:focus {
-	background: rgb(200,200,200);
+	background: #ddd;
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
