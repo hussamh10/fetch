@@ -30,8 +30,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget {
-	background: rgba(0,0,0,0.6);
-	border-radius: 4px;
+	background: transparent;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -49,17 +48,20 @@
       </property>
       <property name="font">
        <font>
-        <family>Segoe UI</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>Roboto Lt</family>
+        <pointsize>16</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background: rgba(0,0,0,0.8);
-color: white;
-padding: 10px;
-border-radius: 4px;</string>
+       <string notr="true">#searchBar {
+	background: white;
+	color: black;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -73,48 +75,42 @@ border-radius: 4px;</string>
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>10</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
      <widget class="QScrollArea" name="scroll_area_container">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">#scroll_area_container {
-background: transparent;
-border: none;
+	background: white;
+	border-radius: 3px;
+}
+
+#scroll_area {
+	background: transparent;
 }</string>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
       <property name="alignment">
-       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+       <set>Qt::AlignBottom|Qt::AlignHCenter</set>
       </property>
       <widget class="QWidget" name="scroll_area">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>295</y>
+         <y>301</y>
          <width>482</width>
-         <height>18</height>
+         <height>16</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -133,22 +129,29 @@ border: none;
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">#scroll_area {
-	background: transparent;
-	border-radius: 5px;
-}
-QPushButton {
+        <string notr="true">QPushButton {
 	padding: 10px;
-	background: rgba(0,0,0,0.5);
 	outline: none;
 	border: none;
+	border-bottom: 1px solid #ccc;
+	background: white;
 }
 
 QPushButton:hover, QPushButton:focus {
-	background: rgba(150,150,150,0.5);
+	background: #ccc;
 }</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2"/>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>15</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
+       </layout>
       </widget>
      </widget>
     </item>

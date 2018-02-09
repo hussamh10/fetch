@@ -17,6 +17,7 @@
 #include <QTextDocument>
 #include <QPainter>
 #include <QTimer>
+#include <QGraphicsDropShadowEffect>
 #include <QScrollBar>
 
 const QString FinderWindow::name = "fuzzyfinder";
@@ -34,7 +35,6 @@ void FinderWindow::init() {
 	initWindowSize();
     initUI();
 	initTray();
-	initFont();
     initPyProcess();
     initIndexer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
@@ -44,6 +44,17 @@ void FinderWindow::init() {
 	tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 	shift_tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
 	resetSize();
+
+	QGraphicsDropShadowEffect* e = new QGraphicsDropShadowEffect();
+	e->setBlurRadius(10);
+	e->setOffset(3,3);
+	e->setColor(QColor(0,0,0,100));
+	QGraphicsDropShadowEffect* e2 = new QGraphicsDropShadowEffect();
+	e2->setBlurRadius(10);
+	e2->setOffset(3,3);
+	e2->setColor(QColor(0,0,0,100));
+	ui->searchBar->setGraphicsEffect(e);
+	ui->scroll_area_container->setGraphicsEffect(e2);
 }
 
 void FinderWindow::initPyProcess() {
@@ -64,11 +75,6 @@ void FinderWindow::initLocalServer() {
 
 void FinderWindow::newConnection() {
 	toggleWindow();
-}
-
-void FinderWindow::initFont() {
-	resultFont.setFamily("Segoe UI");
-	resultFont.setPixelSize(14);
 }
 
 void FinderWindow::initUI() {
@@ -96,16 +102,16 @@ void FinderWindow::initTray() {
 void FinderWindow::initWindowSize() {
 	QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen->geometry();
-    setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 8, screenGeometry.width() / 2, 80);
+	setGeometry(screenGeometry.width() / 4, screenGeometry.height() / 8, screenGeometry.width() / 2, 150);
 }
 
 void FinderWindow::stylizeButton(QPushButton* button, QString maintext, QString subtext) {
     QTextDocument Text;
-    Text.setHtml("<h2><font face='Segoe UI' color=#fff size=5>" +
+	Text.setHtml("<font face='Roboto Lt' color=#000 size=5>" +
                  maintext +
-                 "</font>&nbsp;<font face='Segoe UI' color=#ddd size=3><i>"+
+				 "</font>&nbsp;<font face='Roboto Th' color=#333 size=3><i>"+
                  subtext +
-                 "</i></font></h2>");
+				 "</i></font>");
 
     // crop so it fits inside the button
     QPixmap pixmap(this->size().width() * 0.9, Text.size().height());
@@ -126,7 +132,7 @@ void FinderWindow::addResult(QString name, QString path) {
     connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
     ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
-    int calc_height = 80 + resultCount * 60;
+	int calc_height = 90 + resultCount * 60;
 	setFixedHeight(calc_height > 400 ? 400 : calc_height);
 }
 
@@ -209,8 +215,8 @@ void FinderWindow::searchResult() {
 			clearResults();
         } else if (indexed && !ignoreResults) {
 			QList<QString> list = str.split('|');
-            ui->scroll_area_container->show();
-            setFixedHeight(150);
+			resetSize();
+			ui->scroll_area_container->show();
 			addResult(list[0], list[1].trimmed());
 		}
 	}
@@ -246,7 +252,7 @@ void FinderWindow::toggleWindow() {
 }
 
 void FinderWindow::resetSize() {
-	setFixedHeight(80);
+	setFixedHeight(81);
 	ui->scroll_area_container->hide();
 }
 
