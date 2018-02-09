@@ -39,6 +39,5 @@ def main():
         folders = utils.sort(folders)
 
         utils.printFolders(folders)
-        result = utils.foldersString(folders)
 
 main()

@@ -3,10 +3,6 @@ import libs.scores as scores
 import os
 import re
 
-def generatePreficRegex(q):
-    q = ".*" + q + ".*"
-    return re.compile(q)
-
 def generateBasicRegex(q):
     q = q.split(' ')[-1]
     basic_ptrn = '.*'.join(q)
@@ -37,26 +33,10 @@ def initFoldersList(file_name):
 
     return folders
 
-def initFoldersListWithPrefix(file_name, prefix):
-    prefix_rx = generatePreficRegex(prefix)
-    folders = initFoldersList(file_name)
-    folders = scores.getCandidateFolders(prefix_rx, folders)
-    return folders
-
 def sort(f):
     return sorted(f, key=lambda x: x.score, reverse=True)
-
-def foldersString(f):
-    temp = f[:10]
-    string = ''
-    for t in temp:
-        string = string + (t.path) + '\n'
-    return string
 
 def printFolders(f):
     temp = f[:10]
     for t in temp:
         print(t.name[:-1] + "|" + t.path[:-1])
-
-def openFolder(folder):
-    os.system('explorer \"' + folder.path + '\"')
