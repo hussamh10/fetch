@@ -44,17 +44,6 @@ void FinderWindow::init() {
 	tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 	shift_tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
 	resetSize();
-
-	QGraphicsDropShadowEffect* e = new QGraphicsDropShadowEffect();
-	e->setBlurRadius(10);
-	e->setOffset(3,3);
-	e->setColor(QColor(0,0,0,100));
-	QGraphicsDropShadowEffect* e2 = new QGraphicsDropShadowEffect();
-	e2->setBlurRadius(10);
-	e2->setOffset(3,3);
-	e2->setColor(QColor(0,0,0,100));
-	ui->searchBar->setGraphicsEffect(e);
-	ui->scroll_area_container->setGraphicsEffect(e2);
 }
 
 void FinderWindow::initPyProcess() {
@@ -80,6 +69,19 @@ void FinderWindow::newConnection() {
 void FinderWindow::initUI() {
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint | Qt::Popup | Qt::NoDropShadowWindowHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
+
+	QGraphicsDropShadowEffect* searchBarEffect = new QGraphicsDropShadowEffect();
+	searchBarEffect->setBlurRadius(10);
+	searchBarEffect->setOffset(0,0);
+	searchBarEffect->setColor(QColor(0,0,0,200));
+
+	QGraphicsDropShadowEffect* scrollAreaEffect = new QGraphicsDropShadowEffect();
+	scrollAreaEffect->setBlurRadius(10);
+	scrollAreaEffect->setOffset(0,0);
+	scrollAreaEffect->setColor(QColor(0,0,0,100));
+
+	ui->searchBar->setGraphicsEffect(searchBarEffect);
+	ui->scroll_area_container->setGraphicsEffect(scrollAreaEffect);
 }
 
 void FinderWindow::initTray() {
@@ -128,7 +130,7 @@ void FinderWindow::addResult(QString name, QString path) {
     QPushButton *btn = new QPushButton(this);
     stylizeButton(btn, name, path);
     btn->setProperty("path", path);
-    btn->setDefault(true);
+	btn->setDefault(true);
     connect(btn, SIGNAL(clicked()), this, SLOT(launch()));
     ui->scroll_area->layout()->addWidget(btn);
 	resultCount++;
@@ -139,7 +141,7 @@ void FinderWindow::addResult(QString name, QString path) {
 void FinderWindow::clearResults() {
 	resultCount = 0;
 	qDeleteAll(ui->scroll_area->children());
-	ui->scroll_area->setLayout(new QVBoxLayout());
+	ui->scroll_area->setLayout(createLayout());
 }
 
 void FinderWindow::launch() {
@@ -254,6 +256,12 @@ void FinderWindow::toggleWindow() {
 void FinderWindow::resetSize() {
 	setFixedHeight(81);
 	ui->scroll_area_container->hide();
+}
+
+QLayout *FinderWindow::createLayout() {
+	QVBoxLayout *layout = new QVBoxLayout();
+	layout->setSpacing(0);
+	return layout;
 }
 
 void FinderWindow::on_searchBar_textEdited(const QString &arg1) {

@@ -81,12 +81,14 @@
       </property>
       <property name="styleSheet">
        <string notr="true">#scroll_area_container {
-	background: white;
+	border: 1px solid #ccc;
 	border-radius: 3px;
+	background: white;
 }
 
 #scroll_area {
 	background: transparent;
+	border: none;
 }</string>
       </property>
       <property name="verticalScrollBarPolicy">
@@ -108,8 +110,8 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>301</y>
-         <width>482</width>
+         <y>299</y>
+         <width>480</width>
          <height>16</height>
         </rect>
        </property>
@@ -119,29 +121,34 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::DefaultContextMenu</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	padding: 10px;
 	outline: none;
 	border: none;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgb(200,200,200);
+	border-radius: 3px;
 	background: white;
+	margin: 0;
 }
 
 QPushButton:hover, QPushButton:focus {
-	background: #ccc;
+	background: rgb(200,200,200);
 }</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetNoConstraint</enum>
+        </property>
         <property name="leftMargin">
          <number>15</number>
         </property>
@@ -150,6 +157,9 @@ QPushButton:hover, QPushButton:focus {
         </property>
         <property name="rightMargin">
          <number>15</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
        </layout>
       </widget>
