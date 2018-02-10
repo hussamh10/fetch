@@ -36,19 +36,26 @@ def index():
 
     indexFilePath = os.path.join(homeDir, 'indexed_temp')
 
-    file = open(indexFilePath, 'w')
+    folders = []
 
     rootDirs = getRoots(rootDir)
 
     for root in rootDirs:
         for dirName, subdirList, fileList in os.walk(root):
-            file.write(dirName + '\n')
+            folders.append(dirName)
 
             for dir in subdirList[:]:
                 if hidden(dir):
                     subdirList.remove(dir)
 
+
+    folders.sort(key = lambda s: len(s))
+
+    file = open(indexFilePath, 'w')
+    for f in folders:
+      file.write("%s\n" % f)
     file.close()
+
     deleteAndRename(homeDir)
 
 if __name__ == '__main__':
