@@ -280,5 +280,7 @@ void FinderWindow::exit() {
 
 
 void FinderWindow::on_searchBar_returnPressed() {
-    ((QPushButton*)ui->scroll_area->layout()->itemAt(0)->widget())->animateClick();
+	if (ui->scroll_area->layout()->count() > 0) {
+		((QPushButton*)ui->scroll_area->layout()->itemAt(0)->widget())->animateClick();
+	}
 }
