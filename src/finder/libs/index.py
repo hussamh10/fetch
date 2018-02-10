@@ -8,18 +8,14 @@ def hidden(dir):
         return True
     return False
 
-def deleteAndRename():
-    rootDir = os.environ["HOMEPATH"]
-    oldFile = os.path.join(rootDir, 'indexed')
-
-    newFile = os.path.join(rootDir, 'indexed_temp')
+def deleteAndRename(homeDir):
+    oldFile = os.path.join(homeDir, 'indexed')
+    newFile = os.path.join(homeDir, 'indexed_temp')
     if os.path.exists(oldFile):
         os.remove(oldFile)
     os.rename(newFile, oldFile)
 
-def getRoots():
-    home = os.environ["HOMEPATH"]
-
+def getRoots(home):
     roots = subprocess.check_output(['fsutil', 'fsinfo', 'drives'])
     roots = str(roots)
     roots = roots.split()
@@ -27,28 +23,42 @@ def getRoots():
     rts = []
     for root in roots:
         rts.append(root[:-1])
-    rts.remove("C:\\")
-    rts.append("C:" + home)
+    rts.remove(home[0] + ":\\")
+    rts.append(home)
     return rts
 
-
 def index():
-    rootDir = os.environ["HOMEPATH"]
-    indexFilePath = os.path.join(rootDir, 'indexed_temp')
-    file = open(indexFilePath, 'w')
+    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
 
-    rootDirs = getRoots()
+    
+    dataDir = os.environ["APPDATA"] + "\\fuzzy-data\\"
+
+    if not os.path.exists(dataDir):
+        os.makedirs(dataDir)
+
+    indexFilePath = os.path.join(dataDir, 'indexed_temp')
+
+    folders = []
+
+    rootDirs = getRoots(rootDir)
 
     for root in rootDirs:
         for dirName, subdirList, fileList in os.walk(root):
-            file.write(dirName + '\n')
+            folders.append(dirName)
 
             for dir in subdirList[:]:
                 if hidden(dir):
                     subdirList.remove(dir)
 
+
+    folders.sort(key = lambda s: len(s))
+
+    file = open(indexFilePath, 'w')
+    for f in folders:
+      file.write("%s\n" % f)
     file.close()
-    deleteAndRename()
+
+    deleteAndRename(dataDir)
 
 if __name__ == '__main__':
     index()
