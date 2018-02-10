@@ -8,10 +8,9 @@ def hidden(dir):
         return True
     return False
 
-def deleteAndRename(rootDir):
-    oldFile = os.path.join(rootDir, 'indexed')
-
-    newFile = os.path.join(rootDir, 'indexed_temp')
+def deleteAndRename(homeDir):
+    oldFile = os.path.join(homeDir, 'indexed')
+    newFile = os.path.join(homeDir, 'indexed_temp')
     if os.path.exists(oldFile):
         os.remove(oldFile)
     os.rename(newFile, oldFile)
@@ -28,11 +27,14 @@ def getRoots(home):
     rts.append(home)
     return rts
 
-
 def index():
     rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
-    indexFilePath = os.path.join(rootDir, 'indexed_temp')
+    homeDir = rootDir + "\\fuzzy-data\\"
 
+    if not os.path.exists(homeDir):
+        os.makedirs(homeDir)
+
+    indexFilePath = os.path.join(homeDir, 'indexed_temp')
 
     file = open(indexFilePath, 'w')
 
@@ -47,7 +49,7 @@ def index():
                     subdirList.remove(dir)
 
     file.close()
-    deleteAndRename(rootDir)
+    deleteAndRename(homeDir)
 
 if __name__ == '__main__':
     index()

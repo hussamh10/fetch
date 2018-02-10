@@ -1,26 +1,8 @@
 from libs.folder import Folder
-import libs.scores as scores
 import os
-import re
 
-def generateBasicRegex(q):
-    q = q.split(' ')[-1]
-    basic_ptrn = '.*'.join(q)
-    return re.compile(basic_ptrn)
-
-def generateSubRegex(q):
-    q = q.split(' ')[-1]
-    return re.compile(q)
-
-def generateSpaceRegex(q):
-    if ' ' not in q:
-        return None
-
-    q = q.split(' ')[:-1]
-    q = ' '.join(q)
-    q = '.*'.join(q)
-    q = q.replace(' ', '\\\\*')
-    return re.compile(q)
+def getFuzzyFolder():
+    return '\\fuzzy-data\\'
 
 def readFile(file_name):
     return open(file_name, 'r').readlines()

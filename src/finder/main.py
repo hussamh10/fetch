@@ -2,9 +2,10 @@ import os
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
+import libs.regex as regex
 
 def main():
-    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
+    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"] + utils.getFuzzyFolder()
     indexFilePath = os.path.join(rootDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):
@@ -29,9 +30,9 @@ def main():
         if(not old_len < curr_len or ' ' in q):
             folders = utils.initFoldersList(indexFilePath)
 
-        basic_rx = utils.generateBasicRegex(q)
-        sub_rx = utils.generateSubRegex(q)
-        space_rx = utils.generateSpaceRegex(q)
+        basic_rx = regex.generateBasicRegex(q)
+        sub_rx = regex.generateSubRegex(q)
+        space_rx = regex.generateSpaceRegex(q)
 
         folders = scores.spaceScores(q, space_rx, folders) # chooses only paths that match pre space q
         folders = scores.updateScores(basic_rx, sub_rx, folders) # chooses that match post space q
