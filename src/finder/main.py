@@ -5,8 +5,8 @@ import libs.utils as utils
 import libs.regex as regex
 
 def main():
-    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"] + utils.getFuzzyFolder()
-    indexFilePath = os.path.join(rootDir, 'indexed')
+    indexDir = os.environ["APPDATA"] + utils.getFuzzyFolder()
+    indexFilePath = os.path.join(indexDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):
         index()

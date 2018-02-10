@@ -29,12 +29,14 @@ def getRoots(home):
 
 def index():
     rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
-    homeDir = rootDir + "\\fuzzy-data\\"
 
-    if not os.path.exists(homeDir):
-        os.makedirs(homeDir)
+    
+    dataDir = os.environ["APPDATA"] + "\\fuzzy-data\\"
 
-    indexFilePath = os.path.join(homeDir, 'indexed_temp')
+    if not os.path.exists(dataDir):
+        os.makedirs(dataDir)
+
+    indexFilePath = os.path.join(dataDir, 'indexed_temp')
 
     folders = []
 
@@ -56,7 +58,7 @@ def index():
       file.write("%s\n" % f)
     file.close()
 
-    deleteAndRename(homeDir)
+    deleteAndRename(dataDir)
 
 if __name__ == '__main__':
     index()
