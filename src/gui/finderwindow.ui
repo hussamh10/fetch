@@ -84,11 +84,6 @@
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	background: white;
-}
-
-#scroll_area {
-	background: transparent;
-	border: none;
 }</string>
       </property>
       <property name="verticalScrollBarPolicy">
@@ -128,14 +123,18 @@
         <enum>Qt::DefaultContextMenu</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
+        <string notr="true">#scroll_area {
+	background: white;
+	border: none;
+}
+
+QPushButton {
 	padding: 10px;
 	outline: none;
 	border: none;
-	border-bottom: 1px solid #ddd;
 	border-radius: 3px;
-	background: white;
 	margin: 0;
+	border-top: 1px solid #ddd;
 }
 
 QPushButton:hover, QPushButton:focus {

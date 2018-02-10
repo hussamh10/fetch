@@ -16,32 +16,32 @@ class FinderWindow;
 
 class FinderWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	explicit FinderWindow(QWidget *parent = 0);
-    ~FinderWindow();
+	~FinderWindow();
 	bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 	bool isAlreadyRunning();
 	void startListening();
 	void init();
 
 private slots:
-    void initWindowSize();
+	void initWindowSize();
 	void searchResult();
 	void launch();
 	void newConnection();
 	void on_searchBar_textEdited(const QString &arg1);
 	void exit();
-    void reindex();
+	void reindex();
 
-    void on_searchBar_returnPressed();
+	void on_searchBar_returnPressed();
 
 protected:
-    void keyPressEvent(QKeyEvent* e);
+	void keyPressEvent(QKeyEvent* e);
 
 private:
-    Ui::FinderWindow *ui;
+	Ui::FinderWindow *ui;
 	bool ignoreResults;
 	int resultCount;
 
@@ -49,7 +49,7 @@ private:
 	void initTray();
 	void initPyProcess();
 	void initLocalServer();
-    void initIndexer();
+	void initIndexer();
 
 	void clearResults();
 	void search(QString query);
@@ -58,10 +58,10 @@ private:
 	void killProcess();
 	void revertSearch();
 	void toggleWindow();
-    void resetSize();
+	void resetSize();
 	QLayout* createLayout();
 
-    void stylizeButton(QPushButton *btn, QString text, QString subtext);
+	void stylizeButton(QPushButton *btn, QString text, QString subtext);
 
 	QProcess *pyproc;
 	QSystemTrayIcon *trayIcon;
@@ -69,13 +69,14 @@ private:
 	QLocalServer localServer;
 	QLocalSocket *localSocket;
 
-    QTimer *timer;
+	QTimer *timer;
 
 	static const QString name;
+	static const int MAX_HEIGHT;
+	static const int MIN_HEIGHT;
 	QKeyEvent *tab;
 	QKeyEvent *shift_tab;
-    bool indexed;
-
+	bool indexed;
 };
 
 #endif // FINDERWINDOW_H
