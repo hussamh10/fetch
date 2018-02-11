@@ -5,7 +5,7 @@ import libs.utils as utils
 import libs.regex as regex
 
 def main():
-    indexDir = os.environ["APPDATA"] + utils.getFuzzyFolder()
+    indexDir = os.environ["LOCALAPPDATA"] + utils.getFuzzyFolder()
     indexFilePath = os.path.join(indexDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):

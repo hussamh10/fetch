@@ -31,7 +31,7 @@ def index():
     rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
 
     
-    dataDir = os.environ["APPDATA"] + "\\fuzzy-data\\"
+    dataDir = os.environ["LOCALAPPDATA"] + "\\fuzzy-data\\"
 
     if not os.path.exists(dataDir):
         os.makedirs(dataDir)
