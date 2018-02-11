@@ -22,7 +22,7 @@ def main():
         result = 'None'
 
         q = input().lower()
-        print(":")
+        print(":" + q)
         
         old_len = curr_len
         curr_len = len(q)
