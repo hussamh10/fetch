@@ -32,9 +32,12 @@ def spaceScores(q, r, folders):
         return folders
     
     temp = []
+
+    print(q, r)
+
     for folder in folders:
         string = folder.path.split('\\')[:-1]
-        string = ' '.join(string)
+        string = ':'.join(string)
 
         match = r.search(string.lower())
 
