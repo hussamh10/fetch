@@ -74,8 +74,6 @@ private:
 	static const QString name;
 	static const int MAX_HEIGHT;
 	static const int MIN_HEIGHT;
-	QKeyEvent *tab;
-	QKeyEvent *shift_tab;
 	bool indexed;
 };
 

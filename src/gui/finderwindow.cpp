@@ -1,5 +1,6 @@
 #include "finderwindow.h"
 #include "ui_finderwindow.h"
+
 #include <windows.h>
 #include <QMainWindow>
 #include <QSystemTrayIcon>
@@ -30,6 +31,8 @@ FinderWindow::FinderWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	indexed = false;
+	ignoreResults = false;
+	resultCount = 0;
 }
 
 void FinderWindow::init() {
@@ -40,11 +43,6 @@ void FinderWindow::init() {
 	initPyProcess();
 	initIndexer();
 	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
-
-	ignoreResults = false;
-	resultCount = 0;
-	tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
-	shift_tab = new QKeyEvent (QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
 	resetSize();
 }
 
@@ -113,7 +111,7 @@ void FinderWindow::stylizeButton(QPushButton* button, QString maintext, QString 
 	QTextDocument Text;
 	Text.setHtml("<font face='Roboto Cn' color=#000 size=5>" +
 				 maintext +
-				 "</font>&nbsp;<font face='Roboto' color=#777 size=3><i>"+
+				 "</font>&nbsp;<font face='Roboto' color=#777 size=4><i>"+
 				 subtext +
 				 "</i></font>");
 
@@ -164,17 +162,13 @@ void FinderWindow::reindex() {
 void FinderWindow::keyPressEvent(QKeyEvent *e) {
 	if (e->key() == Qt::Key_Escape && !ui->searchBar->hasFocus()) {
 		revertSearch();
-		return;
-	} else if (e->key() == Qt::Key_Down) {
-		if (ui->searchBar->hasFocus() && resultCount > 0) {
-			QCoreApplication::postEvent(this, tab);
-		}
-	} else if (e->key() == Qt::Key_Up) {
-		if (ui->searchBar->hasFocus() && resultCount > 0) {
-			QCoreApplication::postEvent(this, shift_tab);
-		}
+	} else if (ui->searchBar->hasFocus() && e->key() == Qt::Key_Down) {
+		QCoreApplication::postEvent(this, new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier));
+	} else if (ui->searchBar->hasFocus() && e->key() == Qt::Key_Up) {
+		QCoreApplication::postEvent(this, new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier));
+	} else {
+		QMainWindow::keyPressEvent(e);
 	}
-	QMainWindow::keyPressEvent(e);
 }
 
 bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
