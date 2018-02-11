@@ -1,9 +1,7 @@
-from libs.folder import Folder
-from libs.file import File
+from item import File
+from item import Folder
 import os
-
-def getFuzzyFolder():
-    return '\\fuzzy-data\\'
+import constants
 
 def readFile(file_name):
     return open(file_name, 'r').readlines()
@@ -25,7 +23,6 @@ def initFilesList(file_names, path):
 
     return files
 
-
 def initFoldersList(file_name):
     file = readFile(file_name)
     folders = []
@@ -38,6 +35,17 @@ def sort(f):
     return sorted(f, key=lambda x: x.score, reverse=True)
 
 def printItems(f):
-    temp = f[:10]
+    limit = constants.getResultsLimit()
+    temp = f[:limit]
     for t in temp:
-        print(t.name[:-1] + "|" + t.path[:-1])
+        print(t.name[:-1] + "|" + t.path[:-1], t.score)
+
+def deleteAndRename(homeDir, old, new):
+    oldFile = os.path.join(homeDir, old)
+    newFile = os.path.join(homeDir, new)
+
+
+    if os.path.exists(oldFile):
+        os.remove(oldFile)
+
+    os.rename(newFile, oldFile)

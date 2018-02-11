@@ -1,25 +1,27 @@
 import os
-from libs.index import index
-import libs.scores as scores
-import libs.utils as utils
-import libs.regex as regex
+import index
+import scores
+import utils
+import regex
+import constants
 
-def fuzzy_file(q, classes, files):
+def fuzzy_file(classes, files):
 
-    if q not in classes:
+    q = ''
+    while q not in classes:
+        q = input()
+
+    print("ol")
+
+    while True:
+        index = files[q]
+        q = input()
+        index = fuzz(q, index)
+        utils.printItems(index)
+
         return
 
-    index = files[q]
-    q = input()
-    index = fuzz(q, index)
-
-    utils.printItems(index)
-
-    return
-
-
 def fuzz(q, index):
-
     basic_rx = regex.generateBasicRegex(q)
     sub_rx = regex.generateSubRegex(q)
     space_rx = regex.generateSpaceRegex(q)
@@ -31,12 +33,10 @@ def fuzz(q, index):
 
     return index
 
-def main():
-    indexDir = os.environ["LOCALAPPDATA"] + utils.getFuzzyFolder()
-    indexFilePath = os.path.join(indexDir, 'dir_indexed')
-
-    classes = ['code', 'pic']
-
+def init():
+    indexDir = constants.getIndexPath()
+    indexFilePath = os.path.join(indexDir, constants.getDirIndexName())
+    classes = constants.getClasses()
 
     if not os.path.isfile(indexFilePath):
         index()
@@ -45,24 +45,30 @@ def main():
         if not os.path.isfile(os.path.join(indexDir, c)):
             index()
 
-
     print(":indexed")
+
+    folders = utils.initFoldersList(indexFilePath)
+    files = utils.initFilesList(classes, indexDir)
     
+    return folders, files
+
+def main():
+
+    folders, files = init()
+    candidates = folders
+
     old_len = 0
     curr_len = 0
 
-    folders = utils.initFoldersList(indexFilePath)
-    files = utils.initFilesList(['code', 'pic'], indexDir)
-
-    q = input()
+    classes = constants.getClasses()
+    
+    fuzzy_file(classes, files)
 
     while q != 'dir':
         fuzzy_file(q, classes, files)
         q = input()
 
     while True:
-        result = 'None'
-
         q = input().lower()
         print(":" + q)
 
@@ -70,10 +76,8 @@ def main():
         curr_len = len(q)
 
         if(not old_len < curr_len or ' ' in q):
-            folders = utils.initFoldersList(indexFilePath)
+            candidates = folders
 
-        folders = fuzz(q, folders)
-
-        utils.printItems(folders)
-
+        candidates = fuzz(q, candidates)
+        utils.printItems(candidates)
 main()
