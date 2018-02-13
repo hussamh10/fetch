@@ -1,8 +1,8 @@
 import os
 from time import time
-import subprocess
 import preprocess
 import constants
+import utils
 
 def index():
 
@@ -30,8 +30,9 @@ def index():
             folders.append(dirName)
 
             for f in fileList:
-                f=f.encode( 'cp65001',"ignore")
-                f=f.decode( 'ascii',"ignore")
+                f = f.encode('ascii',"ignore")
+                f = f.decode('ascii',"ignore")
+                f = str(f)
                 f = dirName + "\\" + f
                 files.append(f)
 
@@ -44,12 +45,12 @@ def index():
 
     file = open(dirIndexFilePath, 'w')
     for f in folders:
-      file.write("%s\n" % f)
+        file.write("%s\n" % f)
     file.close()
 
     file = open(fileIndexFilePath, 'w')
     for f in files:
-      file.write("%s\n" % f)
+        file.write(f + '\n')
     file.close()
 
     utils.deleteAndRename(dataDir, dirIndexName, dirIndexNameTemp)

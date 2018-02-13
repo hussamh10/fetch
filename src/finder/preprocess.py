@@ -12,7 +12,7 @@ def makePartition(files, cl, exts, path):
     path = os.path.join(path, cl)
     file = open(path, 'w')
     for f in temp:
-        file.write("%s\n" % f)
+        file.write("%s\n" % f[:-1])
     file.close
 
 

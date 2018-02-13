@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 def getIndexPath():
     return os.environ["LOCALAPPDATA"] + "\\fuzzy-data\\"

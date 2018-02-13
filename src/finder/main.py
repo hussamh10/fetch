@@ -1,25 +1,67 @@
 import os
-import index
+from index import index
 import scores
 import utils
 import regex
 import constants
 
-def fuzzy_file(classes, files):
+def fuzzy_file(q, classes, files):
+    print("files")
 
-    q = ''
     while q not in classes:
-        q = input()
+        q = input().lower()
+        if(len(q) == 0):
+            return
 
-    print("ol")
+
+    old_len = 0
+    curr_len = 0
+
+    cl = q
+    candidates = files[cl][:]
+    q = input().lower()
+    if (q[:-1] != ' '):
+        print("No such class")
 
     while True:
-        index = files[q]
-        q = input()
-        index = fuzz(q, index)
-        utils.printItems(index)
+        q = input().lower()
+        print(":" + q)
 
+        old_len = curr_len
+        curr_len = len(q)
+
+        if (curr_len <= 1):
+            return
+
+        if(not old_len < curr_len or q.count(' ') > 1):
+            candidates = files[cl][:]
+
+        print(q.replace(cl, '', 1))
+        candidates = fuzz(q.replace(cl, '', 1), candidates)
+        utils.printItems(candidates)
         return
+
+def fuzzy_dir(q, folders):
+    old_len = 0
+    curr_len = 0
+    candidates = folders[:]
+    print(":" + q)
+
+    while True:
+        old_len = curr_len
+        curr_len = len(q)
+
+        if (curr_len == 0):
+            return
+
+        if(not old_len < curr_len or ' ' in q):
+            candidates = folders[:]
+
+        candidates = fuzz(q, candidates)
+        utils.printItems(candidates)
+
+        q = input().lower()
+        print(":" + q)
 
 def fuzz(q, index):
     basic_rx = regex.generateBasicRegex(q)
@@ -53,31 +95,16 @@ def init():
     return folders, files
 
 def main():
-
     folders, files = init()
     candidates = folders
-
-    old_len = 0
-    curr_len = 0
-
     classes = constants.getClasses()
-    
-    fuzzy_file(classes, files)
-
-    while q != 'dir':
-        fuzzy_file(q, classes, files)
-        q = input()
-
-    while True:
+    q = ''
+    while(True):
         q = input().lower()
-        print(":" + q)
+        if '.' in q:
+            fuzzy_file(q, classes, files)
+        else:
+            fuzzy_dir(q, candidates)
 
-        old_len = curr_len
-        curr_len = len(q)
 
-        if(not old_len < curr_len or ' ' in q):
-            candidates = folders
-
-        candidates = fuzz(q, candidates)
-        utils.printItems(candidates)
 main()

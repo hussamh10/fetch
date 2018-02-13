@@ -16,5 +16,5 @@ def generateSpaceRegex(q):
     q = q.split(' ')[:-1]
     q = ' '.join(q)
     q = '.*'.join(q)
-    q = q.replace(' ', '\\\\*')
+    q = q.replace(' ', ':')
     return re.compile(q)

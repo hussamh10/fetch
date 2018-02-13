@@ -33,7 +33,7 @@ def spaceScores(q, r, index):
     temp = []
     for item in index:
         string = item.path.split('\\')[:-1]
-        string = ' '.join(string)
+        string = ':'.join(string)
 
         match = r.search(string.lower())
 
