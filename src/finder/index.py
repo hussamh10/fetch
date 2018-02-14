@@ -8,9 +8,6 @@ def index():
 
     dataDir = constants.getIndexPath()
 
-    if not os.path.exists(dataDir):
-        os.makedirs(dataDir)
-
     dirIndexName = constants.getDirIndexName()
     fileIndexName = constants.getFileIndexName()
 

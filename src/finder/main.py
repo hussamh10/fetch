@@ -1,8 +1,10 @@
 import os
 from index import index
+from setup import createClassesFile
 import scores
 import utils
 import regex
+import error
 import constants
 
 def fuzzy_file(q, classes, files):
@@ -78,11 +80,18 @@ def fuzz(q, index):
 def init():
     indexDir = constants.getIndexPath()
     indexFilePath = os.path.join(indexDir, constants.getDirIndexName())
-    classes = constants.getClasses()
 
     if not os.path.isfile(indexFilePath):
+        createClassesFile()
         index()
 
+    classes = constants.getClasses()
+    
+    if not classes:
+        error.noClasses()
+        return
+
+    
     for c in classes:
         if not os.path.isfile(os.path.join(indexDir, c)):
             index()
@@ -105,6 +114,5 @@ def main():
             fuzzy_file(q, classes, files)
         else:
             fuzzy_dir(q, candidates)
-
 
 main()

@@ -1,4 +1,5 @@
 import os
+import error
 
 def makePartition(files, cl, exts, path):
     temp = []
@@ -18,9 +19,14 @@ def makePartition(files, cl, exts, path):
 
 def loadClasses(path):
     filePath = os.path.join(path, 'classes')
+
+    if not os.path.isfile(filePath):
+        return []
+
     f = open(filePath, 'r')
     file = f.readlines()
     f.close()
+
 
     classes = dict()
 
@@ -35,6 +41,10 @@ def loadClasses(path):
 
 def preprocess(fileIndexPath, fileIndexName):
     classes = loadClasses(fileIndexPath)
+
+    if not classes:
+        error.noClasses()
+        return
 
     indexFile = os.path.join(fileIndexPath, fileIndexName)
     file = open(indexFile, 'r')

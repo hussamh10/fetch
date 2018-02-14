@@ -2,7 +2,10 @@ import os
 import subprocess
 
 def getIndexPath():
-    return os.environ["LOCALAPPDATA"] + "\\fuzzy-data\\"
+    path = os.path.join(os.environ["LOCALAPPDATA"] + "\\fuzzy-data\\")
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
 
 def getFileIndexName():
     return "file_indexed"
@@ -25,6 +28,9 @@ def getRoots():
 
 def getClasses():
     filePath = os.path.join(getIndexPath(), 'classes')
+
+    if not os.path.isfile(filePath):
+        return []
 
     f = open(filePath, 'r')
     file = f.readlines()
