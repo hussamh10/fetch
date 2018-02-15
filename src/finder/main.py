@@ -22,7 +22,7 @@ def fuzzy_file(q, classes, files):
     cl = q
     candidates = files[cl][:]
     q = input().lower()
-    if (q[:-1] != ' '):
+    if q[-1] != ' ':
         print("No such class")
 
     while True:
@@ -32,13 +32,13 @@ def fuzzy_file(q, classes, files):
         old_len = curr_len
         curr_len = len(q)
 
-        if (curr_len <= 1):
+        if curr_len <= 1:
             return
 
-        if(not old_len < curr_len or q.count(' ') > 1):
+        if not old_len < curr_len or q.count(' ') > 1:
             candidates = files[cl][:]
 
-        print(q.replace(cl, '', 1))
+        print(q.replace(cl+' ', '', 1))
         candidates = fuzz(q.replace(cl, '', 1), candidates)
         utils.printItems(candidates)
         return
