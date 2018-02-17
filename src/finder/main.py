@@ -1,4 +1,5 @@
 import os
+from msvcrt import getch
 from index import index
 from setup import createClassesFile
 import scores
@@ -7,11 +8,25 @@ import regex
 import error
 import constants
 
+def inputs(q):
+    return input()
+
+    c = chr(ord(getch()))
+    if (c == 'Q'):
+        exit()
+    if (c == 'D'):
+        print(q[:-1])
+        return q[:-1]
+    else:
+        q+=c
+    print(q)
+    return q
+
 def fuzzy_file(q, classes, files):
     print("files")
 
     while q not in classes:
-        q = input().lower()
+        q = inputs(q).lower()
         if(len(q) == 0):
             return
 
@@ -21,18 +36,18 @@ def fuzzy_file(q, classes, files):
 
     cl = q
     candidates = files[cl][:]
-    q = input().lower()
+    q = inputs(q).lower()
     if q[-1] != ' ':
         print("No such class")
 
     while True:
-        q = input().lower()
+        q = inputs(q).lower()
         print(":" + q)
 
         old_len = curr_len
         curr_len = len(q)
 
-        if curr_len <= 1:
+        if curr_len <= len(cl):
             return
 
         if not old_len < curr_len or q.count(' ') > 1:
@@ -41,7 +56,6 @@ def fuzzy_file(q, classes, files):
         print(q.replace(cl+' ', '', 1))
         candidates = fuzz(q.replace(cl, '', 1), candidates)
         utils.printItems(candidates)
-        return
 
 def fuzzy_dir(q, folders):
     old_len = 0
@@ -62,7 +76,7 @@ def fuzzy_dir(q, folders):
         candidates = fuzz(q, candidates)
         utils.printItems(candidates)
 
-        q = input().lower()
+        q = inputs(q).lower()
         print(":" + q)
 
 def fuzz(q, index):
@@ -109,7 +123,7 @@ def main():
     classes = constants.getClasses()
     q = ''
     while(True):
-        q = input().lower()
+        q = inputs(q).lower()
         if '.' in q:
             fuzzy_file(q, classes, files)
         else:
