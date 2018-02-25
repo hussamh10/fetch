@@ -282,7 +282,7 @@ void FinderWindow::pyProcOutputAvailable() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
 		if (!indexed && str.trimmed() == ":indexed") {
-			trayIcon->showMessage("Fuzzy Finder", "Indexing complete. Press F9 to open the finder window.");
+			trayIcon->showMessage("Fuzzy Finder", "Indexing complete. Press Ctrl+Space to open the finder window.");
 			indexed = true;
 		} else if (str.startsWith(":")) {
 			if (str.remove(0,1) == ui->searchBar->text()) {
@@ -321,7 +321,7 @@ void FinderWindow::init() {
 	Settings::getInstance()->load();
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
-	RegisterHotKey(HWND(winId()), 0, 0, VK_F9);
+	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);
 }
 
 void FinderWindow::on_searchBar_returnPressed() {
