@@ -1,10 +1,14 @@
+from time import time
 import os
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
 import libs.regex as regex
 
+debug = True
+
 def main():
+    a = time()
     indexDir = os.environ["LOCALAPPDATA"] + utils.getFuzzyFolder()
     indexFilePath = os.path.join(indexDir, 'indexed')
 
@@ -24,11 +28,14 @@ def main():
         q = input().lower()
         print(":" + q)
         
+        a = time()
+        
         old_len = curr_len
         curr_len = len(q)
 
         if(not old_len < curr_len or ' ' in q):
             folders = utils.initFoldersList(indexFilePath)
+    
 
         basic_rx = regex.generateBasicRegex(q)
         sub_rx = regex.generateSubRegex(q)
@@ -37,6 +44,7 @@ def main():
         folders = scores.spaceScores(q, space_rx, folders) # chooses only paths that match pre space q
         folders = scores.updateScores(basic_rx, sub_rx, folders) # chooses that match post space q
         folders = scores.advancedScoreUpdate(q, folders) # no idea what this does
+
         folders = utils.sort(folders)
 
         utils.printFolders(folders)
