@@ -2,17 +2,19 @@
 #define FINDERWINDOW_H
 
 #include <QMainWindow>
-#include <QLocalServer>
+#include "settings.h"
+
+namespace Ui {
+	class FinderWindow;
+}
 
 class QPushButton;
 class QProcess;
 class QSystemTrayIcon;
+class QLocalServer;
 class QLocalSocket;
 class QTimer;
-
-namespace Ui {
-class FinderWindow;
-}
+class QLabel;
 
 class FinderWindow : public QMainWindow
 {
@@ -26,24 +28,23 @@ public:
 	void startListening();
 	void init();
 
-private slots:
-	void initWindowSize();
-	void searchResult();
-	void launch();
-	void newConnection();
-	void on_searchBar_textEdited(const QString &arg1);
-	void exit();
-	void reindex();
-
-	void on_searchBar_returnPressed();
-
 protected:
 	void keyPressEvent(QKeyEvent* e);
 
+private slots:
+	void pyProcOutputAvailable();
+	void runIndexer();
+	void newInstance();
+	void exit();
+	void launch();
+	void initWindowSize();
+	void setTheme();
+
+	void on_searchBar_returnPressed();
+	void on_searchBar_textEdited(const QString &arg1);
+
 private:
 	Ui::FinderWindow *ui;
-	bool ignoreResults;
-	int resultCount;
 
 	void initUI();
 	void initTray();
@@ -51,30 +52,34 @@ private:
 	void initLocalServer();
 	void initIndexer();
 
+	QString getGlobalStyleSheet();
+	QString getThemedStyleSheet(Theme t);
+	QString getThemeFontColor();
+
+	QLabel* createNrLabel();
+	void resetSearch();
 	void clearResults();
-	void search(QString query);
-	void addResult(QString name, QString path);
-
-	void killProcess();
-	void revertSearch();
 	void toggleWindow();
-	void resetSize();
-	QLayout* createLayout();
+	void search(QString query);
+	void appendResult(QString name, QString path);
+	void etchButtonText(QPushButton* btn, QString& name, QString& path);
+	void setTheme(Theme t);
+	void scrollToTop();
+	void scrollToBottom();
 
-	void stylizeButton(QPushButton *btn, QString text, QString subtext);
+	static const QString SERVERNAME;
+
+	bool ignoreResults;
+	bool indexed;
+	int resultCount;
 
 	QProcess *pyproc;
 	QSystemTrayIcon *trayIcon;
-
-	QLocalServer localServer;
+	QLocalServer *localServer;
 	QLocalSocket *localSocket;
-
 	QTimer *timer;
 
-	static const QString name;
-	static const int MAX_HEIGHT;
-	static const int MIN_HEIGHT;
-	bool indexed;
+	Theme *theme;
 };
 
 #endif // FINDERWINDOW_H

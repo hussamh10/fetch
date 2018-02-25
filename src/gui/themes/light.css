@@ -1,0 +1,18 @@
+#topArea {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+#scrollAreaContents {
+    background: white;
+    border: 1px solid #ccc;
+}
+#scrollAreaContents > QPushButton {
+    border: none;
+    border-top: #ddd solid 1px;
+    outline: none;
+}
+#scrollAreaContents > QPushButton:hover,
+#scrollAreaContents > QPushButton:focus {
+    background: #ddd;
+}

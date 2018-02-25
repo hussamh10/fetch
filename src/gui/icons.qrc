@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="settings_icon">resources/settings_icon.png</file>
+        <file alias="app_icon">resources/fuzzy.ico</file>
+    </qresource>
+</RCC>
