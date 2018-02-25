@@ -1,14 +1,10 @@
-from time import time
 import os
 from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
 import libs.regex as regex
 
-debug = True
-
 def main():
-    a = time()
     indexDir = os.environ["LOCALAPPDATA"] + utils.getFuzzyFolder()
     indexFilePath = os.path.join(indexDir, 'indexed')
 
@@ -27,8 +23,6 @@ def main():
 
         q = input().lower()
         print(":" + q)
-        
-        a = time()
         
         old_len = curr_len
         curr_len = len(q)

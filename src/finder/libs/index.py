@@ -44,6 +44,9 @@ def index():
 
     for root in rootDirs:
         for dirName, subdirList, fileList in os.walk(root):
+            dirName = dirName.encode('ascii',"ignore")
+            dirName = dirName.decode('ascii',"ignore")
+            dirName = str(f)
             folders.append(dirName)
 
             for dir in subdirList[:]:
