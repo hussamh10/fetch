@@ -9,6 +9,10 @@ def generateSubRegex(q):
     q = q.split(' ')[-1]
     return re.compile(q)
 
+def generateFullRegex(q):
+    q = q.split(' ')[-1]
+    return re.compile(q)
+
 def generateSpaceRegex(q):
     if ' ' not in q:
         return None

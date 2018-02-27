@@ -4,7 +4,7 @@ import libs.constants as constants
 def updateScores(basic_rx, sub_rx, folders):
     temp = []
     for folder in folders:
-        folder.score = getScore(basic_rx, sub_rx, folder.name.lower())
+        folder.score = getScore(basic_rx, sub_rx, folder.name.lower()[:-1])
         #folder.score += getScore(basic_rx, sub_rx, folder.name.lower()) removed for better results on all match
 
         if folder.score > 0:
@@ -66,5 +66,7 @@ def getScore(basic_rx, sub_rx, string):
 
     if not match_substring == None:
         score += constants.getSubstringScore()
+        if match_substring.span() == (0, len(match_substring.string)):
+            score += constants.getFullStringScore()
 
     return score

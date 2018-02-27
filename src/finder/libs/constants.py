@@ -14,7 +14,7 @@ def getEndScore():
     return 10
 
 def getSubstringScore():
-    return 15
+    return 13
 
 def getFullStringScore():
-    return 30
+    return 15
