@@ -1,13 +1,12 @@
 import re 
+import constants
 
 def updateScores(basic_rx, sub_rx, index):
     temp = []
     for item in index:
         item.score = getScore(basic_rx, sub_rx, item.name.lower())
-
         if item.score > 0:
             temp.append(item)
-
     return temp
 
 def advancedScoreUpdate(q, index):
@@ -19,7 +18,7 @@ def advancedScoreUpdate(q, index):
                 w += i[0]
         for c in q:
             if c in w:
-                index[j].score = index[j].score + 10
+                index[j].score = index[j].score + constants.getAdvancedScore()
 
         index[j].score = index[j].score - len(re.split(' |\.|-|_', f.name.lower()))
         j += 1   
@@ -38,7 +37,7 @@ def spaceScores(q, r, index):
         match = r.search(string.lower())
 
         if not match == None:
-            item.score += 10
+            item.score += constants.getSpaceScore()
             temp.append(item)
 
     return temp
@@ -52,18 +51,19 @@ def getScore(basic_rx, sub_rx, string):
     if match_basic == None:
         return 0
     
-    score = 1
+    score = constants.getMatchScore()
     
     if match_basic.start() == 0:
-
-        score += 10
+        score += constants.getStartScore()
 
     if match_basic.end() == len(match_basic.string):
-        score += 10
+        score += constants.getEndScore()
 
     match_substring = sub_rx.search(string)
 
     if not match_substring == None:
-        score += 10
+        score += constants.getSubstringScore()
+        if match_substring.span() == (0, len(match_substring.string)):
+            score += constants.getFullStringScore()
 
     return score

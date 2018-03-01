@@ -1,0 +1,12 @@
+.
+lib
+bin
+envs
+include
+pkgs
+build
+sdk
+appdata
+notmnist_large
+notmnist_small
+RTTTL

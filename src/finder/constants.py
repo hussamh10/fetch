@@ -2,7 +2,8 @@ import os
 import subprocess
 
 def getIndexPath():
-    path = os.path.join(os.environ["LOCALAPPDATA"] + "\\fuzzy-data\\")
+    folder_name = 'fuzzy-file-ext\\'
+    path = os.path.join(os.environ["LOCALAPPDATA"], folder_name)
     if not os.path.exists(path):
         os.makedirs(path)
     return path
@@ -44,10 +45,36 @@ def getClasses():
     return classes
 
 def hidden(dir):
-    useless = ['.', 'lib', 'bin', 'envs', 'include', 'pkgs', 'build', 'sdk', 'appdata', 'notmnist_large', 'notmnist_small', 'RTTTL']
+    path = getIndexPath()
+    filename = 'hidden'
+
+    file = open(os.path.join(path, filename))
+    useless = file.read().split()
+
     if dir.lower() in useless or dir[0].lower() in useless:
         return True
     return False
 
 def getResultsLimit():
+    return 1
+
+def getAdvancedScore():
+    return 8
+
+def getMatchScore():
+    return 1
+
+def getSpaceScore():
     return 10
+
+def getStartScore():
+    return 10
+
+def getEndScore():
+    return 10
+
+def getSubstringScore():
+    return 13
+
+def getFullStringScore():
+    return 15
