@@ -55,8 +55,8 @@ When you know the parent directory approximate name along with the folder approx
 - Run `Fuzzy Finder.exe`.
 - Wait for indexing to complete.
 
-## Contributions:
-    Feel free to report a problem by opening an issue.
+## Contributions: 
+Feel free to report a problem by opening an issue.
 
 ## Project Team:
 [Haroon Ahmed](https://github.com/Haroon96)<br>
