@@ -3,10 +3,16 @@ from libs.index import index
 import libs.scores as scores
 import libs.utils as utils
 import libs.regex as regex
+from sys import platform as plt
 
 def main():
-    indexDir = os.environ["LOCALAPPDATA"] + utils.getFuzzyFolder()
-    indexFilePath = os.path.join(indexDir, 'indexed')
+    if "linux" in plt:
+        indexDir = os.path.join(os.environ["HOME"], '.' + utils.getFuzzyFolder())
+        indexFilePath = os.path.join(indexDir, 'indexed')
+
+    else:
+        indexDir = os.path.join(os.environ["LOCALAPPDATA"], utils.getFuzzyFolder())
+        indexFilePath = os.path.join(indexDir, 'indexed')
 
     if not os.path.isfile(indexFilePath):
         index()

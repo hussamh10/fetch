@@ -1,6 +1,7 @@
 import os
 from time import time
 import subprocess
+from sys import platform as plt
 
 def hidden(dir):
     useless = ['.', 'lib', 'bin', 'envs', 'include', 'pkgs', 'build', 'sdk', 'appdata', 'notmnist_large', 'notmnist_small', 'RTTTL']
@@ -16,6 +17,8 @@ def deleteAndRename(homeDir):
     os.rename(newFile, oldFile)
 
 def getRoots(home):
+    if "linux" in plt:
+        return [os.environ["HOME"]]
     roots = subprocess.check_output(['fsutil', 'fsinfo', 'drives'])
     roots = str(roots)
     roots = roots.split()
@@ -28,10 +31,16 @@ def getRoots(home):
     return rts
 
 def index():
-    rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
-
+    if "linux" in plt:
+        rootDir = os.environ["HOME"]
+        dataPath = os.environ["HOME"]
+        dataDir = ".Fuzzy Finder"
+    else:
+        rootDir = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
+        dataPath = os.environ["LOCALAPPDATA"]
+        dataDir = "\\Fuzzy Finder\\"
     
-    dataDir = os.environ["LOCALAPPDATA"] + "\\Fuzzy Finder\\"
+    dataDir = os.path.join(dataPath, dataDir)
 
     if not os.path.exists(dataDir):
         os.makedirs(dataDir)

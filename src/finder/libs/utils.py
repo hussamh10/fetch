@@ -2,7 +2,7 @@ from libs.folder import Folder
 import os
 
 def getFuzzyFolder():
-    return '\\Fuzzy Finder\\'
+    return 'Fuzzy Finder'
 
 def readFile(file_name):
     return open(file_name, 'r').readlines()
