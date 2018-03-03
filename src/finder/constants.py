@@ -1,9 +1,16 @@
 import os
 import subprocess
+from sys import platform as plt
 
 def getIndexPath():
-    folder_name = 'fuzzy-file-ext\\'
-    path = os.path.join(os.environ["LOCALAPPDATA"], folder_name)
+    if "linux" in plt:
+        root = os.environ["HOME"]
+        folder_name = '.fuzzy-file-ext'
+    else:
+        root = os.environ["LOCALAPPDATA"]
+        folder_name = 'fuzzy-file-ext'
+
+    path = os.path.join(root, folder_name)
     if not os.path.exists(path):
         os.makedirs(path)
     return path
@@ -15,6 +22,10 @@ def getDirIndexName():
     return "dir_indexed"
 
 def getRoots():
+    if 'linux' in plt:
+        return [os.environ["HOME"]]
+
+
     home = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
     roots = subprocess.check_output(['fsutil', 'fsinfo', 'drives'])
     roots = str(roots)
@@ -56,7 +67,7 @@ def hidden(dir):
     return False
 
 def getResultsLimit():
-    return 1
+    return 4
 
 def getAdvancedScore():
     return 8

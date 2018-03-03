@@ -1,5 +1,4 @@
 import os
-from msvcrt import getch
 from index import index
 from setup import createClassesFile
 import scores
@@ -9,16 +8,7 @@ import error
 import constants
 
 def inputs(q):
-    c = chr(ord(getch()))
-    if (c == 'Q'):
-        exit()
-    if (c == 'D'):
-        print(q)
-        return q[:-1]
-    else:
-        q+=c
-    print(q)
-    return q
+	return input()
 
 def init():
     indexDir = constants.getIndexPath()
