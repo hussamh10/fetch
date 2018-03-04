@@ -1,13 +1,13 @@
 # Fetch
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-c-plus-plus.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-c-plus-plus.svg)]()
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)]()
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)]()
 
 Search and open any folder or file using fuzzy searches.
 
 ## Description:
-Use Sling Shot to get to any file or folder in your computer. Sling Shot indexes your files and folders. Sling Shot uses aproximate string matching (or fuzzy string search) to list the files and folders that best matches your query. You can also use  parent directories to search for files and folders inside them. Sling Shot can also be used to search files using file types.
+Use Fetch to get to any file or folder in your computer. Fetch indexes your files and folders. Fetch uses approximate string matching (or fuzzy string search) to list the files and folders that best matches your query. You can also use parent directories to search for files and folders inside them. Fetch can also be used to search files using file types.
 
 ## Features
 - Search Files and folders
