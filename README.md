@@ -1,4 +1,4 @@
-# Sling Shot
+# Fecth
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c-plus-plus.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
@@ -11,7 +11,7 @@ Use Sling Shot to get to any file or folder in your computer. Sling Shot indexes
 
 ## Features
 - Search Files and folders
-- Approzimate string matching
+- Approximate string matching
 - OS wide indexing
 - Periodic indexing
 - Ranked results
