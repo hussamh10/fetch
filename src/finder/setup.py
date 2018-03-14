@@ -6,7 +6,7 @@ def createClassesFile():
     lines = file.readlines()
     file.close()
 
-    file = open(constants.getIndexPath() + 'classes', 'w')
+    file = open(os.path.join(constants.getIndexPath(), 'classes'), 'w')
 
     for f in lines:
         file.write(f)
@@ -18,7 +18,7 @@ def createHiddenFile():
     lines = file.readlines()
     file.close()
 
-    file = open(constants.getIndexPath() + 'hidden', 'w')
+    file = open(os.path.join(constants.getIndexPath(), 'hidden'), 'w')
 
     for f in lines:
         file.write(f)

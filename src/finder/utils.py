@@ -12,7 +12,6 @@ def initFilesList(file_names, path):
 
     for name in file_names:
         file_name = os.path.join(path, name)
-        print(file_name)
 
         file = readFile(file_name)
         temp = []
@@ -38,7 +37,7 @@ def printItems(f):
     limit = constants.getResultsLimit()
     temp = f[:limit]
     for t in temp:
-        print(t.name[:-1] + "|" + t.path[:-1], t.score)
+        print(t.name + "|" + t.path[:-1], t.score)
 
 def deleteAndRename(homeDir, old, new):
     oldFile = os.path.join(homeDir, old)
