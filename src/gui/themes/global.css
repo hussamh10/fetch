@@ -1,0 +1,23 @@
+#centralWidget {
+    background: transparent;
+    border: none;
+}
+#topArea {
+    border-radius: 3px;
+}
+#searchBar {
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+#scrollArea {
+    background: transparent;
+    border: none;
+}
+#scrollAreaContents {
+    border-radius: 3px;
+}
+#scrollAreaContents > QPushButton, #scrollAreaContents > QLabel {
+    background: transparent;
+    padding: 10px;
+}

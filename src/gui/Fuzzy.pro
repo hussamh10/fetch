@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-01-02T14:08:08
+# Project created by QtCreator 2018-02-16T21:56:32
 #
 #-------------------------------------------------
 
@@ -22,22 +22,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += static
 
 SOURCES += \
         main.cpp \
-        finderwindow.cpp
+        finderwindow.cpp \
+    settings.cpp
 
 HEADERS += \
-        finderwindow.h
+        finderwindow.h \
+    settings.h
 
 FORMS += \
         finderwindow.ui
-LIBS += -lUser32
 
 DISTFILES +=
-QMAKE_LFLAGS += -static
 
-RC_ICONS = res/fuzzy.ico
+RC_ICONS = resources/fuzzy.ico
 
-RESOURCES += resources.qrc
+RESOURCES += \
+    icons.qrc \
+    themes.qrc

@@ -6,32 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>400</height>
+    <width>347</width>
+    <height>245</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>400</height>
-   </size>
-  </property>
-  <property name="focusPolicy">
-   <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Fuzzy Finder</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">#centralWidget {
-	background: transparent;
-}</string>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/app_icon</normaloff>:/icons/app_icon</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
@@ -39,52 +23,49 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLineEdit" name="searchBar">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto Cn</family>
-        <pointsize>16</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
+     <widget class="QWidget" name="topArea" native="true">
       <property name="styleSheet">
-       <string notr="true">#searchBar {
-	background: white;
-	color: black;
-	padding: 15px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-}</string>
+       <string notr="true"/>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-      <property name="placeholderText">
-       <string>🔍 Search</string>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="searchBar">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="placeholderText">
+          <string>🔍 Fuzzy Search</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>
-     <widget class="QScrollArea" name="scroll_area_container">
+     <widget class="QScrollArea" name="scrollArea">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="styleSheet">
-       <string notr="true">#scroll_area_container {
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	background: white;
-}</string>
+       <string notr="true"/>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -92,73 +73,39 @@
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-      </property>
-      <widget class="QWidget" name="scroll_area">
+      <widget class="QWidget" name="scrollAreaContents">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>299</y>
-         <width>480</width>
+         <y>0</y>
+         <width>327</width>
          <height>16</height>
         </rect>
        </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="contextMenuPolicy">
-        <enum>Qt::DefaultContextMenu</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#scroll_area {
-	background: white;
-	border: none;
-}
-
-QPushButton {
-	padding: 10px;
-	outline: none;
-	border: none;
-	border-radius: 3px;
-	margin: 0;
-	border-top: 1px solid #ddd;
-}
-
-QPushButton:hover, QPushButton:focus {
-	background: #ddd;
-}</string>
-       </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="sizeConstraint">
-         <enum>QLayout::SetNoConstraint</enum>
+         <number>2</number>
         </property>
         <property name="leftMargin">
-         <number>15</number>
+         <number>2</number>
         </property>
         <property name="topMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
         <property name="rightMargin">
-         <number>15</number>
+         <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>2</number>
         </property>
        </layout>
       </widget>
@@ -168,10 +115,8 @@ QPushButton:hover, QPushButton:focus {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <tabstops>
-  <tabstop>searchBar</tabstop>
-  <tabstop>scroll_area_container</tabstop>
- </tabstops>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
