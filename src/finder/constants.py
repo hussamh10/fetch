@@ -34,7 +34,10 @@ def getRoots():
     rts = []
     for root in roots:
         rts.append(root[:-1])
-    rts.remove(home[0] + ":\\")
+    if 'linux' in plt:
+        rts.remove(home[0] + ":/")
+    else:
+        rts.remove(home[0] + ":\\")
     rts.append(home)
     return rts
 

@@ -1,4 +1,5 @@
 import os
+from sys import platform as plt
 from time import time
 import preprocess
 import constants
@@ -33,7 +34,10 @@ def index():
                 f = f.encode('ascii',"ignore")
                 f = f.decode('ascii',"ignore")
                 f = str(f)
-                f = dirName + "\\" + f
+                if 'linux' in plt:
+                    f = dirName + "/" + f
+                else:
+                    f = dirName + "\\" + f
                 files.append(f)
 
             for dir in subdirList[:]:
