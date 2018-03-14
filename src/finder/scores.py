@@ -1,4 +1,5 @@
 import re 
+from sys import platform as plt
 import constants
 
 def updateScores(basic_rx, sub_rx, index):
@@ -31,7 +32,10 @@ def spaceScores(q, r, index):
     
     temp = []
     for item in index:
-        string = item.path.split('\\')[:-1]
+        if 'linux' in plt:
+            string = item.path.split('/')[:-1]
+        else:
+            string = item.path.split('\\')[:-1]
         string = ':'.join(string)
 
         match = r.search(string.lower())
