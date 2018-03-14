@@ -1,53 +1,54 @@
 import re 
-import libs.constants as constants
+from sys import platform as plt
+import constants
 
-def updateScores(basic_rx, sub_rx, folders):
+def updateScores(basic_rx, sub_rx, index):
     temp = []
-    for folder in folders:
-        folder.score = getScore(basic_rx, sub_rx, folder.name.lower()[:-1])
-        #folder.score += getScore(basic_rx, sub_rx, folder.name.lower()) removed for better results on all match
-
-        if folder.score > 0:
-            temp.append(folder)
-
+    for item in index:
+        item.score = getScore(basic_rx, sub_rx, item.name.lower())
+        if item.score > 0:
+            temp.append(item)
     return temp
 
-def advancedScoreUpdate(q, folders):
+def advancedScoreUpdate(q, index):
     j = 0
-    for f in folders:
+    for f in index:
         w = ""
         for i in re.split(' |\.|-|_', f.name.lower()):
             if len(i) > 0:
                 w += i[0]
         for c in q:
             if c in w:
-                folders[j].score = folders[j].score + constants.getAdvancedScore()
-        folders[j].score = folders[j].score - len(re.split(' |\.|-|_', f.name.lower()))
-    
+                index[j].score = index[j].score + constants.getAdvancedScore()
+
+        index[j].score = index[j].score - len(re.split(' |\.|-|_', f.name.lower()))
         j += 1   
 
-    return folders
+    return index
 
-def spaceScores(q, r, folders):
+def spaceScores(q, r, index):
     if ' ' not in q:
-        return folders
+        return index
     
     temp = []
-
-    for folder in folders:
-        string = folder.path.split('\\')[:-1]
+    for item in index:
+        if 'linux' in plt:
+            string = item.path.split('/')[:-1]
+        else:
+            string = item.path.split('\\')[:-1]
         string = ':'.join(string)
 
         match = r.search(string.lower())
 
         if not match == None:
-            folder.score += constants.getSpaceScore()
-            temp.append(folder)
+            item.score += constants.getSpaceScore()
+            temp.append(item)
 
     return temp
 
 
 def getScore(basic_rx, sub_rx, string):
+
     match_basic = basic_rx.search(string)
     match_sub = sub_rx.search(string)
 
@@ -55,7 +56,7 @@ def getScore(basic_rx, sub_rx, string):
         return 0
     
     score = constants.getMatchScore()
-   
+    
     if match_basic.start() == 0:
         score += constants.getStartScore()
 
