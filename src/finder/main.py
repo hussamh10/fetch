@@ -8,7 +8,7 @@ import error
 import constants
 
 def inputs(q):
-	return input()
+    return input()
 
 def init():
     indexDir = constants.getIndexPath()
@@ -96,7 +96,7 @@ def main():
         old_len = curr_len
         curr_len = len(q)
 
-        if curr_len < old_len:
+        if curr_len < old_len or ' ' in q:
             candidate_files = dict(files)
             candidate_folders = folders[:]
 

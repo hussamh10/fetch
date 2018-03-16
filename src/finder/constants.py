@@ -5,10 +5,10 @@ from sys import platform as plt
 def getIndexPath():
     if "linux" in plt:
         root = os.environ["HOME"]
-        folder_name = '.fuzzy-file-ext'
+        folder_name = '.fetch'
     else:
         root = os.environ["LOCALAPPDATA"]
-        folder_name = 'fuzzy-file-ext'
+        folder_name = 'fetch'
 
     path = os.path.join(root, folder_name)
     if not os.path.exists(path):
