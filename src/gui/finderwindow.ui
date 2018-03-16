@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Fuzzy Finder</string>
+   <string>Fetch</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
@@ -45,14 +45,20 @@
        </property>
        <item>
         <widget class="QLineEdit" name="searchBar">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="font">
           <font>
            <family>Roboto</family>
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <property name="placeholderText">
-          <string>🔍 Fuzzy Search</string>
+          <string>Indexing...</string>
          </property>
         </widget>
        </item>

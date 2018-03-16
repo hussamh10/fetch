@@ -10,6 +10,7 @@ Settings::Settings() {
 	if (!appDir.exists()) {
 		appDir.mkdir(appDir.path());
 	}
+    appTheme.setFileName(appDir.absolutePath().append("/fetch-theme"));
 }
 
 Settings* Settings::getInstance() {
@@ -20,20 +21,20 @@ Settings* Settings::getInstance() {
 }
 
 void Settings::save() {
-	QFile file(appDir.absolutePath().append("/theme"));
-	file.open(QFile::ReadWrite);
-	QTextStream out(&file);
+    appTheme.open(QFile::ReadWrite);
+    QTextStream out(&appTheme);
 	out << currentTheme;
+    appTheme.close();
 }
 
 void Settings::load() {
-	QFile file(appDir.absolutePath().append("/theme"));
-	file.open(QFile::ReadOnly);
-	if (file.isOpen()) {
-		currentTheme = (Theme)QString(file.readAll()).toInt();
+    appTheme.open(QFile::ReadOnly);
+    if (appTheme.isOpen()) {
+        currentTheme = (Theme)QString(appTheme.readAll()).toInt();
 	} else {
 		currentTheme = LIGHT;
 	}
+    appTheme.close();
 }
 
 Theme Settings::getCurrentTheme() {

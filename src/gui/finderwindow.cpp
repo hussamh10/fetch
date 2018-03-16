@@ -1,7 +1,10 @@
 #include "finderwindow.h"
 #include "ui_finderwindow.h"
 
+#ifdef Q_OS_WIN
 #include <windows.h>
+#endif
+
 #include <QProcess>
 #include <QTimer>
 #include <QSystemTrayIcon>
@@ -19,8 +22,9 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QScrollBar>
+#include <QRegExpValidator>
 
-const QString FinderWindow::SERVERNAME = "fuzzyfinder";
+const QString FinderWindow::SERVERNAME = "fetch";
 
 FinderWindow::FinderWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -37,14 +41,16 @@ FinderWindow::~FinderWindow() {
 }
 
 bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
-	Q_UNUSED(eventType);
+#ifdef Q_OS_WIN
+    Q_UNUSED(eventType);
 	Q_UNUSED(result);
 	MSG *msg = static_cast<MSG*>(message);
 	if (msg->message == WM_HOTKEY) {
 		toggleWindow();
 		return true;
-	}
-	return false;
+    }
+#endif
+    return QMainWindow::nativeEvent(eventType, message, result);
 }
 
 bool FinderWindow::isAlreadyRunning() {
@@ -62,17 +68,25 @@ void FinderWindow::startListening() {
 }
 
 void FinderWindow::initUI() {
-	setWindowFlags(Qt::Window | Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint | Qt::Popup | Qt::NoDropShadowWindowHint);
-	setAttribute(Qt::WA_TranslucentBackground, true);
+
+#ifndef Q_OS_WIN
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::NoDropShadowWindowHint);
+#else
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::NoDropShadowWindowHint | Qt::Popup);
+#endif
+
+    setAttribute(Qt::WA_TranslucentBackground, true);
 
 	QGraphicsDropShadowEffect* searchBarEffect = new QGraphicsDropShadowEffect();
 	searchBarEffect->setBlurRadius(10);
 	searchBarEffect->setOffset(0,0);
 	searchBarEffect->setColor(QColor(0,0,0,200));
 
-	ui->topArea->setGraphicsEffect(searchBarEffect);
+    ui->topArea->setGraphicsEffect(searchBarEffect);
 
 	ui->scrollAreaContents->layout()->setAlignment(Qt::AlignTop);
+
+    ui->searchBar->setValidator(new QRegExpValidator(QRegExp("[A-Za-z0-9._- ]*"), ui->searchBar));
 }
 
 void FinderWindow::initTray() {
@@ -101,8 +115,7 @@ void FinderWindow::initTray() {
 	menu->addAction(exit);
 
 	trayIcon->setContextMenu(menu);
-	trayIcon->show();
-	trayIcon->showMessage("Fuzzy Finder", "Fuzzy Finder is indexing your directories.");
+    trayIcon->show();
 }
 
 void FinderWindow::initPyProcess() {
@@ -189,21 +202,24 @@ void FinderWindow::launch() {
 }
 
 void FinderWindow::toggleWindow() {
-	if (!indexed) {
-		trayIcon->showMessage("Fuzzy Finder", "Your directories are currently being indexed. Please wait.");
-	} else if (this->isHidden()) {
-		resetSearch();
-		this->show();
-		this->activateWindow();
-		ui->searchBar->setFocus();
-	} else {
-		this->hide();
+    if (this->isHidden()) {
+        resetSearch();
+        show();
+        activateWindow();
+        raise();
+        ui->searchBar->setFocus();
+    } else {
+        hide();
 	}
 }
 
 void FinderWindow::search(QString query) {
 	pyproc->write(query.toStdString().c_str());
+#ifdef Q_OS_WIN
 	pyproc->write("\r\n");
+#else
+    pyproc->write("\n");
+#endif
 }
 
 void FinderWindow::etchButtonText(QPushButton *button, QString &name, QString &path) {
@@ -259,7 +275,7 @@ void FinderWindow::appendResult(QString name, QString path) {
 }
 
 void FinderWindow::keyPressEvent(QKeyEvent *e) {
-	if (!ui->searchBar->hasFocus()) {
+    if (!ui->searchBar->hasFocus()) {
 		if (e->key() == Qt::Key_Escape) {
 			resetSearch();
 		} else {
@@ -275,14 +291,17 @@ void FinderWindow::keyPressEvent(QKeyEvent *e) {
 		scrollToBottom();
 	} else {
 		QMainWindow::keyPressEvent(e);
-	}
+    }
 }
 
 void FinderWindow::pyProcOutputAvailable() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
 		if (!indexed && str.trimmed() == ":indexed") {
-			trayIcon->showMessage("Fuzzy Finder", "Indexing complete. Press Ctrl+Space to open the finder window.");
+            trayIcon->showMessage("Fetch", "Press Ctrl+Space to start.");
+            ui->searchBar->setPlaceholderText("🔍 Search");
+            ui->searchBar->setAlignment(Qt::AlignLeft);
+            ui->searchBar->setEnabled(true);
 			indexed = true;
 		} else if (str.startsWith(":")) {
 			if (str.remove(0,1) == ui->searchBar->text()) {
@@ -299,7 +318,7 @@ void FinderWindow::pyProcOutputAvailable() {
 }
 
 void FinderWindow::runIndexer() {
-	(new QProcess(this))->start("python libs/index.py");
+    (new QProcess(this))->start("python index.py");
 }
 
 void FinderWindow::newInstance() {
@@ -321,7 +340,9 @@ void FinderWindow::init() {
 	Settings::getInstance()->load();
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
+#ifdef Q_OS_WIN
 	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);
+#endif
 }
 
 void FinderWindow::on_searchBar_returnPressed() {
@@ -331,14 +352,11 @@ void FinderWindow::on_searchBar_returnPressed() {
 }
 
 void FinderWindow::on_searchBar_textEdited(const QString &arg1) {
-	ignoreResults = false;
-	QString str = arg1;
-	str.remove(QRegularExpression("[\\[\\]~`!@#$%^&*\\(\\);:\"'<>,?/+=-_]"));
-	if (str.isEmpty()) {
+    ignoreResults = false;
+    if (arg1.isEmpty()) {
 		resetSearch();
 		return;
 	}
-	scrollToTop();
-	ui->searchBar->setText(str);
-	search(str);
+    scrollToTop();
+    search(arg1);
 }
