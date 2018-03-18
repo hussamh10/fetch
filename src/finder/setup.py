@@ -25,6 +25,9 @@ def createHiddenFile():
     
     return
 
-if __name__ == '__main__':
+def setup():
     createClassesFile()
     createHiddenFile()
+
+if __name__ == '__main__':
+    setup()
