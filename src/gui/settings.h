@@ -13,6 +13,7 @@ private:
 	static Settings* instance;
 
 	QDir appDir;
+    QFile appTheme;
 	Theme currentTheme;
 public:
 	static Settings* getInstance();
