@@ -39,6 +39,7 @@ private slots:
 	void launch();
 	void initWindowSize();
 	void setTheme();
+	void toggleRunOnStartup(bool);
 
 	void on_searchBar_returnPressed();
 	void on_searchBar_textEdited(const QString &arg1);

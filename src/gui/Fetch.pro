@@ -29,7 +29,9 @@ SOURCES += \
     settings.cpp
 
 HEADERS += \
-        finderwindow.h
+        finderwindow.h \
+    settings.h \
+    settings.h
 
 FORMS += \
         finderwindow.ui

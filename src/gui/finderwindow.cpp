@@ -94,8 +94,13 @@ void FinderWindow::initTray() {
 	trayIcon->setIcon(QIcon(":/icons/app_icon"));
 
 	QMenu *menu = new QMenu(this);
+	QAction *startup = new QAction("Run on startup", menu);
 	QAction *exit = new QAction("Exit", menu);
 
+	startup->setCheckable(true);
+	Settings::getInstance()->setStartup(startup);
+
+	connect(startup, SIGNAL(triggered(bool)), this, SLOT(toggleRunOnStartup(bool)));
 	connect(exit, SIGNAL(triggered(bool)), this, SLOT(exit()));
 
 	QMenu *themeMenu = new QMenu("Themes", menu);
@@ -112,6 +117,7 @@ void FinderWindow::initTray() {
 	themeMenu->addAction(lightTheme);
 
 	menu->addMenu(themeMenu);
+	menu->addAction(startup);
 	menu->addAction(exit);
 
 	trayIcon->setContextMenu(menu);
@@ -177,6 +183,11 @@ void FinderWindow::setTheme() {
 	QVariant v = QObject::sender()->property("theme");
 	Theme t = *(Theme*)&v;
 	setTheme((Theme)t);
+}
+
+void FinderWindow::toggleRunOnStartup(bool checked) {
+	Settings::getInstance()->toggleRunOnStartup(checked);
+	Settings::getInstance()->save();
 }
 
 void FinderWindow::resetSearch() {

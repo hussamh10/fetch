@@ -6,6 +6,8 @@ enum Theme { LIGHT, DARK };
 
 #include <QDir>
 
+class QAction;
+
 class Settings
 {
 private:
@@ -13,8 +15,9 @@ private:
 	static Settings* instance;
 
 	QDir appDir;
-    QFile appTheme;
+	QFile settings;
 	Theme currentTheme;
+	QAction *startup;
 public:
 	static Settings* getInstance();
 
@@ -23,6 +26,10 @@ public:
 
 	Theme getCurrentTheme();
 	void setCurrentTheme(Theme t);
+
+	void toggleRunOnStartup(bool checked);
+
+	void setStartup(QAction *startup);
 
 };
 
