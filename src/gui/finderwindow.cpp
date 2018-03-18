@@ -116,7 +116,7 @@ void FinderWindow::initTray() {
 
 void FinderWindow::initPyProcess() {
 	pyproc = new QProcess(this);
-	pyproc->start("python main.py");
+	pyproc->start(getPyProcessCommand("main.py"));
 	connect(pyproc, SIGNAL(readyReadStandardOutput()), this, SLOT(pyProcOutputAvailable()));
 }
 
@@ -138,6 +138,10 @@ QString FinderWindow::getGlobalStyleSheet() {
 
 QString FinderWindow::getThemeFontColor() {
 	return Settings::getInstance()->getCurrentTheme() == LIGHT ? "#000,#777" : "#fff,#ccc";
+}
+
+QString FinderWindow::getPyProcessCommand(QString scriptname) {
+	return "python py/" + scriptname;
 }
 
 QString FinderWindow::getThemedStyleSheet(Theme t) {
@@ -315,7 +319,7 @@ void FinderWindow::pyProcOutputAvailable() {
 }
 
 void FinderWindow::runIndexer() {
-    (new QProcess(this))->start("python index.py");
+	(new QProcess(this))->start(getPyProcessCommand("index.py"));
 }
 
 void FinderWindow::newInstance() {

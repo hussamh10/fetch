@@ -56,6 +56,7 @@ private:
 	QString getGlobalStyleSheet();
 	QString getThemedStyleSheet(Theme t);
 	QString getThemeFontColor();
+	QString getPyProcessCommand(QString scriptname);
 
 	QLabel* createNrLabel();
 	void resetSearch();
