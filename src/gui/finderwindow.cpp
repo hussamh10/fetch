@@ -220,13 +220,13 @@ void FinderWindow::launch() {
 }
 
 void FinderWindow::toggleWindow() {
-    if (this->isHidden()) {
-        resetSearch();
-        show();
+	resetSearch();
+	if (this->isHidden()) {
+		show();
         activateWindow();
         raise();
         ui->searchBar->setFocus();
-    } else {
+	} else {
         hide();
 	}
 }
@@ -241,7 +241,7 @@ void FinderWindow::etchButtonText(QPushButton *button, QString &name, QString &p
 	QList<QString> color = getThemeFontColor().split(",");
 	Text.setHtml("<font face='Roboto Cn' color="+color[0]+" size=5>" +
 				 name +
-				 "</font>&nbsp;<font face='Roboto' color="+color[1]+" size=4><i>"+
+				 "</font>&nbsp;<font face='Roboto Cn' color="+color[1]+" size=4><i>"+
 				 path +
 				 "</i></font>");
 
@@ -303,7 +303,7 @@ void FinderWindow::keyPressEvent(QKeyEvent *e) {
 		scrollToBottom();
 	} else {
 		QMainWindow::keyPressEvent(e);
-    }
+	}
 }
 
 void FinderWindow::pyProcOutputAvailable() {
