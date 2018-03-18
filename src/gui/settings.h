@@ -17,7 +17,7 @@ private:
 	QDir appDir;
 	QFile settings;
 	Theme currentTheme;
-	QAction *startup;
+	bool runOnBoot;
 public:
 	static Settings* getInstance();
 
@@ -26,11 +26,9 @@ public:
 
 	Theme getCurrentTheme();
 	void setCurrentTheme(Theme t);
+	bool runsOnBoot();
 
 	void toggleRunOnStartup(bool checked);
-
-	void setStartup(QAction *startup);
-
 };
 
 #endif // SETTINGS_H

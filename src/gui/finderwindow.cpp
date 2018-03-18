@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QScrollBar>
+#include <QActionGroup>
 #include <QRegExpValidator>
 
 const QString FinderWindow::SERVERNAME = "fetch";
@@ -88,7 +89,7 @@ void FinderWindow::initTray() {
 	QAction *exit = new QAction("Exit", menu);
 
 	startup->setCheckable(true);
-	Settings::getInstance()->setStartup(startup);
+	startup->setChecked(Settings::getInstance()->runsOnBoot());
 
 	connect(startup, SIGNAL(triggered(bool)), this, SLOT(toggleRunOnStartup(bool)));
 	connect(exit, SIGNAL(triggered(bool)), this, SLOT(exit()));
@@ -99,6 +100,18 @@ void FinderWindow::initTray() {
 
 	darkTheme->setProperty("theme", DARK);
 	lightTheme->setProperty("theme", LIGHT);
+
+	darkTheme->setCheckable(true);
+	lightTheme->setCheckable(true);
+
+	QActionGroup *actionGroup = new QActionGroup(this);
+	actionGroup->addAction(lightTheme);
+	actionGroup->addAction(darkTheme);
+
+	if (Settings::getInstance()->getCurrentTheme() == DARK)
+		darkTheme->setChecked(true);
+	else
+		lightTheme->setChecked(true);
 
 	connect(darkTheme, SIGNAL(triggered(bool)), this, SLOT(setTheme()));
 	connect(lightTheme, SIGNAL(triggered(bool)), this, SLOT(setTheme()));
@@ -177,11 +190,11 @@ void FinderWindow::setTheme() {
 	QVariant v = QObject::sender()->property("theme");
 	Theme t = *(Theme*)&v;
 	setTheme((Theme)t);
+	Settings::getInstance()->setCurrentTheme(t);
 }
 
 void FinderWindow::toggleRunOnStartup(bool checked) {
 	Settings::getInstance()->toggleRunOnStartup(checked);
-	Settings::getInstance()->save();
 }
 
 void FinderWindow::resetSearch() {
@@ -244,8 +257,6 @@ void FinderWindow::etchButtonText(QPushButton *button, QString &name, QString &p
 
 void FinderWindow::setTheme(Theme t) {
 	setStyleSheet(getGlobalStyleSheet() + getThemedStyleSheet(t));
-	Settings::getInstance()->setCurrentTheme(t);
-	Settings::getInstance()->save();
 }
 
 void FinderWindow::scrollToTop() {
@@ -331,6 +342,8 @@ void FinderWindow::exit() {
 }
 
 void FinderWindow::init() {
+	Settings::getInstance()->load();
+
 	initLocalServer();
 	initUI();
 	initWindowSize();
@@ -338,7 +351,6 @@ void FinderWindow::init() {
 	initPyProcess();
 	initIndexer();
 
-	Settings::getInstance()->load();
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
 	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);

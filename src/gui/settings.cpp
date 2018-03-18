@@ -26,19 +26,18 @@ Settings* Settings::getInstance() {
 void Settings::save() {
 	settings.open(QFile::ReadWrite);
 	QTextStream out(&settings);
-	out << currentTheme << endl;
-	out << startup->isChecked() << endl;
+	out << currentTheme;
+	endl(out);
+	out << runOnBoot;
 	settings.close();
 }
 
 void Settings::load() {
 	settings.open(QFile::ReadOnly);
 	if (settings.isOpen()) {
-		currentTheme = (Theme)settings.readLine().toInt();
-		startup->setChecked(settings.readLine().toInt());
+		currentTheme = (Theme)settings.readLine().trimmed().toInt();
 	} else {
 		currentTheme = LIGHT;
-		startup->setChecked(false);
 	}
 	settings.close();
 }
@@ -49,10 +48,11 @@ Theme Settings::getCurrentTheme() {
 
 void Settings::setCurrentTheme(Theme t) {
 	currentTheme = t;
+	save();
 }
 
-void Settings::setStartup(QAction *startup) {
-	this->startup = startup;
+bool Settings::runsOnBoot() {
+	return runOnBoot;
 }
 
 void Settings::toggleRunOnStartup(bool checked) {
@@ -65,4 +65,6 @@ void Settings::toggleRunOnStartup(bool checked) {
 	} else {
 		settings.remove("Fetch");
 	}
+	runOnBoot = checked;
+	save();
 }
