@@ -4,8 +4,17 @@ from time import time
 import preprocess
 import constants
 import utils
+import constants
+from setup import setup
 
 def index():
+
+    if not os.path.isfile(os.path.join(constants.getIndexPath(), 'classes')):
+        setup()
+        print('setup')
+    if not os.path.isfile(os.path.join(constants.getIndexPath(), 'hidden')):
+        setup()
+        print('setup')
 
     dataDir = constants.getIndexPath()
 
