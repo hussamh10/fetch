@@ -1,10 +1,7 @@
 #include "finderwindow.h"
 #include "ui_finderwindow.h"
 
-#ifdef Q_OS_WIN
 #include <windows.h>
-#endif
-
 #include <QProcess>
 #include <QTimer>
 #include <QSystemTrayIcon>
@@ -41,15 +38,13 @@ FinderWindow::~FinderWindow() {
 }
 
 bool FinderWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
-#ifdef Q_OS_WIN
-    Q_UNUSED(eventType);
+	Q_UNUSED(eventType);
 	Q_UNUSED(result);
 	MSG *msg = static_cast<MSG*>(message);
 	if (msg->message == WM_HOTKEY) {
 		toggleWindow();
 		return true;
-    }
-#endif
+	}
     return QMainWindow::nativeEvent(eventType, message, result);
 }
 
@@ -68,12 +63,7 @@ void FinderWindow::startListening() {
 }
 
 void FinderWindow::initUI() {
-
-#ifndef Q_OS_WIN
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::NoDropShadowWindowHint);
-#else
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::WindowStaysOnTopHint | Qt::NoDropShadowWindowHint | Qt::Popup);
-#endif
 
     setAttribute(Qt::WA_TranslucentBackground, true);
 
@@ -226,11 +216,7 @@ void FinderWindow::toggleWindow() {
 
 void FinderWindow::search(QString query) {
 	pyproc->write(query.toStdString().c_str());
-#ifdef Q_OS_WIN
 	pyproc->write("\r\n");
-#else
-    pyproc->write("\n");
-#endif
 }
 
 void FinderWindow::etchButtonText(QPushButton *button, QString &name, QString &path) {
@@ -351,9 +337,7 @@ void FinderWindow::init() {
 	Settings::getInstance()->load();
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
-#ifdef Q_OS_WIN
 	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);
-#endif
 }
 
 void FinderWindow::on_searchBar_returnPressed() {
