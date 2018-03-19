@@ -21,6 +21,9 @@
 #include <QScrollBar>
 #include <QActionGroup>
 #include <QRegExpValidator>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 const QString FinderWindow::SERVERNAME = "fetch";
 
@@ -28,7 +31,8 @@ FinderWindow::FinderWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::FinderWindow) {
 	ui->setupUi(this);
-	localServer = new QLocalServer();
+	localServer = new QLocalServer(this);
+	manager = new QNetworkAccessManager(this);
 	indexed = false;
 	ignoreResults = false;
 	resultCount = 0;
@@ -68,7 +72,7 @@ void FinderWindow::initUI() {
 
     setAttribute(Qt::WA_TranslucentBackground, true);
 
-	QGraphicsDropShadowEffect* searchBarEffect = new QGraphicsDropShadowEffect();
+	QGraphicsDropShadowEffect* searchBarEffect = new QGraphicsDropShadowEffect(this);
 	searchBarEffect->setBlurRadius(10);
 	searchBarEffect->setOffset(0,0);
 	searchBarEffect->setColor(QColor(0,0,0,200));
@@ -143,6 +147,12 @@ void FinderWindow::initIndexer() {
 	timer->start(60 * 60 * 1000);
 }
 
+void FinderWindow::initUpdater() {
+	QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/latest-release"));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
+	manager->get(request);
+}
+
 QString FinderWindow::getGlobalStyleSheet() {
 	QFile file(":/themes/global");
 	file.open(QFile::ReadOnly);
@@ -154,7 +164,7 @@ QString FinderWindow::getThemeFontColor() {
 }
 
 QString FinderWindow::getPyProcessCommand(QString scriptname) {
-	return "python py/" + scriptname;
+	return "python py\\" + scriptname;
 }
 
 QString FinderWindow::getThemedStyleSheet(Theme t) {
@@ -195,6 +205,14 @@ void FinderWindow::setTheme() {
 
 void FinderWindow::toggleRunOnStartup(bool checked) {
 	Settings::getInstance()->toggleRunOnStartup(checked);
+}
+
+void FinderWindow::downloaded(QNetworkReply *r) {
+	QString latest(r->readAll());
+	if (latest != QApplication::applicationVersion()) {
+		(new QProcess(this))->startDetached(getPyProcessCommand("update.py") + " " + QApplication::applicationDirPath().replace("/", "\\"));
+		QApplication::quit();
+	}
 }
 
 void FinderWindow::resetSearch() {
@@ -349,6 +367,7 @@ void FinderWindow::init() {
 	initTray();
 	initPyProcess();
 	initIndexer();
+	initUpdater();
 
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));

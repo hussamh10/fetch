@@ -15,6 +15,8 @@ class QLocalServer;
 class QLocalSocket;
 class QTimer;
 class QLabel;
+class QNetworkAccessManager;
+class QNetworkReply;
 
 class FinderWindow : public QMainWindow
 {
@@ -40,6 +42,7 @@ private slots:
 	void initWindowSize();
 	void setTheme();
 	void toggleRunOnStartup(bool);
+	void downloaded(QNetworkReply *);
 
 	void on_searchBar_returnPressed();
 	void on_searchBar_textEdited(const QString &arg1);
@@ -52,6 +55,7 @@ private:
 	void initPyProcess();
 	void initLocalServer();
 	void initIndexer();
+	void initUpdater();
 
 	QString getGlobalStyleSheet();
 	QString getThemedStyleSheet(Theme t);
@@ -80,6 +84,7 @@ private:
 	QLocalServer *localServer;
 	QLocalSocket *localSocket;
 	QTimer *timer;
+	QNetworkAccessManager *manager;
 
 	Theme *theme;
 };
