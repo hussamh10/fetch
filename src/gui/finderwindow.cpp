@@ -149,7 +149,7 @@ void FinderWindow::initIndexer() {
 
 void FinderWindow::initUpdater() {
 	QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/latest-release"));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(latestReleaseAvailable(QNetworkReply*)));
 	manager->get(request);
 }
 
@@ -207,7 +207,7 @@ void FinderWindow::toggleRunOnStartup(bool checked) {
 	Settings::getInstance()->toggleRunOnStartup(checked);
 }
 
-void FinderWindow::downloaded(QNetworkReply *r) {
+void FinderWindow::latestReleaseAvailable(QNetworkReply *r) {
 	QString latest(r->readAll());
 	if (latest != QApplication::applicationVersion()) {
 		(new QProcess(this))->startDetached(getPyProcessCommand("update.py") + " " + QApplication::applicationDirPath().replace("/", "\\"));

@@ -42,7 +42,7 @@ private slots:
 	void initWindowSize();
 	void setTheme();
 	void toggleRunOnStartup(bool);
-	void downloaded(QNetworkReply *);
+	void latestReleaseAvailable(QNetworkReply *);
 
 	void on_searchBar_returnPressed();
 	void on_searchBar_textEdited(const QString &arg1);

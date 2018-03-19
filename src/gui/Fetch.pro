@@ -41,3 +41,5 @@ RC_ICONS = resources/fetch.ico
 RESOURCES += \
     icons.qrc \
     themes.qrc
+
+VERSION = 1.0.0.0
