@@ -215,16 +215,15 @@ void FinderWindow::clearResults() {
 }
 
 void FinderWindow::launch() {
-	toggleWindow();
 	QDesktopServices::openUrl(QUrl::fromLocalFile(QObject::sender()->property("path").toString()));
+	hide();
 }
 
 void FinderWindow::toggleWindow() {
 	resetSearch();
 	if (this->isHidden()) {
 		show();
-        activateWindow();
-        raise();
+		activateWindow();
         ui->searchBar->setFocus();
 	} else {
         hide();
