@@ -37,7 +37,7 @@ def printItems(f):
     limit = constants.getResultsLimit()
     temp = f[:limit]
     for t in temp:
-        print(t.name + "|" + t.path[:-1], t.score)
+        print(t.name + "|" + t.path[:-1])
 
 def deleteAndRename(homeDir, old, new):
     oldFile = os.path.join(homeDir, old)
