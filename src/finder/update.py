@@ -1,3 +1,13 @@
+import ctypes, sys
+import os
+
+def is_admin():
+	try:
+		return ctypes.windll.shell32.IsUserAnAdmin()
+	except:
+		return False
+		
+		
 import sys
 import urllib3
 import tempfile
@@ -27,7 +37,7 @@ def get_fetch_path():
 	return ' '.join(sys.argv[1:])
 	
 def main():
-	print(get_fetch_path())
+	print("Updating Fetch...")
 	try:
 		f = download_update(tempfile.NamedTemporaryFile(delete=False))
 		extract_archive(f, get_fetch_path())
@@ -36,4 +46,7 @@ def main():
 		subprocess.Popen("Fetch.exe")
 
 urllib3.disable_warnings()
-main()
+if is_admin():
+	main()
+else:
+	ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__ + ' ' + get_fetch_path(), None, 1)
