@@ -164,7 +164,7 @@ QString FinderWindow::getThemeFontColor() {
 }
 
 QString FinderWindow::getPyProcessCommand(QString scriptname) {
-	return "python py\\" + scriptname;
+	return "python " + scriptname;
 }
 
 QString FinderWindow::getThemedStyleSheet(Theme t) {
