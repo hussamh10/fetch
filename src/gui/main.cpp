@@ -1,11 +1,11 @@
 #include "finderwindow.h"
 #include <QApplication>
-#include <QDateTime>
-#include <iostream>
 
 int main(int argc, char *argv[])  {
 
 	QApplication a(argc, argv);
+
+	QDir::setCurrent(QCoreApplication::applicationDirPath());
 
 	FinderWindow w;
     a.setApplicationName("Fetch");
