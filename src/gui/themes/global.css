@@ -14,9 +14,6 @@
     background: transparent;
     border: none;
 }
-#scrollAreaContents {
-    border-radius: 3px;
-}
 #scrollAreaContents > QPushButton, #scrollAreaContents > QLabel {
     background: transparent;
     padding: 10px;
