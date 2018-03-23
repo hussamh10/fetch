@@ -41,6 +41,9 @@ def getRoots():
     rts.append(home)
     return rts
 
+def getFilesIndexFile():
+    filePath = os.path.join(getIndexPath(), getFileIndexName())
+
 def getClasses():
     filePath = os.path.join(getIndexPath(), 'classes')
 
@@ -51,7 +54,7 @@ def getClasses():
     file = f.readlines()
     f.close()
     
-    classes = []
+    classes = [.f]
 
     for f in file:
         classes.append(f.split()[0])
