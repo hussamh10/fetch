@@ -1,2 +1,6 @@
-.code .py .java .cpp .html .cs .css .rb .mat .hdf5 .rb .go .c .asm
-.pic .bmp .png .jpg .jpeg .gif .tiff
+.code .py .java .cpp .html .cs .css .rb .mat .hdf5 .rb .go .c .asm .h .vb
+.pic .bmp .png .jpg .jpeg .gif .tiff .psd .svg .ico
+.doc .pdf .ppt .pptx .docx .odt .txt .xlsx .htm .csv .xml .odp .rtf .doc .tex
+.arch .rar .gz .zip .7z .pkg .deb .z
+.audio .pcm .wav .aiff .mp3 .aac .ogg .wma .flac .alac .midi
+.video .mp4 .avi .mkv .flv .mpg .wmv .vob .m4v .3gp 
