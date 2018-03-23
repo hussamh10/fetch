@@ -11,10 +11,8 @@ def index():
 
     if not os.path.isfile(os.path.join(constants.getIndexPath(), 'classes')):
         setup()
-        print('setup')
     if not os.path.isfile(os.path.join(constants.getIndexPath(), 'hidden')):
         setup()
-        print('setup')
 
     dataDir = constants.getIndexPath()
 
