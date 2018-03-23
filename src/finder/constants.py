@@ -16,7 +16,7 @@ def getIndexPath():
     return path
 
 def getFileIndexName():
-    return "file_indexed"
+    return ".f"
 
 def getDirIndexName():
     return "dir_indexed"
@@ -54,7 +54,7 @@ def getClasses():
     file = f.readlines()
     f.close()
     
-    classes = [.f]
+    classes = ['.f']
 
     for f in file:
         classes.append(f.split()[0])
