@@ -7,7 +7,6 @@ def readFile(file_name):
     return open(file_name, 'r').readlines()
 
 def initFilesList(file_names, path):
-    
     files = dict.fromkeys(file_names)
 
     for name in file_names:
