@@ -6,7 +6,7 @@ def makePartition(files, cl, exts, path):
 
     for f in files:
         for e in exts:
-            if e in f[-5:] and e[-1] == f[-2]:
+            if e in f[-7:] and e[-1] == f[-2]:
                 temp.append(f)
 
 
