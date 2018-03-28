@@ -208,6 +208,10 @@ void FinderWindow::toggleRunOnStartup(bool checked) {
 }
 
 void FinderWindow::latestReleaseAvailable(QNetworkReply *r) {
+
+	if (r->error() != QNetworkReply::NoError)
+		return;
+
 	QString latest(r->readAll());
 	if (latest != QApplication::applicationVersion()) {
 		(new QProcess(this))->startDetached(getPyProcessCommand("update.py") + " " + QApplication::applicationDirPath().replace("/", "\\"));
