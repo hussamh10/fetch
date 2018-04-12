@@ -45,7 +45,7 @@ def getFilesIndexFile():
     filePath = os.path.join(getIndexPath(), getFileIndexName())
 
 def getClasses():
-    filePath = os.path.join(getIndexPath(), 'classes')
+    filePath = 'classes'
 
     if not os.path.isfile(filePath):
         return []
@@ -62,10 +62,9 @@ def getClasses():
     return classes
 
 def hidden(dir):
-    path = getIndexPath()
     filename = 'hidden'
 
-    file = open(os.path.join(path, filename))
+    file = open(filename)
     useless = file.read().split()
 
     if dir.lower() in useless or dir[0].lower() in useless:
