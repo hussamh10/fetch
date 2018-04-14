@@ -1,5 +1,5 @@
 import ctypes, sys
-import os
+import os, shutil
 
 def is_admin():
 	try:
@@ -36,8 +36,17 @@ def download_update(f):
 def get_fetch_path():
 	return ' '.join(sys.argv[1:])
 	
+def deleteData():
+	root = os.environ["LOCALAPPDATA"]
+	folder_name = 'Fetch'
+	path = os.path.join(root, folder_name)
+	if os.path.exists(path):
+		shutil.rmtree(path)
+		os.mkdir(path)
+
 def main():
 	print("Updating Fetch...")
+	deleteData()
 	try:
 		f = download_update(tempfile.NamedTemporaryFile(delete=False))
 		extract_archive(f, get_fetch_path())

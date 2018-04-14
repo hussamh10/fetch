@@ -8,7 +8,7 @@ def getIndexPath():
         folder_name = '.fetch'
     else:
         root = os.environ["LOCALAPPDATA"]
-        folder_name = 'fetch'
+        folder_name = 'Fetch'
 
     path = os.path.join(root, folder_name)
     if not os.path.exists(path):
