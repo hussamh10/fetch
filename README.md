@@ -24,7 +24,7 @@ Fetch allows you to find and open any file or folder on your computer. By indexi
 </p>
 
 ## Supported classes for file search:
-- Type the class name at the start of the query and then the approximate query.
+- Type the corresponding class name at the start of your approximate query to search for files of that type.
 
 Class name  | Supported file types
 ------------| -------------
