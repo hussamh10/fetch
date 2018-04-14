@@ -38,9 +38,9 @@ Class name  | File types
 
 ## Installation:
 - Install [Python](https://python.org) on your computer.
-- [Download](https://github.com/hussamh10/fetch/releases/download/stable/Fetch-Setup.exe) and install the stable release for Windows.
-- Run `Fetch.exe`.
-- Wait for Fetch to prompt you when indexing is complete.
+- [Download](https://github.com/hussamh10/fetch/releases/download/stable/Fetch-Setup.zip) and install the latest release for Windows.
+- Run Fetch.
+- Wait for Fetch to finish indexing.
 
 ## Project team:
 - [Muhammad Haroon](https://github.com/haroon96)
