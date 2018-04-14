@@ -85,7 +85,7 @@ void FinderWindow::initUI() {
 }
 
 void FinderWindow::initTray() {
-	trayIcon = new QSystemTrayIcon(this);
+	QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon(":/icons/app_icon"));
 
 	QMenu *menu = new QMenu(this);
@@ -128,7 +128,7 @@ void FinderWindow::initTray() {
 	menu->addAction(exit);
 
 	trayIcon->setContextMenu(menu);
-    trayIcon->show();
+	trayIcon->show();
 }
 
 void FinderWindow::initPyProcess() {
@@ -331,7 +331,6 @@ void FinderWindow::pyProcOutputAvailable() {
 	while (pyproc->canReadLine()) {
 		QString str(pyproc->readLine());
 		if (!indexed && str.trimmed() == ":indexed") {
-            trayIcon->showMessage("Fetch", "Press Ctrl+Space to start.");
             ui->searchBar->setPlaceholderText("🔍 Search");
             ui->searchBar->setAlignment(Qt::AlignLeft);
             ui->searchBar->setEnabled(true);

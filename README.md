@@ -20,7 +20,7 @@ Fetch allows you to find and open any file or folder on your computer. By indexi
 ## Usage:
 - Follow this cheatsheet and you'll know how to use Fetch within seconds.
 <p align="center">
-	<img src="res/cheatsheet.png" width="100%" />
+	<img src="res/cs.png" width="100%" />
 </p>
 
 ## Installation:

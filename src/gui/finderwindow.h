@@ -80,7 +80,6 @@ private:
 	int resultCount;
 
 	QProcess *pyproc;
-	QSystemTrayIcon *trayIcon;
 	QLocalServer *localServer;
 	QLocalSocket *localSocket;
 	QTimer *timer;
