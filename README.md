@@ -23,6 +23,18 @@ Fetch allows you to find and open any file or folder on your computer. By indexi
 	<img src="res/cs.png" width="100%" />
 </p>
 
+## Supported classes:
+
+Class name  | Supported file types
+------------| -------------
+.code  | .py .java .cpp .html .cs .css .rb .mat .hdf5 .rb .go .c .asm .h .vb
+.pic   | .bmp .png .jpg .jpeg .gif .tiff .psd .svg .ico
+.doc   | .pdf .ppt .pptx .docx .odt .txt .xlsx .htm .csv .xml .odp .rtf .doc .tex
+.arch  | .rar .gz .zip .7z .pkg .deb .z
+.audio | .pcm .wav .aiff .mp3 .aac .ogg .wma .flac .alac .midi
+.video | .mp4 .avi .mkv .flv .mpg .wmv .vob .m4v .3gp 
+
+
 ## Installation:
 - Install [Python](https://python.org) on your computer.
 - [Download](https://github.com/hussamh10/fetch/releases/download/stable/Fetch-Setup.exe) and install the stable release for Windows.
