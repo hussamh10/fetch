@@ -23,8 +23,8 @@ Fetch allows you to find and open any file or folder on your computer. By indexi
 	<img src="res/cs.png" width="100%" />
 </p>
 
-## Supported classes:
-
+## Supported classes for file search:
+- Type the class name at the start of the query and then the approximate query.
 Class name  | Supported file types
 ------------| -------------
 .code  | .py .java .cpp .html .cs .css .rb .mat .hdf5 .rb .go .c .asm .h .vb
