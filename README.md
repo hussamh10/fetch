@@ -37,7 +37,6 @@ Class name  | File types
 
 
 ## Installation:
-- Install [Python](https://python.org) on your computer.
 - Download and install the [latest release](https://github.com/hussamh10/fetch/releases/download/stable/Fetch-Setup.zip) for Windows.
 - Run Fetch.
 - Wait for Fetch to finish indexing.
