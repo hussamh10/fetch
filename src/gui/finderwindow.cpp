@@ -133,7 +133,7 @@ void FinderWindow::initTray() {
 
 void FinderWindow::initPyProcess() {
 	pyproc = new QProcess(this);
-	pyproc->start(getPyProcessCommand("main.py"));
+	pyproc->start("main.exe");
 	connect(pyproc, SIGNAL(readyReadStandardOutput()), this, SLOT(pyProcOutputAvailable()));
 }
 
@@ -161,10 +161,6 @@ QString FinderWindow::getGlobalStyleSheet() {
 
 QString FinderWindow::getThemeFontColor() {
 	return Settings::getInstance()->getCurrentTheme() == LIGHT ? "#000,#777" : "#fff,#ccc";
-}
-
-QString FinderWindow::getPyProcessCommand(QString scriptname) {
-	return "python " + scriptname;
 }
 
 QString FinderWindow::getThemedStyleSheet(Theme t) {
@@ -214,7 +210,7 @@ void FinderWindow::latestReleaseAvailable(QNetworkReply *r) {
 
 	QString latest(r->readAll());
 	if (latest != QApplication::applicationVersion()) {
-		(new QProcess(this))->startDetached(getPyProcessCommand("update.py") + " " + QApplication::applicationDirPath().replace("/", "\\"));
+		(new QProcess(this))->startDetached("update.exe " + QApplication::applicationDirPath().replace("/", "\\"));
 		QApplication::quit();
 	}
 }
@@ -350,7 +346,7 @@ void FinderWindow::pyProcOutputAvailable() {
 }
 
 void FinderWindow::runIndexer() {
-	(new QProcess(this))->start(getPyProcessCommand("index.py"));
+	(new QProcess(this))->start("index.exe");
 }
 
 void FinderWindow::newInstance() {
