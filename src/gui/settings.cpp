@@ -55,6 +55,10 @@ bool Settings::runsOnBoot() {
 	return runOnBoot;
 }
 
+QDir Settings::getAppDir() {
+	return appDir;
+}
+
 void Settings::toggleRunOnStartup(bool checked) {
 	QSettings settings("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
 	if (checked) {

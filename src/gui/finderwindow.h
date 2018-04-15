@@ -42,7 +42,7 @@ private slots:
 	void initWindowSize();
 	void setTheme();
 	void toggleRunOnStartup(bool);
-	void latestReleaseAvailable(QNetworkReply *);
+	void handleReply(QNetworkReply*);
 
 	void on_searchBar_returnPressed();
 	void on_searchBar_textEdited(const QString &arg1);
@@ -73,6 +73,10 @@ private:
 	void scrollToTop();
 	void scrollToBottom();
 
+
+	void updateInfoAvailable(QNetworkReply *);
+	void updateDownloaded(QNetworkReply *);
+
 	static const QString SERVERNAME;
 
 	bool ignoreResults;
@@ -84,6 +88,7 @@ private:
 	QLocalSocket *localSocket;
 	QTimer *timer;
 	QNetworkAccessManager *manager;
+	QSystemTrayIcon *trayIcon;
 
 	Theme *theme;
 };

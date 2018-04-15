@@ -27,6 +27,7 @@ public:
 	Theme getCurrentTheme();
 	void setCurrentTheme(Theme t);
 	bool runsOnBoot();
+	QDir getAppDir();
 
 	void toggleRunOnStartup(bool checked);
 };

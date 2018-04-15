@@ -24,6 +24,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QFile>
 
 const QString FinderWindow::SERVERNAME = "fetch";
 
@@ -85,7 +86,7 @@ void FinderWindow::initUI() {
 }
 
 void FinderWindow::initTray() {
-	QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
+	trayIcon = new QSystemTrayIcon(this);
 	trayIcon->setIcon(QIcon(":/icons/app_icon"));
 
 	QMenu *menu = new QMenu(this);
@@ -129,6 +130,7 @@ void FinderWindow::initTray() {
 
 	trayIcon->setContextMenu(menu);
 	trayIcon->show();
+	trayIcon->showMessage("Fetch", "Press Ctrl+Space to begin.");
 }
 
 void FinderWindow::initPyProcess() {
@@ -149,7 +151,6 @@ void FinderWindow::initIndexer() {
 
 void FinderWindow::initUpdater() {
 	QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/latest-release"));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(latestReleaseAvailable(QNetworkReply*)));
 	manager->get(request);
 }
 
@@ -203,16 +204,40 @@ void FinderWindow::toggleRunOnStartup(bool checked) {
 	Settings::getInstance()->toggleRunOnStartup(checked);
 }
 
-void FinderWindow::latestReleaseAvailable(QNetworkReply *r) {
+void FinderWindow::handleReply(QNetworkReply *r) {
+	if(r->request().url().toString().contains("update.zip")) {
+		updateDownloaded(r);
+	} else {
+		updateInfoAvailable(r);
+	}
+}
+
+void FinderWindow::updateInfoAvailable(QNetworkReply *r) {
 
 	if (r->error() != QNetworkReply::NoError)
 		return;
 
 	QString latest(r->readAll());
 	if (latest != QApplication::applicationVersion()) {
-		(new QProcess(this))->startDetached("update.exe " + QApplication::applicationDirPath().replace("/", "\\"));
-		QApplication::quit();
+		QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/update.zip"));
+		manager->get(request);
+		trayIcon->showMessage("Fetch", "Downloading update...");
 	}
+}
+
+void FinderWindow::updateDownloaded(QNetworkReply *r) {
+
+	if (r->error() != QNetworkReply::NoError)
+		return;
+
+	QFile tmp;
+	tmp.setFileName(Settings::getInstance()->getAppDir().absolutePath().append("/update.zip"));
+	tmp.open(QFile::WriteOnly);
+	tmp.write(r->readAll());
+	tmp.close();
+
+	(new QProcess(this))->startDetached("FetchUpdate.exe");
+	QApplication::quit();
 }
 
 void FinderWindow::resetSearch() {
@@ -370,6 +395,7 @@ void FinderWindow::init() {
 
 	setTheme(Settings::getInstance()->getCurrentTheme());
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(handleReply(QNetworkReply*)));
 	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);
 }
 
