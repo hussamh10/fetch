@@ -37,7 +37,7 @@ Class name  | File types
 
 
 ## Installation:
-- Download and install the [latest release](https://github.com/hussamh10/fetch/releases/download/stable/Fetch-Setup.zip) for Windows.
+- Download and install the [latest release](https://github.com/hussamh10/fetch/releases/latest) for Windows.
 - Run Fetch.
 - Wait for Fetch to finish indexing.
 
