@@ -26,15 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         finderwindow.cpp \
-    settings.cpp
+    settings.cpp \
+    shortcutkeyselector.cpp
 
 HEADERS += \
         finderwindow.h \
     settings.h \
-    settings.h
+    settings.h \
+    shortcutkeyselector.h
 
 FORMS += \
-        finderwindow.ui
+        finderwindow.ui \
+    shortcutkeyselector.ui
 
 RC_ICONS = resources/fetch.ico
 
