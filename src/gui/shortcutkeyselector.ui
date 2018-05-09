@@ -40,13 +40,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="winMod">
-         <property name="text">
-          <string>Win</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="comboBox"/>
        </item>
       </layout>

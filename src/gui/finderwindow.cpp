@@ -1,4 +1,5 @@
 #include "finderwindow.h"
+#include "shortcutkeyselector.h"
 #include "ui_finderwindow.h"
 
 #include <windows.h>
@@ -91,12 +92,14 @@ void FinderWindow::initTray() {
 
 	QMenu *menu = new QMenu(this);
 	QAction *startup = new QAction("Run on startup", menu);
+	QAction *shortcutKeySelector = new QAction("Set shortcut", menu);
 	QAction *exit = new QAction("Exit", menu);
 
 	startup->setCheckable(true);
 	startup->setChecked(Settings::getInstance()->runsOnBoot());
 
 	connect(startup, SIGNAL(triggered(bool)), this, SLOT(toggleRunOnStartup(bool)));
+	connect(shortcutKeySelector, SIGNAL(triggered(bool)), this, SLOT(launchShortcutKeySelector()));
 	connect(exit, SIGNAL(triggered(bool)), this, SLOT(exit()));
 
 	QMenu *themeMenu = new QMenu("Themes", menu);
@@ -118,19 +121,24 @@ void FinderWindow::initTray() {
 	else
 		lightTheme->setChecked(true);
 
+	if (Settings::getInstance()->runsOnBoot()) {
+		startup->setChecked(true);
+	}
+
 	connect(darkTheme, SIGNAL(triggered(bool)), this, SLOT(setTheme()));
 	connect(lightTheme, SIGNAL(triggered(bool)), this, SLOT(setTheme()));
 
 	themeMenu->addAction(darkTheme);
 	themeMenu->addAction(lightTheme);
 
+	menu->addAction(shortcutKeySelector);
 	menu->addMenu(themeMenu);
 	menu->addAction(startup);
 	menu->addAction(exit);
 
 	trayIcon->setContextMenu(menu);
 	trayIcon->show();
-	trayIcon->showMessage("Fetch", "Press Ctrl+Space to begin.");
+	trayIcon->showMessage("Fetch", "Press " + Settings::getInstance()->getShortcutKey()->toString() + " to begin.");
 }
 
 void FinderWindow::initPyProcess() {
@@ -198,6 +206,10 @@ void FinderWindow::setTheme() {
 	Theme t = *(Theme*)&v;
 	setTheme((Theme)t);
 	Settings::getInstance()->setCurrentTheme(t);
+}
+
+void FinderWindow::launchShortcutKeySelector() {
+	(new ShortcutKeySelector(this))->show();
 }
 
 void FinderWindow::toggleRunOnStartup(bool checked) {
@@ -394,9 +406,9 @@ void FinderWindow::init() {
 	initUpdater();
 
 	setTheme(Settings::getInstance()->getCurrentTheme());
+	Settings::getInstance()->registerHotKey();
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(handleReply(QNetworkReply*)));
-	RegisterHotKey(HWND(winId()), 0, MOD_CONTROL, VK_SPACE);
 }
 
 void FinderWindow::on_searchBar_returnPressed() {

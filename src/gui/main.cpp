@@ -1,6 +1,8 @@
 #include "finderwindow.h"
+#include "settings.h"
 #include <QApplication>
 #include <iostream>
+
 int main(int argc, char *argv[])  {
 
 	QApplication a(argc, argv);
@@ -10,6 +12,7 @@ int main(int argc, char *argv[])  {
 	std::cout << a.applicationFilePath().replace('/','\\').toStdString() << std::endl;
 
 	FinderWindow w;
+	Settings::getInstance()->setMainWindow(&w);
     a.setApplicationName("Fetch");
 
 	if (w.isAlreadyRunning()) {

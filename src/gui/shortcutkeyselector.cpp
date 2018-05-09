@@ -1,20 +1,24 @@
 #include "shortcutkeyselector.h"
 #include "ui_shortcutkeyselector.h"
 #include "windows.h"
+#include "settings.h"
 #include <QKeyEvent>
 
 ShortcutKeySelector::ShortcutKeySelector(QWidget *parent) :
-	QDialog(parent),
+	QDialog(parent, Qt::WindowSystemMenuHint | Qt::WindowTitleHint),
 	ui(new Ui::ShortcutKeySelector)
 {
 	ui->setupUi(this);
+	setWindowTitle("Set shortcut key to launch Fetch");
+	initComboBox();
+	init();
 }
 
 ShortcutKeySelector::~ShortcutKeySelector() {
 	delete ui;
 }
 
-ShortcutKeySelectorSelector::initComboBox() {
+void ShortcutKeySelector::initComboBox() {
 	ui->comboBox->addItem("A", 0x41);
 	ui->comboBox->addItem("B", 0x42);
 	ui->comboBox->addItem("C", 0x43);
@@ -51,19 +55,13 @@ ShortcutKeySelectorSelector::initComboBox() {
 	ui->comboBox->addItem("7", 0x37);
 	ui->comboBox->addItem("8", 0x38);
 	ui->comboBox->addItem("9", 0x39);
-	ui->comboBox->addItem("SPACEBAR", 0x20);
-	ui->comboBox->addItem("PAGE UP", 0x21);
-	ui->comboBox->addItem("PAGE DOWN", 0x22);
-	ui->comboBox->addItem("END", 0x23);
-	ui->comboBox->addItem("HOME", 0x24);
-	ui->comboBox->addItem("LEFT ARROW", 0x25);
-	ui->comboBox->addItem("UP ARROW", 0x26);
-	ui->comboBox->addItem("RIGHT ARROW", 0x27);
-	ui->comboBox->addItem("DOWN ARROW", 0x28);
-	ui->comboBox->addItem("SELECT", 0x29);
-	ui->comboBox->addItem("PRINT SCREEN", 0x2C);
-	ui->comboBox->addItem("INS", 0x2D);
-	ui->comboBox->addItem("DEL", 0x2E);
+	ui->comboBox->addItem("Space", 0x20);
+	ui->comboBox->addItem("PgUp", 0x21);
+	ui->comboBox->addItem("PgDn", 0x22);
+	ui->comboBox->addItem("End", 0x23);
+	ui->comboBox->addItem("Home", 0x24);
+	ui->comboBox->addItem("Ins", 0x2D);
+	ui->comboBox->addItem("Del", 0x2E);
 	ui->comboBox->addItem("F1", 0x70);
 	ui->comboBox->addItem("F2", 0x71);
 	ui->comboBox->addItem("F3", 0x72);
@@ -76,9 +74,7 @@ ShortcutKeySelectorSelector::initComboBox() {
 	ui->comboBox->addItem("F10", 0x79);
 	ui->comboBox->addItem("F11", 0x7A);
 	ui->comboBox->addItem("F12", 0x7B);
-	ui->comboBox->addItem("LShift", 0xA0);
 	ui->comboBox->addItem("RShift", 0xA1);
-	ui->comboBox->addItem("LCtrl", 0xA2);
 	ui->comboBox->addItem("RCtrl", 0xA3);
 	ui->comboBox->addItem("NUM0", 0x60);
 	ui->comboBox->addItem("NUM1", 0x61);
@@ -90,4 +86,44 @@ ShortcutKeySelectorSelector::initComboBox() {
 	ui->comboBox->addItem("NUM7", 0x67);
 	ui->comboBox->addItem("NUM8", 0x68);
 	ui->comboBox->addItem("NUM9", 0x69);
+}
+
+void ShortcutKeySelector::init() {
+	ShortcutKey sk = *(Settings::getInstance()->getShortcutKey());
+	ui->ctrlMod->setChecked(sk.ctrl);
+	ui->altMod->setChecked(sk.alt);
+	ui->shiftMod->setChecked(sk.shift);
+	ui->comboBox->setCurrentText(sk.keyname);
+}
+
+void ShortcutKeySelector::on_saveBtn_clicked() {
+	QString name = ui->comboBox->currentText();
+	int vk = ui->comboBox->currentData().toInt();
+	bool ctrl = ui->ctrlMod->checkState() == Qt::Checked;
+	bool alt = ui->altMod->checkState() == Qt::Checked;
+	bool shift = ui->shiftMod->checkState() == Qt::Checked;
+	ShortcutKeySelector::ShortcutKey key(ctrl, alt, shift, vk, name);
+	Settings::getInstance()->registerHotKey(key);
+	setVisible(false);
+}
+
+void ShortcutKeySelector::on_closeBtn_clicked() {
+	setVisible(false);
+}
+
+int ShortcutKeySelector::ShortcutKey::getModifiers() {
+	int modifier = 0;
+	if (ctrl) modifier |= MOD_CONTROL;
+	if (alt) modifier |= MOD_ALT;
+	if (shift) modifier |= MOD_SHIFT;
+	return modifier;
+}
+
+QString ShortcutKeySelector::ShortcutKey::toString() {
+	QString str = "";
+	if (ctrl) str.append("Ctrl + ");
+	if (alt) str.append("Alt + ");
+	if (shift) str.append("Shift + ");
+	str.append(keyname);
+	return str;
 }

@@ -41,6 +41,7 @@ private slots:
 	void launch();
 	void initWindowSize();
 	void setTheme();
+	void launchShortcutKeySelector();
 	void toggleRunOnStartup(bool);
 	void handleReply(QNetworkReply*);
 

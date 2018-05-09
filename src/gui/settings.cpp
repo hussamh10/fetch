@@ -1,10 +1,14 @@
 #include "settings.h"
+#include <windows.h>
 #include <QStandardPaths>
 #include <QFile>
 #include <QTextStream>
 #include <QSettings>
 #include <QCoreApplication>
 #include <QAction>
+#include <QList>
+#include <QMainWindow>
+#include <finderwindow.h>
 
 Settings* Settings::instance = nullptr;
 
@@ -24,20 +28,36 @@ Settings* Settings::getInstance() {
 }
 
 void Settings::save() {
-	settings.open(QFile::ReadWrite);
+	settings.open(QFile::WriteOnly);
 	QTextStream out(&settings);
-	out << currentTheme;
-	endl(out);
-	out << runOnBoot;
+	out << currentTheme << ","
+		<< runOnBoot << ","
+		<< shortcutKey->ctrl << ","
+		<< shortcutKey->alt << ","
+		<< shortcutKey->shift << ","
+		<< shortcutKey->vk << ","
+		<< shortcutKey->keyname;
 	settings.close();
 }
 
 void Settings::load() {
 	settings.open(QFile::ReadOnly);
 	if (settings.isOpen()) {
-		currentTheme = (Theme)settings.readLine().trimmed().toInt();
+		QList<QByteArray> params = settings.readAll().trimmed().split(',');
+		currentTheme = (Theme)params[0].toInt();
+		runOnBoot == params[1].toInt();
+		shortcutKey = new ShortcutKeySelector::
+				ShortcutKey(
+					params[2].toInt(),
+					params[3].toInt(),
+					params[4].toInt(),
+					params[5].toInt(),
+					params[6]
+				);
 	} else {
 		currentTheme = LIGHT;
+		runOnBoot == false;
+		shortcutKey = new ShortcutKeySelector::ShortcutKey(true, false, false, VK_SPACE, "Space");
 	}
 	settings.close();
 }
@@ -55,8 +75,16 @@ bool Settings::runsOnBoot() {
 	return runOnBoot;
 }
 
+void Settings::setMainWindow(FinderWindow *w) {
+	this->window = w;
+}
+
 QDir Settings::getAppDir() {
 	return appDir;
+}
+
+ShortcutKeySelector::ShortcutKey* Settings::getShortcutKey() {
+	return shortcutKey;
 }
 
 void Settings::toggleRunOnStartup(bool checked) {
@@ -70,5 +98,16 @@ void Settings::toggleRunOnStartup(bool checked) {
 		settings.remove("Fetch");
 	}
 	runOnBoot = checked;
+	save();
+}
+
+void Settings::registerHotKey() {
+	RegisterHotKey(HWND(window->winId()), 2054, shortcutKey->getModifiers(), shortcutKey->vk);
+}
+
+void Settings::registerHotKey(ShortcutKeySelector::ShortcutKey key) {
+	*shortcutKey = key;
+	UnregisterHotKey(HWND(window->winId()), 2054);
+	registerHotKey();
 	save();
 }
