@@ -42,19 +42,24 @@ void Settings::save() {
 
 void Settings::load() {
 	settings.open(QFile::ReadOnly);
+	bool loadDefaults = true;
 	if (settings.isOpen()) {
 		QList<QByteArray> params = settings.readAll().trimmed().split(',');
-		currentTheme = (Theme)params[0].toInt();
-		runOnBoot == params[1].toInt();
-		shortcutKey = new ShortcutKeySelector::
-				ShortcutKey(
-					params[2].toInt(),
-					params[3].toInt(),
-					params[4].toInt(),
-					params[5].toInt(),
-					params[6]
-				);
-	} else {
+		if (params.length() == 7) {
+			currentTheme = (Theme)params[0].toInt();
+			runOnBoot == params[1].toInt();
+			shortcutKey = new ShortcutKeySelector::
+					ShortcutKey(
+						params[2].toInt(),
+						params[3].toInt(),
+						params[4].toInt(),
+						params[5].toInt(),
+						params[6]
+					);
+			loadDefaults = false;
+		}
+	}
+	if (loadDefaults) {
 		currentTheme = LIGHT;
 		runOnBoot == false;
 		shortcutKey = new ShortcutKeySelector::ShortcutKey(true, false, false, VK_SPACE, "Space");
