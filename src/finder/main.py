@@ -10,6 +10,13 @@ import constants
 def inputs(q):
     return input()
 
+def updateFolders():
+    indexDir = constants.getIndexPath()
+    indexFilePath = os.path.join(indexDir, constants.getDirIndexName())
+    folders = utils.initFoldersList(indexFilePath)
+    return folders
+
+
 def init():
     indexDir = constants.getIndexPath()
     indexFilePath = os.path.join(indexDir, constants.getDirIndexName())
@@ -81,7 +88,7 @@ def fuzz(q, index):
 def main():
     folders, files = init()
     classes = constants.getClasses()
-
+    
     candidate_files = dict(files)
     candidate_folders = folders[:]
 
@@ -97,13 +104,15 @@ def main():
         curr_len = len(q)
 
         if curr_len < old_len or ' ' in q:
+            candidate_folders = updateFolders()
             candidate_files = dict(files)
-            candidate_folders = folders[:]
 
         if curr_len > 0 and '.' == q[0]:
-            candidate_files = file_fuzzy(q, classes, candidate_files)
+            pass
+            #candidate_files = file_fuzzy(q, classes, candidate_files)
 
         if curr_len > 0 and not '.' == q[0]:
+            candidate_folders = folders[:]
             candidate_folders = folder_fuzzy(q, candidate_folders)
 
 main()
