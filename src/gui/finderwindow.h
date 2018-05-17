@@ -36,6 +36,7 @@ protected:
 private slots:
 	void pyProcOutputAvailable();
 	void runIndexer();
+	void runUpdater();
 	void newInstance();
 	void exit();
 	void launch();
@@ -55,8 +56,8 @@ private:
 	void initTray();
 	void initPyProcess();
 	void initLocalServer();
-	void initIndexer();
 	void initUpdater();
+	void initIndexer();
 
 	QString getGlobalStyleSheet();
 	QString getThemedStyleSheet(Theme t);
@@ -87,7 +88,7 @@ private:
 	QProcess *pyproc;
 	QLocalServer *localServer;
 	QLocalSocket *localSocket;
-	QTimer *timer;
+	QTimer *updateTimer, *indexTimer;
 	QNetworkAccessManager *manager;
 	QSystemTrayIcon *trayIcon;
 

@@ -152,14 +152,15 @@ void FinderWindow::initLocalServer() {
 }
 
 void FinderWindow::initIndexer() {
-	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(runIndexer()));
-	timer->start(60 * 60 * 1000);
+	indexTimer = new QTimer(this);
+	connect(indexTimer, SIGNAL(timeout()), this, SLOT(runIndexer()));
+	indexTimer->start(3600000); // ‪3600000‬ms = 1hr
 }
 
 void FinderWindow::initUpdater() {
-	QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/latest-release"));
-	manager->get(request);
+	updateTimer = new QTimer(this);
+	connect(updateTimer, SIGNAL(timeout()), this, SLOT(runUpdater()));
+	updateTimer->start(3600000 * 3); // ‪3600000‬ * 3 ms = 3hrs
 }
 
 QString FinderWindow::getGlobalStyleSheet() {
@@ -233,7 +234,7 @@ void FinderWindow::updateInfoAvailable(QNetworkReply *r) {
 	if (latest != QApplication::applicationVersion()) {
 		QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/update.zip"));
 		manager->get(request);
-		trayIcon->showMessage("Fetch", "Downloading update...");
+		trayIcon->showMessage("Fetch", "Downloading updates...");
 	}
 }
 
@@ -384,6 +385,11 @@ void FinderWindow::pyProcOutputAvailable() {
 
 void FinderWindow::runIndexer() {
 	(new QProcess(this))->start("index.exe");
+}
+
+void FinderWindow::runUpdater() {
+	QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/latest-release"));
+	manager->get(request);
 }
 
 void FinderWindow::newInstance() {
