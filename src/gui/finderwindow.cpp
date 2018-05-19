@@ -154,13 +154,13 @@ void FinderWindow::initLocalServer() {
 void FinderWindow::initIndexer() {
 	indexTimer = new QTimer(this);
 	connect(indexTimer, SIGNAL(timeout()), this, SLOT(runIndexer()));
-	indexTimer->start(3600000); // ‪3600000‬ms = 1hr
+	indexTimer->start(1800000); // ‪1800000‬ms = 30mins
 }
 
 void FinderWindow::initUpdater() {
 	updateTimer = new QTimer(this);
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(runUpdater()));
-	updateTimer->start(3600000 * 3); // ‪3600000‬ * 3 ms = 3hrs
+	updateTimer->start(3600000); // ‪3600000‬ = 1hr
 }
 
 QString FinderWindow::getGlobalStyleSheet() {
@@ -234,7 +234,7 @@ void FinderWindow::updateInfoAvailable(QNetworkReply *r) {
 	if (latest != QApplication::applicationVersion()) {
 		QNetworkRequest request(QUrl("https://raw.githubusercontent.com/hussamh10/fetch/gh-pages/update.zip"));
 		manager->get(request);
-		trayIcon->showMessage("Fetch", "Downloading updates...");
+		trayIcon->showMessage("Fetch", "Downloading update...");
 	}
 }
 
@@ -415,6 +415,8 @@ void FinderWindow::init() {
 	Settings::getInstance()->registerHotKey();
 	connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(initWindowSize()));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(handleReply(QNetworkReply*)));
+
+	runUpdater();
 }
 
 void FinderWindow::on_searchBar_returnPressed() {

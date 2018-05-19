@@ -47,7 +47,7 @@ void Settings::load() {
 		QList<QByteArray> params = settings.readAll().trimmed().split(',');
 		if (params.length() == 7) {
 			currentTheme = (Theme)params[0].toInt();
-			runOnBoot == params[1].toInt();
+			runOnBoot = params[1].toInt();
 			shortcutKey = new ShortcutKeySelector::
 					ShortcutKey(
 						params[2].toInt(),
@@ -61,7 +61,7 @@ void Settings::load() {
 	}
 	if (loadDefaults) {
 		currentTheme = LIGHT;
-		runOnBoot == false;
+		runOnBoot = false;
 		shortcutKey = new ShortcutKeySelector::ShortcutKey(true, false, false, VK_SPACE, "Space");
 	}
 	settings.close();
