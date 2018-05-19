@@ -112,7 +112,7 @@ def main():
             #candidate_files = file_fuzzy(q, classes, candidate_files)
 
         if curr_len > 0 and not '.' == q[0]:
-            candidate_folders = folders[:]
+            #candidate_folders = folders[:]
             candidate_folders = folder_fuzzy(q, candidate_folders)
 
 main()
