@@ -45,4 +45,4 @@ RESOURCES += \
     icons.qrc \
     themes.qrc
 
-VERSION = 1.4.0.2
+VERSION = 1.5.0.0
