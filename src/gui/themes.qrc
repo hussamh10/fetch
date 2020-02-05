@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/themes">
-        <file alias="dark">themes/dark.css</file>
-        <file alias="light">themes/light.css</file>
-        <file alias="global">themes/global.css</file>
-    </qresource>
-</RCC>
