@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Fetch</title>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="fetch.js"></script>
+  </head>
+  <body ng-app="fetchApp" ng-controller="fetchController as vm">
+    <input id="search-bar" ng-model="vm.query" ng-model-options="{'debounce': 300}" ng-change="vm.search(vm.query)">
+
+    <h1 ng-bind="vm.logger"></h1>
+  </body>
+</html>
