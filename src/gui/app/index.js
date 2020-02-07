@@ -1,4 +1,5 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, remote } = require('electron');
+const { Tray } = remote;
 
 let app = angular.module('fetchApp', []);
 
@@ -14,8 +15,10 @@ function fetchController($timeout) {
 	function init() {
 		vm.search = search;
 		vm.open = open;
+		vm.openTopResult = openTopResult;
 
 		initIPC();
+		initTray();
 	}
 	
 	function initIPC() {
@@ -41,9 +44,21 @@ function fetchController($timeout) {
 
 	}
 
+	function initTray() {
+		let tray = new Tray('app/res/fetch.png');
+		tray.setTitle('Fetch');
+		tray.setToolTip('Fetch');
+	}
+
 	function search(query) {
 		vm.results = null;
 		ipcRenderer.send('search', query);
+	}
+	
+	function openTopResult() {
+		if (vm.results && vm.results.length > 0) {
+			open(vm.results[0][1]);
+		}
 	}
 
 	function open(path) {

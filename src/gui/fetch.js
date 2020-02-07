@@ -34,8 +34,10 @@ function initIPCMain(stdin, stdout) {
 
 	// target open event
 	electron.ipcMain.on('open', (event, arg) => {
-		console.log('opening', arg);
-		electron.shell.openItem(arg);
+		if (arg) {
+			console.log('opening', arg);
+			electron.shell.openItem(arg);
+		}
 	});
 
 	// communication channel establish event
