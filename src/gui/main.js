@@ -1,14 +1,12 @@
 const electron = require('electron');
-const exec = require('child_process').exec;
+const fetch = require('./fetch');
+const config = require('./config');
 
-let queries = {};
+// construct electron app
+electron.app.whenReady().then(init);
 
-function initFetch() {
-	// launch finder app
-	let finder = exec('/usr/bin/python3.6 test.py');
-	// establish link with view
-	initIPCMain(finder.stdin, finder.stdout);
-	// render view window
+function init() {
+	fetch.init();
 	initWindow();
 }
 
@@ -24,41 +22,31 @@ function initWindow() {
 	});
 	
 	// window.setMenuBarVisibility(false);
-	window.loadFile('index.html');
+	window.loadFile('app/index.html');
+
+	configureEvents(window);
 }
 
-function initIPCMain(stdin, stdout) {
+function configureEvents(window) {
+	window.on('blur', () => {
+		hideWindow(window);
+	})
 
-	electron.ipcMain.on('query', (event, arg) => {
-		// log the query
-		queries[arg] = {'event': event};
-		// send query to finder process
-		stdin.write(arg + '\n');
-		console.log(arg);
-	});
-
-	stdout.on('data', (data) => {
-		let lines = data.split(new RegExp('\r?\n'));
-		let query = null, results = [];
-		for (let line of lines) {
-			// is this a new result set?
-			console.log('line', line);
-			if (line.startsWith(':')) {
-				console.log('here');
-				query = line.slice(1, line.length);
-				results = [];
-			} else {
-				results.push(line);
-			}
+	electron.globalShortcut.register(config.launchKey, () => {
+		if (window.isVisible()) {
+			hideWindow(window);
+		} else {
+			showWindow(window);
 		}
-		console.log('results for', query, data);
-		// find relevant event and send results to view
-		if (query != null) {
-			let event = queries[query].event;
-			event.reply('results', results);
-			delete queries[query];	
-		}
-	});
+	})
 }
 
-electron.app.whenReady().then(initFetch);
+function showWindow(window) {
+	window.show();
+	fetch.show();
+}
+
+function hideWindow(window) {
+	window.hide();
+	fetch.hide();
+}
