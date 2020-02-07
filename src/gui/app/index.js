@@ -13,9 +13,13 @@ function fetchController($timeout) {
 	init();
 
 	function init() {
+		vm.indexing = true;
 		vm.search = search;
 		vm.open = open;
 		vm.openTopResult = openTopResult;
+
+		// establish a communication channel from main to renderer
+		ipcRenderer.send('channel');
 
 		initIPC();
 		initTray();
@@ -23,25 +27,25 @@ function fetchController($timeout) {
 	
 	function initIPC() {
 		// handle results receive
-		ipcRenderer.on('results', (event, args) => {
-			digest(() => { vm.results = args; });
+		ipcRenderer.on('results', (event, arg) => {
+			digest(() => { vm.results = arg; });
 		});
 
 		// handle channel events
 
 		// when window is shown
-		ipcRenderer.on('show', (event, args) => {
+		ipcRenderer.on('show', (event, arg) => {
 			document.getElementById('search-bar').focus();
 		});
 
 		// when window is hidden
-		ipcRenderer.on('hide', (event, args) => {
+		ipcRenderer.on('hide', (event, arg) => {
 			digest(clear);
 		});
 
-		// establish a communication channel from main to renderer
-		ipcRenderer.send('channel');
-
+		ipcRenderer.on('indexed', (event, arg) => {
+			digest(() => { vm.indexing = false; })
+		})
 	}
 
 	function initTray() {

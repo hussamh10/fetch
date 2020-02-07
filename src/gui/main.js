@@ -6,25 +6,28 @@ const config = require('./config');
 electron.app.whenReady().then(init);
 
 function init() {
-	fetch.init();
-	initWindow();
+	setTimeout(() => {
+		fetch.init();
+		initWindow();
+	}, 2000);
 }
 
 function initWindow() {
 	let window = new electron.BrowserWindow({
 		width: 500,
 		height: 500,
-		// frame: false,
-		// titleBarStyle: 'hidden',
 		webPreferences: {
 			nodeIntegration: true
-		}
+		},
+		frame: false,
+		transparent: true
 	});
 	
-	// window.setMenuBarVisibility(false);
+	window.setMenuBarVisibility(false);
 	window.loadFile('app/index.html');
 
 	configureEvents(window);
+	hideWindow(window);
 }
 
 function configureEvents(window) {
