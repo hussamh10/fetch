@@ -86,6 +86,10 @@ def fuzz(q, index):
 
 
 def main():
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     folders, files = init()
     classes = constants.getClasses()
     
