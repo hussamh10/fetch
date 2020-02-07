@@ -8,18 +8,26 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body ng-app="fetchApp" ng-controller="fetchController as vm">
-    <input tabindex=1 
-            id="search-bar" 
-            ng-model="vm.query" 
-            ng-model-options="{'debounce': 300}" 
-            ng-change="vm.search(vm.query)"  
-            ng-keyup="$event.keyCode == 13 && vm.openTopResult()">
+    <div class="search-bar-container">
+      <img src="res/flatfetch.png">
+      <input tabindex=1 
+              placeholder="Search"
+              id="search-bar" 
+              ng-model="vm.query" 
+              ng-model-options="{'debounce': 300}" 
+              ng-change="vm.search(vm.query)"  
+              ng-keyup="$event.keyCode == 13 && vm.openTopResult()">
+    </div>
+    <div class="result-buttons">
+      <button tabindex="{{ $index + 1 }}"
+              ng-repeat="result in vm.results"
+              ng-click="vm.open(result[1])">
+              <span>{{ result[0] }}</span>
+              <span>{{ result[1] }}</span>
+        </button>
+    </div>
 
-    <button tabindex="{{ $index + 1 }}"
-            ng-repeat="result in vm.results"
-            ng-bind="result[0]"
-            ng-click="vm.open(result[1])">
-      </button>
+    <div ng-if="vm.indexing" class="indexer-overlay">Please wait for indexing to finish.</div>
 
   </body>
 </html>

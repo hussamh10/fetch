@@ -11,14 +11,21 @@ const config = require('./config');
 let queries = {};
 let channel;
 
-function init() {
-	// launch finder app
-	let finder = exec([config.pythonPath, config.fetchPath].join(' '));
-	// establish link with view
-	initIPCMain(finder.stdin, finder.stdout);
+function init() {	
+	// wait for renderer to establish communications
+	electron.ipcMain.on('channel', (event, arg) => {
+		channel = event;
+		
+		// launch finder app
+		let finder = exec([config.pythonPath, config.fetchPath].join(' '));
+
+		// establish other links
+		establishLinks(finder.stdin, finder.stdout);
+	});
+
 }
 
-function initIPCMain(stdin, stdout) {
+function establishLinks(stdin, stdout) {
 
 	// search event
 	electron.ipcMain.on('search', (event, arg) => {
@@ -33,31 +40,27 @@ function initIPCMain(stdin, stdout) {
 	});
 
 	// target open event
-	electron.ipcMain.on('open', (event, arg) => {
+	electron.ipcMain.on('open', (e, arg) => {
 		if (arg) {
 			console.log('opening', arg);
 			electron.shell.openItem(arg);
 		}
 	});
 
-	// communication channel establish event
-	electron.ipcMain.on('channel', (event, arg) => {
-		channel = event;
-	});
 
 	stdout.on('data', (data) => {
 		let lines = data.split(new RegExp('\r?\n'));
 		let query = null, results = [];
 		for (let line of lines) {
-			// is this a new result set?
 			console.log('line', line);
 			if (line == ':indexed') {
 				console.log('indexed');
+				channel.reply('indexed');
 			} else if (line.startsWith(':')) {
 				console.log('here');
 				query = line.slice(1, line.length);
 				results = [];
-			} else {
+			} else if (line != '') {
 				results.push(line);
 			}
 		}
@@ -76,9 +79,13 @@ function initIPCMain(stdin, stdout) {
 }
 
 function show() {
-	channel.reply('show');
+	if (channel) {
+		channel.reply('show');
+	}
 }
 
 function hide() {
-	channel.reply('hide');
+	if (channel) {
+		channel.reply('hide');
+	}
 }
