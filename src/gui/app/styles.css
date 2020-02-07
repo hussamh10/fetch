@@ -1,0 +1,10 @@
+body {
+	margin: 0 auto;
+}
+
+button {
+	display: block;
+	background: transparent;
+	border: none;
+	width: 100%;
+}

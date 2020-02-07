@@ -5,12 +5,21 @@
     <title>Fetch</title>
     <script src="../node_modules/angular/angular.min.js"></script>
     <script src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body ng-app="fetchApp" ng-controller="fetchController as vm">
-    <input id="search-bar" ng-model="vm.query" ng-model-options="{'debounce': 300}" ng-change="vm.search(vm.query)">
+    <input tabindex=1 
+            id="search-bar" 
+            ng-model="vm.query" 
+            ng-model-options="{'debounce': 300}" 
+            ng-change="vm.search(vm.query)"  
+            ng-keyup="$event.keyCode == 13 && vm.openTopResult()">
 
-    <ul>
-      <li ng-repeat="result in vm.results" ng-bind="result[0]" ng-click="vm.open(result[1])"></li>
-    </ul>
+    <button tabindex="{{ $index + 1 }}"
+            ng-repeat="result in vm.results"
+            ng-bind="result[0]"
+            ng-click="vm.open(result[1])">
+      </button>
+
   </body>
 </html>
