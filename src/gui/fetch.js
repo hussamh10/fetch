@@ -6,6 +6,7 @@ module.exports = {
 
 const electron = require('electron');
 const exec = require('child_process').exec;
+const path = require('path');
 const config = require('./config');
 
 let queries = {};
@@ -17,14 +18,19 @@ function init() {
 		channel = event;
 		
 		// launch finder app
-		let finder = exec([config.pythonPath, config.fetchPath].join(' '));
+		let finder = exec([config.pythonPath, path.join(config.fetchPath, "main.py")].join(' '));
 
 		// establish other links
 		establishLinks(finder.stdin, finder.stdout);
+
+		// configure indexer
+		setInterval(runIndexer, config.indexerDuration);
 	});
 
 }
 
+
+// configure pipes for communication with renderer and finder processes
 function establishLinks(stdin, stdout) {
 
 	// search event
@@ -52,19 +58,16 @@ function establishLinks(stdin, stdout) {
 		let lines = data.split(new RegExp('\r?\n'));
 		let query = null, results = [];
 		for (let line of lines) {
-			console.log('line', line);
 			if (line == ':indexed') {
 				console.log('indexed');
 				channel.reply('indexed');
 			} else if (line.startsWith(':')) {
-				console.log('here');
 				query = line.slice(1, line.length);
 				results = [];
 			} else if (line != '') {
 				results.push(line);
 			}
 		}
-		console.log('results for', query, data);
 		// find relevant event and send results to view
 		if (query != null) {
 			let q = queries[query];
@@ -76,6 +79,12 @@ function establishLinks(stdin, stdout) {
 			}
 		}
 	});
+}
+
+// rebuild the finder indexer
+function runIndexer() {
+	console.log('rebuilding index');
+	exec([config.pythonPath, path.join(config.fetchPath, "index.py")].join(' '));
 }
 
 function show() {
