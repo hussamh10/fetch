@@ -15,12 +15,12 @@ function init() {
 function initWindow() {
 	let window = new electron.BrowserWindow({
 		width: 400,
-		height: 500,
+		height: 200,
 		webPreferences: {
 			nodeIntegration: true
 		},
-		// frame: false,
-		// transparent: true
+		frame: false,
+		transparent: true
 	});
 	
 	window.setMenuBarVisibility(false);

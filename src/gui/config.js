@@ -6,8 +6,10 @@ module.exports = getConfig();
 function getConfig() {
 	let configPath;
 	if (process.env.HOME) {
+		// ubuntu machine
 		configPath = path.join(process.env.HOME, '.fetch', 'config.json');
 	} else if (process.env.LOCALAPPDATA) {
+		// windows machine
 		configPath = path.join(process.env.LOCALAPPDATA, 'Fetch', 'config.json');
 	}
 

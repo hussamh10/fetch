@@ -17,7 +17,7 @@ function fetchController($timeout) {
 		vm.search = search;
 		vm.open = open;
 		vm.openTopResult = openTopResult;
-		vm.keyup = keyup;
+		vm.buttonKeyup = buttonKeyup;
 
 		// establish a communication channel from main to renderer
 		ipcRenderer.send('channel');
@@ -78,10 +78,32 @@ function fetchController($timeout) {
 
 	function digest(f) {
 		$timeout(f, 0);
-	}
+	}	
 
-	function keyup(e) {
-		console.log(e);
+	function buttonKeyup(ev) {
+		// capture only required keys
+		if (!['ArrowDown', 'ArrowUp'].includes(ev.key)) {
+			return;
+		}
+
+		let id = ev.target.id;
+
+		if (id == 'search-bar') {
+			nextId = 'button0';
+			prevId = 'button3';
+		} else if (id.startsWith('button')) {
+			let c = parseInt(id.replace('button', ''));
+			nextId = (c + 1) == 4 ? 'search-bar' : `button${c + 1}`
+			prevId = (c - 1) == -1 ? 'search-bar' : `button${c - 1}`
+		}
+
+		if (ev.keyCode == 40) {
+			// down key
+			document.getElementById(nextId).focus();
+		} else if (ev.keyCode == 38) {
+			// up key
+			document.getElementById(prevId).focus();
+		}
 	}
 	
 }

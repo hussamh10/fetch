@@ -7,22 +7,27 @@
     <script src="index.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body ng-app="fetchApp" ng-controller="fetchController as vm" ng-keyup="vm.keyup($event)">
+  <body ng-app="fetchApp" ng-controller="fetchController as vm">
     <div class="search-bar-container">
       <img src="res/flatfetch.png">
       <input tabindex=1 
               placeholder="Search"
+              id="search-bar"
               class="search-bar" 
               ng-disabled="vm.indexing"
               ng-model="vm.query" 
-              ng-model-options="{'debounce': 300}" 
-              ng-change="vm.search(vm.query)"  
+              ng-model-options="{'debounce': 300}"
+              ng-change="vm.search(vm.query)"
+              ng-keyup="vm.buttonKeyup($event)"
               ng-keyup="$event.keyCode == 13 && vm.openTopResult()">
     </div>
     <div class="result-buttons">
       <button tabindex="{{ $index + 1 }}"
               ng-repeat="result in vm.results"
-              ng-click="vm.open(result[1])">
+              ng-click="vm.open(result[1])"
+              ng-keyup="vm.buttonKeyup($event)"
+              id="button{{ $index }}"
+              >
               <span>{{ result[0] }}</span>
               <span>{{ result[1] }}</span>
         </button>
