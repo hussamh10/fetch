@@ -5,33 +5,16 @@
 }
 
 body {
-    margin: 8px;
+    margin: 0;
     overflow: hidden;
     background: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     font-size: 80%;
 }
 
-button {
-	display: block;
-	background: transparent;
-	border: none;
-	width: 100%;
-}
-
-.indexer-overlay {
-    opacity: 0.75;
-    width: 100%;
-    height: 100%;
-    background: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-	justify-content: space-around;
+.search-bar-container, .result-buttons {
+    display: relative;
+    width: 98%;
+    margin: 0 auto;
 }
 
 .search-bar-container {
@@ -46,9 +29,9 @@ button {
     position: absolute;
 }
 
-#search-bar {
+.search-bar {
     padding: 8px 16px 8px 36px;
-    width: 300px;
+    width: calc(100% - 52px);
     outline: none;
     font-size: 1.2em;
 
@@ -57,13 +40,20 @@ button {
     box-shadow: 2px 2px 4px 0.1px rgba(0,0,0,0.3);
 }
 
+.result-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .result-buttons button {
     padding: 6px;
-    width: 340px;
+    width: calc(100% - 12px);
     outline: none;
     overflow: hidden;
     text-align: left;
     white-space: nowrap;
+    transition: all ease-in 0.3s;
 
     border: solid 1px rgba(0,0,0,0.5);
     background: rgba(255,255,255,0.7);
@@ -71,12 +61,11 @@ button {
 
 .result-buttons button:focus {
     background: white;
-    font-size: 1.2em;
     border: solid 1px rgba(0,0,0,0.7);
+    font-weight: bold;
 }
 
 .result-buttons button > span:first-child {
-    font-weight: bold;
     font-size: 1.1em;
 }
 
@@ -86,11 +75,6 @@ button {
     margin-left: 4px;
 
     color: #444;
-}
-
-.result-buttons button:first-child {
-    margin-top: 7px;
-    border-radius: 4px 4px 0px 0px;
 }
 
 .result-buttons button:nth-child(n+2) {
