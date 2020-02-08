@@ -86,9 +86,6 @@ def fuzz(q, index):
 
 
 def main():
-    abspath = os.path.abspath(__file__)
-    dname = os.path.dirname(abspath)
-    os.chdir(dname)
 
     folders, files = init()
     classes = constants.getClasses()
@@ -119,4 +116,8 @@ def main():
             #candidate_folders = folders[:]
             candidate_folders = folder_fuzzy(q, candidate_folders)
 
-main()
+if __name__ == '__main__':
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+    main()
