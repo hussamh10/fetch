@@ -7,12 +7,13 @@
     <script src="index.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body ng-app="fetchApp" ng-controller="fetchController as vm">
+  <body ng-app="fetchApp" ng-controller="fetchController as vm" ng-keyup="vm.keyup($event)">
     <div class="search-bar-container">
       <img src="res/flatfetch.png">
       <input tabindex=1 
               placeholder="Search"
-              id="search-bar" 
+              class="search-bar" 
+              ng-disabled="vm.indexing"
               ng-model="vm.query" 
               ng-model-options="{'debounce': 300}" 
               ng-change="vm.search(vm.query)"  
@@ -26,8 +27,6 @@
               <span>{{ result[1] }}</span>
         </button>
     </div>
-
-    <div ng-if="vm.indexing" class="indexer-overlay">Please wait for indexing to finish.</div>
 
   </body>
 </html>

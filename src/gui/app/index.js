@@ -17,6 +17,7 @@ function fetchController($timeout) {
 		vm.search = search;
 		vm.open = open;
 		vm.openTopResult = openTopResult;
+		vm.keyup = keyup;
 
 		// establish a communication channel from main to renderer
 		ipcRenderer.send('channel');
@@ -77,6 +78,10 @@ function fetchController($timeout) {
 
 	function digest(f) {
 		$timeout(f, 0);
+	}
+
+	function keyup(e) {
+		console.log(e);
 	}
 	
 }
