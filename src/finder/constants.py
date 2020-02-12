@@ -1,6 +1,7 @@
 import os
 import subprocess
 from sys import platform as plt
+from config import get_config, write_config
 
 def getIndexPath():
     if "linux" in plt:
@@ -22,7 +23,14 @@ def getDirIndexName():
     return "dir_indexed"
 
 def getRoots():
+    
+    config = get_config('indexPaths')
+  
+    if config != None:
+        return config
+    
     if 'linux' in plt:
+        write_config('indexPaths', [os.environ["HOME"]])
         return [os.environ["HOME"]]
 
 
@@ -39,6 +47,8 @@ def getRoots():
     else:
         rts.remove(home[0] + ":\\")
     rts.append(home)
+    
+    write_config('indexPaths', rts)
     return rts
 
 def getFilesIndexFile():
