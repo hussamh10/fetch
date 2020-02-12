@@ -17,14 +17,16 @@ function init() {
 	electron.ipcMain.on('channel', (event, arg) => {
 		channel = event;
 		
+		let cfg = config.get();
+
 		// launch finder app
-		let finder = exec([config.pythonPath, path.join(config.fetchPath, "main.py")].join(' '));
+		let finder = exec([cfg.pythonPath, path.join(cfg.fetchPath, "main.py")].join(' '));
 
 		// establish other links
 		establishLinks(finder.stdin, finder.stdout);
 
 		// configure indexer
-		setInterval(runIndexer, config.indexerDuration);
+		setInterval(runIndexer, cfg.indexerDuration);
 	});
 
 }
@@ -89,7 +91,8 @@ function establishLinks(stdin, stdout) {
 // rebuild the finder indexer
 function runIndexer() {
 	console.log('rebuilding index');
-	exec([config.pythonPath, path.join(config.fetchPath, "index.py")].join(' '));
+	let cfg = config.get();
+	exec([cfg.pythonPath, path.join(cfg.fetchPath, "index.py")].join(' '));
 }
 
 function show() {

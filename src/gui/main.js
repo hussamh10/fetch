@@ -35,7 +35,9 @@ function configureEvents(window) {
 		hideWindow(window);
 	});
 
-	electron.globalShortcut.register(config.launchKey, () => {
+	let cfg = config.get();
+
+	electron.globalShortcut.register(cfg.launchKey, () => {
 		if (window.isVisible()) {
 			hideWindow(window);
 		} else {
