@@ -81,11 +81,19 @@ function fetchController($timeout) {
 	}	
 
 	function buttonKeyup(ev) {
-		// capture only required keys
-		if (!['ArrowDown', 'ArrowUp'].includes(ev.key)) {
-			return;
+		// delegate actions for certain keys
+		switch (ev.key) {
+			case 'ArrowDown':
+			case 'ArrowUp':
+				handleArrowKeys(ev);
+				break;
+			case 'Escape':
+				ipcRenderer.send('hide');
+				break;
 		}
+	}
 
+	function handleArrowKeys(ev) {
 		let id = ev.target.id;
 
 		if (id == 'search-bar') {

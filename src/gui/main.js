@@ -33,15 +33,23 @@ function initWindow() {
 function configureEvents(window) {
 	window.on('blur', () => {
 		hideWindow(window);
-	})
+	});
 
 	electron.globalShortcut.register(config.launchKey, () => {
 		if (window.isVisible()) {
 			hideWindow(window);
 		} else {
+			adjustWindowPosition(window);
 			showWindow(window);
 		}
-	})
+	});
+}
+
+function adjustWindowPosition(window) {
+	const { width } = electron.screen.getPrimaryDisplay().workAreaSize;
+	let x = (width / 2) - (400 / 2);
+	let y = 200;
+	window.setPosition(x, y);
 }
 
 function showWindow(window) {
