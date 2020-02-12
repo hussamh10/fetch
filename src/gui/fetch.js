@@ -53,7 +53,12 @@ function establishLinks(stdin, stdout) {
 		}
 	});
 
+	// target hide event
+	electron.ipcMain.on('hide', (e, arg) => {
+		electron.BrowserWindow.getFocusedWindow().hide();
+	});
 
+	// handle finder pipe
 	stdout.on('data', (data) => {
 		let lines = data.split(new RegExp('\r?\n'));
 		let query = null, results = [];
