@@ -5,13 +5,10 @@ const config = require('./config');
 // construct electron app
 electron.app.whenReady().then(init);
 
-let tray = null;
-
 function init() {
 	setTimeout(() => {
 		fetch.init();
 		initWindow();
-		initTray();
 	}, 2000);
 }
 
@@ -31,20 +28,6 @@ function initWindow() {
 
 	configureEvents(window);
 	hideWindow(window);
-}
-
-function initTray() {
-	tray = new electron.Tray('app/res/fetch.png');
-	const trayTemplate = [{
-			label: 'Update index',
-			click: fetch.index
-		}, {
-			label: 'Exit',
-			click: electron.app.quit
-		}
-	];
-
-	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
 }
 
 function configureEvents(window) {

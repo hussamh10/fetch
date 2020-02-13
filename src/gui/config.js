@@ -3,7 +3,8 @@ const path = require('path');
 
 module.exports = {
 	get: get,
-	put: put
+	put: put,
+	getThemeList: getThemeList
 }
 
 function getConfigPath() {
@@ -17,6 +18,19 @@ function getConfigPath() {
 		dir = path.join(process.env.LOCALAPPDATA, 'Fetch');
 	}
 	return { dir: dir, file: 'config.json' };
+}
+
+function getThemeList() {
+	let configPath = getConfigPath();
+	let themePath = path.join(configPath.dir, 'themes');
+	if (!fs.existsSync(themePath)) {
+		return {};
+	}
+	let themeList = {};
+	for (let i of fs.readdirSync(themePath)) {
+		themeList[i] = path.join('file://', themePath, i);
+	}
+	return themeList;
 }
 
 function get() {

@@ -1,0 +1,13 @@
+.search-bar {
+    background: white;
+    color: black;
+}
+
+.result-buttons button {
+    background: rgba(255,255,255,0.85);
+    color: black;
+}
+
+.result-buttons button:focus {
+    background: rgba(255,255,255,1);
+}

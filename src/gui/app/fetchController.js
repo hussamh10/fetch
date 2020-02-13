@@ -44,9 +44,18 @@
 				digest(clear);
 			});
 
+			// run on index completion
 			ipcRenderer.on('indexed', (event, arg) => {
 				digest(() => { vm.indexing = false; })
 			})
+
+			// run on theme change
+			ipcRenderer.on('set-theme', (event, args) => {
+				let link = document.createElement('link');
+				link.href = args;
+				link.rel = 'stylesheet';
+				document.head.appendChild(link);
+			});
 		}
 
 		function search(query) {
@@ -82,6 +91,7 @@
 					handleArrowKeys(ev);
 					break;
 				case 'Escape':
+					clear();
 					ipcRenderer.send('hide');
 					break;
 				case 'Enter':

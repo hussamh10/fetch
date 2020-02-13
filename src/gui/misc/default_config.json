@@ -2,5 +2,5 @@
 	"launchKey": "Ctrl+Space",
 	"pythonPath": "/usr/bin/python3.6",
 	"fetchPath": "../finder",
-	"indexerDuration": 1800000
+	"indexerDuration": 60
 }
