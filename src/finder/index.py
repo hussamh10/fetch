@@ -5,9 +5,12 @@ import preprocess
 import constants
 import utils
 import constants
+from setup import setup
 
 def index():
-
+    if not os.path.isfile(os.path.join(constants.getIndexPath(), 'classes')):
+        setup()
+    
     dataDir = constants.getIndexPath()
 
     dirIndexName = constants.getDirIndexName()

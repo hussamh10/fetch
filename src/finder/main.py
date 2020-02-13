@@ -1,5 +1,6 @@
 import os
 from index import index
+from setup import createClassesFile
 import scores
 import utils
 import regex
@@ -20,9 +21,9 @@ def init():
     indexDir = constants.getIndexPath()
     indexFilePath = os.path.join(indexDir, constants.getDirIndexName())
 
-    # if not os.path.isfile(indexFilePath):
-    #     createClassesFile()
-    #     index()
+    if not os.path.isfile(indexFilePath):
+        createClassesFile()
+        index()
 
     classes = constants.getClasses()
     
