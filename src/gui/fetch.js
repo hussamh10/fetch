@@ -1,8 +1,7 @@
 module.exports = {
 	init: init,
 	show: show,
-	hide: hide,
-	index: runIndexer
+	hide: hide
 }
 
 const electron = require('electron');
@@ -12,8 +11,9 @@ const config = require('./config');
 
 let queries = {};
 let channel;
+let tray;
 
-function init() {	
+function init() {
 	// wait for renderer to establish communications
 	electron.ipcMain.on('channel', (event, arg) => {
 		channel = event;
@@ -27,7 +27,13 @@ function init() {
 		establishLinks(finder.stdin, finder.stdout);
 
 		// configure indexer
-		setInterval(runIndexer, cfg.indexerDuration);
+		setInterval(runIndexer, cfg.indexerDuration * 60);
+
+		// init tray
+		initTray();
+
+		// set theme
+		setTheme(config.get().theme);
 	});
 
 }
@@ -106,4 +112,51 @@ function hide() {
 	if (channel) {
 		channel.reply('hide');
 	}
+}
+
+function setTheme(theme) {
+	let path = getThemePath(theme);
+	channel.reply('set-theme', path);
+}
+
+function initTray() {
+	tray = new electron.Tray('app/res/fetch.png');
+	const trayTemplate = [{
+			label: 'Update index',
+			click: runIndexer
+		}, {
+			label: 'Inject CSS',
+			click: () => {
+				setTheme('default-dark');
+			}
+		}, {
+			label: 'Exit',
+			click: electron.app.quit
+		}
+	];
+
+	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
+}
+
+function getThemePath(themeName) {
+
+	// check if it's a default theme
+	let stdThemes = {
+		'default-light': `file://${__dirname}/misc/default-light.css`,
+		'default-dark': `file://${__dirname}/misc/default-dark.css`
+	};
+
+	if (stdThemes[themeName]) {
+		return stdThemes[themeName];
+	}
+
+	// check if it's an external theme
+	let externalThemeList = config.getThemeList();
+
+	if (externalThemeList[themeName]) {
+		return externalThemeList[themeName]
+	}
+
+	// if not found anywhere, return default-light theme
+	return stdThemes['default-light'];
 }
