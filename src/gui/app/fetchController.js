@@ -88,6 +88,11 @@
 				case 'Escape':
 					ipcRenderer.send('hide');
 					break;
+				case 'Enter':
+					if (ev.target.id == 'search-bar') {
+						openTopResult();
+					}
+					break;
 			}
 		}
 
