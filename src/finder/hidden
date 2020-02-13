@@ -10,3 +10,5 @@ appdata
 notmnist_large
 notmnist_small
 RTTTL
+node_modules
+__pycache__

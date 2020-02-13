@@ -1,5 +1,5 @@
 (function(){
-	const { remote } = require('electron');
+	const { remote, Menu } = require('electron');
 	const { Tray } = remote;
 	
 	let app = angular.module('fetchApp');
@@ -18,9 +18,9 @@
 
 		angular.extend(trayFactory.prototype, {
 			buildMenu: function() {
-				console.log('building menu');
+				
 			}
-		})
+		});
 	
 		return trayFactory;
 	}

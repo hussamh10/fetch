@@ -32,6 +32,11 @@ def index():
 
     for root in rootDirs:
         for dirName, subdirList, fileList in os.walk(root):
+
+            # do not proceed if it's a hidden directory
+            if constants.hidden(dirName):
+                continue
+            
             dirName = dirName.encode('ascii',"ignore")
             dirName = dirName.decode('ascii',"ignore")
             dirName = str(dirName)
