@@ -1,13 +1,15 @@
 module.exports = {
 	init: init,
 	show: show,
-	hide: hide
+	hide: hide,
+	relaunch: relaunch
 }
 
 const electron = require('electron');
 const exec = require('child_process').exec;
 const path = require('path');
 const config = require('./config');
+const settings = require('./settings');
 
 let queries = {};
 let channel;
@@ -21,19 +23,22 @@ function init() {
 		let cfg = config.get();
 
 		// launch finder app
-		let finder = exec([cfg.pythonPath, path.join(cfg.fetchPath, "main.py")].join(' '));
+		let finder = exec([cfg.pythonPath, path.join('../finder', "main.py")].join(' '));
 
 		// establish other links
 		establishLinks(finder.stdin, finder.stdout);
 
 		// configure indexer
-		setInterval(runIndexer, cfg.indexerDuration * 60);
+		setInterval(runIndexer, cfg.indexerDuration * 60 * 1000);
 
 		// init tray
 		initTray();
 
 		// set theme
 		setTheme(config.get().theme);
+
+		// re-run indexer
+		runIndexer();
 	});
 
 }
@@ -99,7 +104,7 @@ function establishLinks(stdin, stdout) {
 function runIndexer() {
 	console.log('rebuilding index');
 	let cfg = config.get();
-	exec([cfg.pythonPath, path.join(cfg.fetchPath, "index.py")].join(' '));
+	exec([cfg.pythonPath, path.join('../finder', "index.py")].join(' '));
 }
 
 function show() {
@@ -120,10 +125,8 @@ function initTray() {
 			label: 'Update index',
 			click: runIndexer
 		}, {
-			label: 'Inject CSS',
-			click: () => {
-				setTheme('blue');
-			}
+			label: 'Settings',
+			click: settings.show
 		}, {
 			label: 'Exit',
 			click: electron.app.quit
@@ -133,30 +136,18 @@ function initTray() {
 	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
 }
 
-function setTheme(theme) {
-	let path = getTheme(theme);
-	channel.reply('set-theme', path);
-}
-
-function getTheme(themeName) {
-	let themesList = getThemesList();
-
-	// return requested theme
-	if (themesList[themeName]) {
-		return themesList[themeName];
-	}
+function setTheme(themeName) {
+	let themes = config.getThemesList();
 	
-	// return default theme
-	return themesList['default-light'];
+	// use default theme if invalid selected
+	if (!themes[themeName]) {
+		themeName = 'default-light';
+	}
+
+	channel.reply('set-theme', themes[themeName]);
 }
 
-function getThemesList() {
-	// load external themes
-	let themesList = config.getExternalThemesList();
-
-	// insert default themes
-	themesList['default-light'] = `file://${__dirname}/misc/default-light.css`;
-	themesList['default-dark'] = `file://${__dirname}/misc/default-dark.css`;
-
-	return themesList;
+function relaunch() {
+	electron.app.relaunch();
+	electron.app.quit();
 }

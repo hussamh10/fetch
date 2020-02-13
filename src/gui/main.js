@@ -1,5 +1,6 @@
 const electron = require('electron');
 const fetch = require('./fetch');
+const settings = require('./settings');
 const config = require('./config');
 
 // construct electron app
@@ -7,6 +8,7 @@ electron.app.whenReady().then(init);
 
 function init() {
 	setTimeout(() => {
+		settings.init();
 		fetch.init();
 		initWindow();
 	}, 2000);
@@ -15,16 +17,17 @@ function init() {
 function initWindow() {
 	let window = new electron.BrowserWindow({
 		width: 400,
-		height: 200,
+		height: 250,
 		webPreferences: {
 			nodeIntegration: true
 		},
 		frame: false,
-		transparent: true
+		transparent: true,
+		// resizable: false
 	});
 	
 	window.setMenuBarVisibility(false);
-	window.loadFile('app/index.html');
+	window.loadFile('app/fetchApp/index.html');
 
 	configureEvents(window);
 	hideWindow(window);
@@ -35,9 +38,8 @@ function configureEvents(window) {
 		hideWindow(window);
 	});
 
-	let cfg = config.get();
-
-	electron.globalShortcut.register(cfg.launchKey, () => {
+	let launchKey = config.get().launchKey;
+	electron.globalShortcut.register(launchKey, () => {
 		if (window.isVisible()) {
 			hideWindow(window);
 		} else {

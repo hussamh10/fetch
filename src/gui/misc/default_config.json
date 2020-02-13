@@ -1,6 +1,53 @@
 {
-	"launchKey": "Ctrl+Space",
-	"pythonPath": "/usr/bin/python3.6",
-	"fetchPath": "../finder",
-	"indexerDuration": 60
+  "theme":{
+     "desc":"Theme",
+     "type":"select",
+     "default":"default-light",
+     "options":[
+        "default-light",
+        "default-dark"
+     ]
+  },
+  "launchKey":{
+     "desc":"Launch key",
+     "type":"string",
+     "default":"Ctrl+Space"
+  },
+  "pythonPath":{
+     "desc":"Python3 command",
+     "type":"string",
+     "default":"python3"
+  },
+  "indexerDuration":{
+     "desc":"Update index after (minutes)",
+     "type":"string",
+     "default":"60"
+  },
+  "indexPaths":{
+     "desc":"Directories to index",
+     "type":"array",
+     "default":[
+
+     ]
+  },
+  "exclusions":{
+     "desc":"Exclusions",
+     "type":"array",
+     "default":[
+        ".",
+        "lib",
+        "bin",
+        "envs",
+        "include",
+        "pkgs",
+        "build",
+        "sdk",
+        "appdata",
+        "notmnist_large",
+        "notmnist_small",
+        "RTTTL",
+        "node_modules",
+        "__pycache__"
+     ]
+  }
 }

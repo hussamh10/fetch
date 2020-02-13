@@ -4,7 +4,8 @@ const path = require('path');
 module.exports = {
 	get: get,
 	put: put,
-	getExternalThemesList: getExternalThemesList
+	getThemesList: getThemesList,
+	getDefaultConfig: getDefaultConfig
 }
 
 function getConfigPath() {
@@ -20,25 +21,38 @@ function getConfigPath() {
 	return { dir: dir, file: 'config.json' };
 }
 
-function getExternalThemesList() {
+function getThemesList() {
 	let configPath = getConfigPath();
 	let themePath = path.join(configPath.dir, 'themes');
-	if (!fs.existsSync(themePath)) {
-		return {};
-	}
+
 	let themeList = {};
-	for (let i of fs.readdirSync(themePath)) {
-		let themeName = i.replace('.css', '');
-		themeList[themeName] = path.join('file://', themePath, i);
+	themeList['default-light'] = `file://${__dirname}/misc/default-light.css`;
+	themeList['default-dark'] = `file://${__dirname}/misc/default-dark.css`;
+
+	if (fs.existsSync(themePath)) {
+		for (let i of fs.readdirSync(themePath)) {
+			let themeName = i.replace('.css', '');
+			themeList[themeName] = path.join('file://', themePath, i);
+		}
 	}
+	
 	return themeList;
+}
+
+function getDefaultConfig() {
+	return JSON.parse(fs.readFileSync('misc/default_config.json'))
 }
 
 function get() {
 	let configPath = getConfigPath();
 	let configFile = path.join(configPath.dir, configPath.file);
 	if (!fs.existsSync(configFile)) {
-		save(JSON.parse(fs.readFileSync('misc/default_config.json')));	
+		let default_config = getDefaultConfig();
+		let config = {};
+		for (let key in default_config) {
+			config[key] = default_config[key].default;
+		}
+		save(config);
 	}
 	return JSON.parse(fs.readFileSync(configFile));
 }

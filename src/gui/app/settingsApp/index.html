@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Fetch settings</title>
+    <script src="../../node_modules/angular/angular.min.js"></script>
+    <script src="settingsController.js"></script>
+    <link rel="stylesheet" href="../res/styles.css">
+    <link rel="icon" href="../res/fetch.png">
+  </head>
+  <body ng-app="settingsApp" ng-controller="settingsController as vm">
+    <div class="settings-body">
+      <h2>Settings</h2>
+      <div class="settings-container">
+        <div class="setting" ng-repeat="(key, cfg) in vm.config" ng-class="{ 'single-line' : cfg.type == 'string', 'multi-line': cfg.type == 'array' }">
+          <div>
+            <span ng-bind="cfg.desc"></span>
+          </div>
+          <div>
+            <!-- for string type input -->
+            <input ng-model="vm.config[key].value" ng-if="cfg.type == 'string'" placeholder="{{ cfg.default }}">
+      
+            <!-- for select type input -->
+            <select ng-model="vm.config[key].value" ng-if="cfg.type == 'select'" ng-options="opt for opt in cfg.options"></select>
+
+            <!-- for array type input -->
+            <textarea ng-focus="vm.adjustHeight($event)" ng-model="vm.config[key].value" ng-if="cfg.type == 'array'"></textarea>
+          </div>
+        </div>
+        <div class="settings-buttons">
+          <button ng-click="vm.save(vm.config)">Save & Close</button>
+          <button ng-click="vm.cancel()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
