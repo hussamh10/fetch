@@ -19,8 +19,7 @@
               ng-model="vm.query" 
               ng-model-options="{'debounce': 300}"
               ng-change="vm.search(vm.query)"
-              ng-keyup="vm.buttonKeyup($event)"
-              ng-keyup="$event.keyCode == 13 && vm.openTopResult()">
+              ng-keyup="vm.buttonKeyup($event)">
     </div>
     <div class="result-buttons">
       <button tabindex="{{ $index + 1 }}"
