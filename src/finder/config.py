@@ -13,16 +13,22 @@ def get_config_path():
     return os.path.join(root, folder_name, 'config.json')
 
 def get_config(key):
-    if not os.path.exists(get_config_path()):
+    try:
+        with open(get_config_path()) as f:
+            config = json.load(f)
+            return config.get(key, None)
+    except:
         return None
-    with open(get_config_path()) as f:
-        config = json.load(f)
-        return config.get(key, None)
-    	
+
 def write_config(key, value):
-    with open(get_config_path()) as f:
-        config = json.load(f)
-        config[key] = value
-    	
-    with open(get_config_path(), 'w') as f:
-        json.dump(config, f)
+    try:
+        # overwrite previous config
+        with open(get_config_path()) as f:
+            config = json.load(f)
+            config[key] = value
+    except:
+        # couldn't open previous config, create new
+        config = {key: value}
+    finally:
+        with open(get_config_path(), 'w') as f:
+            json.dump(config, f)

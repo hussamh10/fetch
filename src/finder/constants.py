@@ -30,8 +30,10 @@ def getRoots():
         return config
     
     if 'linux' in plt:
-        write_config('indexPaths', [os.environ["HOME"]])
-        return [os.environ["HOME"]]
+        indexPaths = ['Desktop', 'Documents', 'Downloads', 'Music', 'Picture', 'Public', 'Templates', 'Videos']
+        indexPaths = list(map(lambda x : os.path.join(os.environ["HOME"], x), indexPaths))
+        write_config('indexPaths', indexPaths)
+        return indexPaths
 
 
     home = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
