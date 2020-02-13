@@ -74,13 +74,16 @@ def getClasses():
     return classes
 
 def hidden(dir):
-    filename = 'hidden'
-
-    file = open(filename)
-    useless = file.read().split()
+    useless = get_config('exclusions')
+    
+    # config changed, rewrite
+    if useless == None:
+        useless = open('hidden').read().split()
+        write_config('exclusions', useless)
 
     if dir.lower() in useless or dir[0].lower() in useless:
         return True
+
     return False
 
 def getResultsLimit():
