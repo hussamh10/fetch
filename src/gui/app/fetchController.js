@@ -6,9 +6,9 @@
 
 	app.controller('fetchController', fetchController);
 
-	fetchController.$inject = ['$timeout', 'trayFactory'];
+	fetchController.$inject = ['$timeout'];
 
-	function fetchController($timeout, trayFactory) {
+	function fetchController($timeout) {
 		let vm = this;
 		
 		init();
@@ -22,10 +22,6 @@
 
 			// establish a communication channel from main to renderer
 			ipcRenderer.send('channel');
-
-			// setup tray
-			let tray = new trayFactory();
-			tray.buildMenu();
 
 			initIPC();
 		}

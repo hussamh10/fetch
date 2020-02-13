@@ -1,7 +1,8 @@
 module.exports = {
 	init: init,
 	show: show,
-	hide: hide
+	hide: hide,
+	index: runIndexer
 }
 
 const electron = require('electron');
