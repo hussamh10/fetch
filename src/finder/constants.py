@@ -76,11 +76,9 @@ def getClasses():
 def hidden(dir):
     useless = get_config('exclusions')
     
-    # config changed, rewrite
     if useless == None:
-        useless = open('hidden').read().split()
-        write_config('exclusions', useless)
-
+        useless = []
+    
     if dir.lower() in useless or dir[0].lower() in useless:
         return True
 
