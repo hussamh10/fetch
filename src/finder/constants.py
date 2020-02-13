@@ -26,7 +26,7 @@ def getRoots():
     
     config = get_config('indexPaths')
   
-    if config != None:
+    if config != None and len(config) > 0:
         return config
     
     if 'linux' in plt:

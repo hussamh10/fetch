@@ -16,6 +16,7 @@
 		function init() {
 			vm.indexing = true;
 			vm.search = search;
+			vm.shorten = shorten;
 			vm.open = open;
 			vm.openTopResult = openTopResult;
 			vm.buttonKeyup = buttonKeyup;
@@ -77,6 +78,10 @@
 		function clear() {
 			vm.results = null;
 			vm.query = null;
+		}
+
+		function shorten(x) {
+			return x;
 		}
 
 		function digest(f) {
