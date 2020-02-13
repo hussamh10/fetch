@@ -114,11 +114,6 @@ function hide() {
 	}
 }
 
-function setTheme(theme) {
-	let path = getThemePath(theme);
-	channel.reply('set-theme', path);
-}
-
 function initTray() {
 	tray = new electron.Tray('app/res/fetch.png');
 	const trayTemplate = [{
@@ -127,7 +122,7 @@ function initTray() {
 		}, {
 			label: 'Inject CSS',
 			click: () => {
-				setTheme('default-dark');
+				setTheme('blue');
 			}
 		}, {
 			label: 'Exit',
@@ -138,25 +133,30 @@ function initTray() {
 	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
 }
 
-function getThemePath(themeName) {
+function setTheme(theme) {
+	let path = getTheme(theme);
+	channel.reply('set-theme', path);
+}
 
-	// check if it's a default theme
-	let stdThemes = {
-		'default-light': `file://${__dirname}/misc/default-light.css`,
-		'default-dark': `file://${__dirname}/misc/default-dark.css`
-	};
+function getTheme(themeName) {
+	let themesList = getThemesList();
 
-	if (stdThemes[themeName]) {
-		return stdThemes[themeName];
+	// return requested theme
+	if (themesList[themeName]) {
+		return themesList[themeName];
 	}
+	
+	// return default theme
+	return themesList['default-light'];
+}
 
-	// check if it's an external theme
-	let externalThemeList = config.getThemeList();
+function getThemesList() {
+	// load external themes
+	let themesList = config.getExternalThemesList();
 
-	if (externalThemeList[themeName]) {
-		return externalThemeList[themeName]
-	}
+	// insert default themes
+	themesList['default-light'] = `file://${__dirname}/misc/default-light.css`;
+	themesList['default-dark'] = `file://${__dirname}/misc/default-dark.css`;
 
-	// if not found anywhere, return default-light theme
-	return stdThemes['default-light'];
+	return themesList;
 }

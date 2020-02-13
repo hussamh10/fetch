@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
 	get: get,
 	put: put,
-	getThemeList: getThemeList
+	getExternalThemesList: getExternalThemesList
 }
 
 function getConfigPath() {
@@ -20,7 +20,7 @@ function getConfigPath() {
 	return { dir: dir, file: 'config.json' };
 }
 
-function getThemeList() {
+function getExternalThemesList() {
 	let configPath = getConfigPath();
 	let themePath = path.join(configPath.dir, 'themes');
 	if (!fs.existsSync(themePath)) {
@@ -28,7 +28,8 @@ function getThemeList() {
 	}
 	let themeList = {};
 	for (let i of fs.readdirSync(themePath)) {
-		themeList[i] = path.join('file://', themePath, i);
+		let themeName = i.replace('.css', '');
+		themeList[themeName] = path.join('file://', themePath, i);
 	}
 	return themeList;
 }
