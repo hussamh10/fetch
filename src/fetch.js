@@ -6,8 +6,7 @@ module.exports = {
 }
 
 const electron = require('electron');
-const exec = require('child_process').execFile;
-const path = require('path');
+const execFile = require('child_process').execFile;
 const config = require('./config');
 const settings = require('./settings');
 
@@ -145,4 +144,11 @@ function setTheme(themeName) {
 function relaunch() {
 	electron.app.relaunch();
 	electron.app.quit();
+}
+
+function exec(exe) {
+	if (process.platform.includes('win')) {
+		exe = `${exe}.exe`;
+	}
+	return execFile(exe);
 }
