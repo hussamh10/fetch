@@ -2,6 +2,7 @@ import os
 import subprocess
 from sys import platform as plt
 from config import get_config, write_config
+import re
 
 def getIndexPath():
     if "linux" in plt:
@@ -72,19 +73,19 @@ def getClasses():
     #     classes.append(f.split()[0])
         
     # return classes
-    return ['.f']
+    return []
 
 def hidden(dir):
     useless = get_config('exclusions')
     
     if useless == None:
         useless = []
-    
-    if dir.lower() in useless or dir[0].lower() in useless:
-        return True
 
-    return False
+    useless = '|'.join(useless)
 
+    # return true if match found for useless
+    return re.search(useless, dir.lower()) != None
+        
 def getResultsLimit():
     return 4
 

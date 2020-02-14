@@ -28,8 +28,8 @@ function getThemesList() {
 	let themePath = path.join(configPath.dir, 'themes');
 
 	let themeList = {};
-	themeList['default-light'] = `file://${__dirname}/misc/default-light.css`;
-	themeList['default-dark'] = `file://${__dirname}/misc/default-dark.css`;
+	themeList['default-light'] = `file://${makePath('assets/default-light.css')}`;
+	themeList['default-dark'] = `file://${makePath('assets/default-dark.css')}`;
 
 	if (fs.existsSync(themePath)) {
 		for (let i of fs.readdirSync(themePath)) {

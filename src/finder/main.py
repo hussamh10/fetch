@@ -27,9 +27,9 @@ def init():
 
     classes = constants.getClasses()
     
-    if not classes:
-        error.noClasses()
-        return
+    # if not classes:
+    #     error.noClasses()
+    #     return
 
     
     for c in classes:
