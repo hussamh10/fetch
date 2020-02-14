@@ -6,7 +6,7 @@ module.exports = {
 }
 
 const electron = require('electron');
-const exec = require('child_process').exec;
+const exec = require('child_process').execFile;
 const path = require('path');
 const config = require('./config');
 const settings = require('./settings');
@@ -56,13 +56,11 @@ function establishLinks(stdin, stdout) {
 		queries[arg] = {'event': event};
 		// send query to finder process
 		stdin.write(arg + '\n');
-		console.log(arg);
 	});
 
 	// target open event
 	electron.ipcMain.on('open', (e, arg) => {
 		if (arg) {
-			console.log('opening', arg);
 			electron.shell.openItem(arg);
 		}
 	});
@@ -78,7 +76,6 @@ function establishLinks(stdin, stdout) {
 		let query = null, results = [];
 		for (let line of lines) {
 			if (line == ':indexed') {
-				console.log('indexed');
 				channel.reply('indexed');
 			} else if (line.startsWith(':')) {
 				query = line.slice(1, line.length);
@@ -102,8 +99,6 @@ function establishLinks(stdin, stdout) {
 
 // rebuild the finder indexer
 function runIndexer() {
-	console.log('rebuilding index');
-	let cfg = config.get();
 	exec(config.makePath('index'));
 }
 
@@ -120,7 +115,7 @@ function hide() {
 }
 
 function initTray() {
-	tray = new electron.Tray('app/res/fetch.png');
+	tray = new electron.Tray(config.makePath('app/res/fetch.png'));
 	const trayTemplate = [{
 			label: 'Update index',
 			click: runIndexer

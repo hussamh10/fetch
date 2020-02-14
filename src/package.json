@@ -8,11 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del-cli build",
     "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
-    "py-build:main": "pyinstaller build/finder/main.py --distpath build/finder -F --specpath build/finder ",
-    "py-build:index": "pyinstaller build/finder/index.py --distpath build/finder -F --specpath build/finder",
+    "py-build:main": "pyinstaller finder/main.py --distpath . -F",
+    "py-build:index": "pyinstaller finder/index.py --distpath . -F",
     "electron-build": "electron-packager .",
     "package-install": "npm install",
-    "build": "npm-run-all clean copy py-build:main py-build:index package-install electron-build"
+    "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index package-install electron-build"
   },
   "author": "Muhammad Haroon",
   "license": "ISC",

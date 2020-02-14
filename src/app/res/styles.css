@@ -203,7 +203,7 @@ styles for settings window
 }
 
 .settings-buttons button {
-    background: #f0f0f0;
+    background: #eee;
     padding: 12px;
     border: none;
     flex-basis: 50%;
@@ -220,36 +220,3 @@ styles for settings window
 .settings-buttons button:last-child {
     border-bottom-right-radius: 4px;
 }
-
-
-
-
-
-
-
-
-
-/* 
-.settings-container span.subtext {
-    font-size: 12px;
-}
-
-.settings-container tr > td {
-    padding: 8px;
-    margin: 0;
-    border-top: solid 1px #ccc;
-    border-bottom: solid 1px #ccc;
-}
-
-.settings-container tr:first-child > td {
-    border-top: none;
-}
-
-.settings-container tr:last-child > td {
-    border-bottom: none;
-}
-
-.vertical {
-    display: flex;
-    flex-direction: column;
-} */

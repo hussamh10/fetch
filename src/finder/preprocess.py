@@ -42,9 +42,9 @@ def loadClasses(path):
 def preprocess(fileIndexPath, fileIndexName):
     classes = loadClasses(fileIndexPath)
 
-    if not classes:
-        error.noClasses()
-        return
+    # if not classes:
+    #     error.noClasses()
+    #     return
 
     indexFile = os.path.join(fileIndexPath, fileIndexName)
     file = open(indexFile, 'r')

@@ -13,11 +13,6 @@
      "type":"string",
      "default":"Ctrl+Space"
   },
-  "pythonPath":{
-     "desc":"Python3 command",
-     "type":"string",
-     "default":"python3"
-  },
   "indexerDuration":{
      "desc":"Update index after (minutes)",
      "type":"string",
@@ -34,7 +29,7 @@
      "desc":"Exclusions",
      "type":"array",
      "default":[
-        ".",
+        "\\.",
         "lib",
         "bin",
         "envs",
