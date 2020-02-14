@@ -16,7 +16,7 @@ function show() {
 		height: 600,
 		webPreferences: {
 			nodeIntegration: true,
-			devTools: false
+			// devTools: false
 		},
 		frame: false,
 		transparent: true

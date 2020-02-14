@@ -12,7 +12,7 @@
     <div class="settings-body">
       <h2>Settings</h2>
       <div class="settings-container">
-        <div class="setting" ng-repeat="(key, cfg) in vm.config" ng-class="{ 'single-line' : cfg.type == 'string', 'multi-line': cfg.type == 'array' }">
+        <div class="setting" ng-repeat="(key, cfg) in vm.config" ng-class="{ 'single-line' : cfg.type == 'string', 'multi-line': cfg.type == 'array', 'invalid': !cfg.valid }">
           <div>
             <span ng-bind="cfg.desc"></span>
           </div>
@@ -24,11 +24,11 @@
             <select ng-model="vm.config[key].value" ng-if="cfg.type == 'select'" ng-options="opt for opt in cfg.options"></select>
 
             <!-- for array type input -->
-            <textarea ng-focus="vm.adjustHeight($event)" ng-model="vm.config[key].value" ng-if="cfg.type == 'array'"></textarea>
+            <textarea ng-focus="vm.adjustHeight($event)" ng-blur="vm.resetHeight($event)" ng-model="vm.config[key].value" ng-if="cfg.type == 'array'"></textarea>
           </div>
         </div>
         <div class="settings-buttons">
-          <button ng-click="vm.save(vm.config)">Save & Close</button>
+          <button ng-click="vm.save(vm.config)" ng-disabled="!vm.allConfigValid(vm.config)">Save & Close</button>
           <button ng-click="vm.cancel()">Cancel</button>
         </div>
       </div>
