@@ -57,21 +57,22 @@ def getFilesIndexFile():
     filePath = os.path.join(getIndexPath(), getFileIndexName())
 
 def getClasses():
-    filePath = 'classes'
+    # filePath = 'classes'
 
-    if not os.path.isfile(filePath):
-        return []
+    # if not os.path.isfile(filePath):
+    #     return []
 
-    f = open(filePath, 'r')
-    file = f.readlines()
-    f.close()
+    # f = open(filePath, 'r')
+    # file = f.readlines()
+    # f.close()
     
-    classes = ['.f']
+    # classes = ['.f']
 
-    for f in file:
-        classes.append(f.split()[0])
+    # for f in file:
+    #     classes.append(f.split()[0])
         
-    return classes
+    # return classes
+    return ['.f']
 
 def hidden(dir):
     useless = get_config('exclusions')
