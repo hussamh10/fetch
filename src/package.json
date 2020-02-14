@@ -5,12 +5,23 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "del-cli build",
+    "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
+    "py-build:main": "pyinstaller build/finder/main.py --distpath build/finder -F --specpath build/finder ",
+    "py-build:index": "pyinstaller build/finder/index.py --distpath build/finder -F --specpath build/finder",
+    "electron-build": "electron-packager .",
+    "package-install": "npm install",
+    "build": "npm-run-all clean copy py-build:main py-build:index package-install electron-build"
   },
   "author": "Muhammad Haroon",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^8.0.0"
+    "copyfiles": "^2.2.0",
+    "del-cli": "^3.0.0",
+    "electron": "^8.0.0",
+    "electron-packager": "^14.2.1",
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "angular": "^1.7.9"

@@ -23,7 +23,7 @@ function init() {
 		let cfg = config.get();
 
 		// launch finder app
-		let finder = exec([cfg.pythonPath, path.join('../finder', "main.py")].join(' '));
+		let finder = exec(config.makePath('main'));
 
 		// establish other links
 		establishLinks(finder.stdin, finder.stdout);
@@ -35,7 +35,7 @@ function init() {
 		initTray();
 
 		// set theme
-		setTheme(config.get().theme);
+		setTheme(cfg.theme);
 
 		// re-run indexer
 		runIndexer();
@@ -104,7 +104,7 @@ function establishLinks(stdin, stdout) {
 function runIndexer() {
 	console.log('rebuilding index');
 	let cfg = config.get();
-	exec([cfg.pythonPath, path.join('../finder', "index.py")].join(' '));
+	exec(config.makePath('index'));
 }
 
 function show() {

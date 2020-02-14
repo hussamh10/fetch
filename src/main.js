@@ -27,7 +27,7 @@ function initWindow() {
 	});
 	
 	window.setMenuBarVisibility(false);
-	window.loadFile('app/fetchApp/index.html');
+	window.loadFile(config.makePath('app/fetchApp/index.html'));
 
 	configureEvents(window);
 	hideWindow(window);

@@ -1,11 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const { app } = require('electron');
 
 module.exports = {
 	get: get,
 	put: put,
 	getThemesList: getThemesList,
-	getDefaultConfig: getDefaultConfig
+	getDefaultConfig: getDefaultConfig,
+	makePath: makePath
 }
 
 function getConfigPath() {
@@ -40,7 +42,7 @@ function getThemesList() {
 }
 
 function getDefaultConfig() {
-	return JSON.parse(fs.readFileSync('misc/default_config.json'))
+	return JSON.parse(fs.readFileSync(makePath('assets/default_config.json')));
 }
 
 function get() {
@@ -72,4 +74,8 @@ function save(config) {
 	}
 	let configFile = path.join(configPath.dir, configPath.file);
 	fs.writeFileSync(configFile, JSON.stringify(config));
+}
+
+function makePath(sub) {
+	return path.join(app.getAppPath(), sub);
 }
