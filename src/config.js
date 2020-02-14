@@ -28,8 +28,8 @@ function getThemesList() {
 	let themePath = path.join(configPath.dir, 'themes');
 
 	let themeList = {};
-	themeList['default-light'] = `file://${makePath('assets/default-light.css')}`;
-	themeList['default-dark'] = `file://${makePath('assets/default-dark.css')}`;
+	themeList['default-light'] = `file://${makePath('assets/themes/default-light.css')}`;
+	themeList['default-dark'] = `file://${makePath('assets/themes/default-dark.css')}`;
 
 	if (fs.existsSync(themePath)) {
 		for (let i of fs.readdirSync(themePath)) {
@@ -42,7 +42,7 @@ function getThemesList() {
 }
 
 function getDefaultConfig() {
-	return JSON.parse(fs.readFileSync(makePath('assets/default_config.json')));
+	return JSON.parse(fs.readFileSync(makePath('assets/config/default_config.json')));
 }
 
 function get() {

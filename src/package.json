@@ -10,7 +10,7 @@
     "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
-    "electron-build": "electron-packager .",
+    "electron-build": "electron-packager . --ignore='spec|build|finder|assets/icons' --icon=assets/icons/fetch --executableName=Fetch --asar",
     "package-install": "npm install",
     "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index package-install electron-build"
   },
