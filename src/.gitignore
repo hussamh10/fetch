@@ -1,7 +1,4 @@
 node_modules
 .vscode
-*.py
-node_modules
-.vscode
-*.py
-build
+*.pyc
+dist
