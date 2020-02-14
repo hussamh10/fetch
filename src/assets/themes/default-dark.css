@@ -1,5 +1,5 @@
 .search-bar {
-    background: rgb(30,30,30);
+    background: #333;
     color: #aaa;
 }
 
@@ -13,5 +13,5 @@
 }
 
 .search-bar-container img {
-    color: invert;
+    filter: invert;
 }

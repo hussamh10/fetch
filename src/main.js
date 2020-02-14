@@ -19,7 +19,8 @@ function initWindow() {
 		width: 400,
 		height: 250,
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			devTools: false
 		},
 		frame: false,
 		transparent: true,
