@@ -15,14 +15,16 @@ function show() {
 		width: 500,
 		height: 600,
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			devTools: false
 		},
 		frame: false,
 		transparent: true
 	});
 
 	settingsWindow.setMenuBarVisibility(false);
-	settingsWindow.loadFile('app/settingsApp/index.html');
+	settingsWindow.loadFile(config.makePath('app/settingsApp/index.html'));
+	settingsWindow.setIcon(config.makePath('app/res/fetch.png'));
 	settingsWindow.on('closed', () => {
 		settingsWindow = null;
 	});
@@ -52,6 +54,7 @@ function close() {
 function marshalConfig() {
 	let cfg = config.get();
 	let configInfo = config.getDefaultConfig();
+	configInfo.theme.options = Object.keys(config.getThemesList());
 	
 	for (let key in cfg) {
 		if (configInfo[key]) {

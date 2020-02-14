@@ -34,7 +34,7 @@ function getThemesList() {
 	if (fs.existsSync(themePath)) {
 		for (let i of fs.readdirSync(themePath)) {
 			let themeName = i.replace('.css', '');
-			themeList[themeName] = path.join('file://', themePath, i);
+			themeList[themeName] = `file://${path.join(themePath, i)}`;
 		}
 	}
 	
