@@ -1,25 +1,33 @@
 {
-  "name": "fetch",
+  "name": "Fetch",
+  "productName": "Fetch",
   "version": "1.0.0",
-  "description": "Fetch",
+  "description": "An OS wide fuzzy folder finder and indexer",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del-cli build",
     "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
-    "electron-build": "electron-packager . --ignore='spec|build|finder|assets/icons' --icon=assets/icons/fetch --executableName=Fetch --asar",
-    "package-install": "npm install",
-    "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index package-install electron-build"
+    "electron-build": "electron-packager . Fetch --ignore='spec|build|finder|assets/icons' --icon=assets/icons/fetch --executableName=Fetch --asar",
+    "npm-install": "npm install",
+    "package:deb": "electron-installer-debian --src build/Fetch-linux-x64/ --dest build/installers/ --arch amd64 --icon assets/icons/fetch.png",
+    "package:win": "electron-installer-windows --src build/Fetch-linux-x64/ --dest build/installers/ --icon assets/icons/fetch.ico",
+    "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install electron-build"
   },
-  "author": "Muhammad Haroon",
+  "author": "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
+  "contributors": [
+    "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
+    "Hussam Habib <hussamh10@gmail.com> (https://hussamh10.com)"
+  ],
   "license": "ISC",
   "devDependencies": {
     "copyfiles": "^2.2.0",
     "del-cli": "^3.0.0",
     "electron": "^8.0.0",
+    "electron-installer-debian": "^3.0.0",
+    "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.1",
     "npm-run-all": "^4.1.5"
   },
