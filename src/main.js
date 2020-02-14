@@ -28,6 +28,7 @@ function initWindow() {
 	
 	window.setMenuBarVisibility(false);
 	window.loadFile(config.makePath('app/fetchApp/index.html'));
+	window.setIcon(config.makePath('app/res/fetch.png'));
 
 	configureEvents(window);
 	hideWindow(window);

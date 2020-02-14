@@ -11,3 +11,7 @@
 .result-buttons button:focus {
     background: rgba(30,30,30,1);
 }
+
+.search-bar-container img {
+    color: invert;
+}
