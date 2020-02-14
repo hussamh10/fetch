@@ -2,14 +2,14 @@ import constants
 import os
 
 def createClassesFile():
-    file = open('classes', 'r')
-    lines = file.readlines()
-    file.close()
+    # file = open('classes', 'r')
+    # lines = file.readlines()
+    # file.close()
 
-    file = open(os.path.join(constants.getIndexPath(), 'classes'), 'w')
+    # file = open(os.path.join(constants.getIndexPath(), 'classes'), 'w')
 
-    for f in lines:
-        file.write(f)
+    # for f in lines:
+    #     file.write(f)
     
     return
 

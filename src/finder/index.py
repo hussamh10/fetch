@@ -39,37 +39,37 @@ def index():
             dirName = str(dirName)
             folders.append(dirName)
 
-            for f in fileList:
-                f = f.encode('ascii',"ignore")
-                f = f.decode('ascii',"ignore")
-                f = str(f)
-                if 'linux' in plt:
-                    f = dirName + "/" + f
-                else:
-                    f = dirName + "\\" + f
-                files.append(f)
+            # for f in fileList:
+            #     f = f.encode('ascii',"ignore")
+            #     f = f.decode('ascii',"ignore")
+            #     f = str(f)
+            #     if 'linux' in plt:
+            #         f = dirName + "/" + f
+            #     else:
+            #         f = dirName + "\\" + f
+            #     files.append(f)
 
-            for dir in subdirList[:]:
-                if constants.hidden(dir):
-                    subdirList.remove(dir)
+            # for dir in subdirList[:]:
+            #     if constants.hidden(dir):
+            #         subdirList.remove(dir)
 
     folders.sort(key = lambda s: len(s))
-    files.sort(key = lambda s: len(s))
+    # files.sort(key = lambda s: len(s))
 
     file = open(dirIndexFilePath, 'w')
     for f in folders:
         file.write("%s\n" % f)
     file.close()
 
-    file = open(fileIndexFilePath, 'w')
-    for f in files:
-        file.write(f + '\n')
-    file.close()
+    # file = open(fileIndexFilePath, 'w')
+    # for f in files:
+    #     file.write(f + '\n')
+    # file.close()
 
     utils.deleteAndRename(dataDir, dirIndexName, dirIndexNameTemp)
-    utils.deleteAndRename(dataDir, fileIndexName, fileIndexNameTemp)
+    # utils.deleteAndRename(dataDir, fileIndexName, fileIndexNameTemp)
 
-    preprocess.preprocess(dataDir, fileIndexName)
+    # preprocess.preprocess(dataDir, fileIndexName)
 
 
 if __name__ == '__main__':
