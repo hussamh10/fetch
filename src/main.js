@@ -24,7 +24,8 @@ function initWindow() {
 		},
 		frame: false,
 		transparent: true,
-		// resizable: false
+		resizable: false,
+		skipTaskbar: true
 	});
 	
 	window.setMenuBarVisibility(false);
