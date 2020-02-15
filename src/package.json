@@ -12,18 +12,15 @@
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
     "npm-install": "npm install",
-    "package:linux": "cd build && electron-builder . -l",
-    "package:win": "cd build && electron-builder . -w",
+    "package": "cd build && electron-builder .",
     "make": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install"
   },
   "build": {
     "icon": "assets/icons",
     "files": [
-      "*.js",
-      "*.exe",
-      "*.json",
-      "app",
-      "assets"
+      "!build",
+      "!finder",
+      "!*.spec"
     ],
     "linux": {
       "target": "deb"
