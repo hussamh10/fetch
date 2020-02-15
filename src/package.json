@@ -12,7 +12,8 @@
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
     "npm-install": "npm install",
-    "package:linux": "cd build && electron-builder . --linux deb",
+    "package:linux": "cd build && electron-builder . -l",
+    "package:win": "cd build && electron-builder . -w",
     "make": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install"
   },
   "build": {
@@ -22,8 +23,7 @@
       "*.exe",
       "*.json",
       "app",
-      "assets/config",
-      "assets/themes"
+      "assets"
     ],
     "linux": {
       "target": "deb"
