@@ -30,7 +30,7 @@ function initWindow() {
 	
 	window.setMenuBarVisibility(false);
 	window.loadFile(config.makePath('app/fetchApp/index.html'));
-	window.setIcon(config.makePath('app/res/fetch.png'));
+	window.setIcon(config.makePath('assets/icons/icon.png'));
 
 	configureEvents(window);
 	hideWindow(window);

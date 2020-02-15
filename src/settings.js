@@ -24,7 +24,7 @@ function show() {
 
 	settingsWindow.setMenuBarVisibility(false);
 	settingsWindow.loadFile(config.makePath('app/settingsApp/index.html'));
-	settingsWindow.setIcon(config.makePath('app/res/fetch.png'));
+	settingsWindow.setIcon(config.makePath('assets/icons/icon.png'));
 	settingsWindow.on('closed', () => {
 		settingsWindow = null;
 	});

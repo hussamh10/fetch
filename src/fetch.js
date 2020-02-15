@@ -114,7 +114,7 @@ function hide() {
 }
 
 function initTray() {
-	tray = new electron.Tray(config.makePath('app/res/fetch.png'));
+	tray = new electron.Tray(config.makePath('assets/icons/icon.png'));
 	const trayTemplate = [{
 			label: 'Update index',
 			click: runIndexer

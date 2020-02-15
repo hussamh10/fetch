@@ -4,17 +4,26 @@
   "version": "1.0.0",
   "description": "An OS wide fuzzy folder finder and indexer",
   "main": "main.js",
+  "homepage": "https://hussamh10.github.io/fetch",
   "scripts": {
     "start": "electron .",
     "clean": "del-cli build",
     "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
-    "electron-build": "electron-packager . Fetch --ignore='spec|build|finder|assets/icons' --icon=assets/icons/fetch --executableName=Fetch --asar",
     "npm-install": "npm install",
-    "package:deb": "electron-installer-debian --src build/Fetch-linux-x64/ --dest build/installers/ --arch amd64 --icon assets/icons/fetch.png",
-    "package:win": "electron-installer-windows --src build/Fetch-linux-x64/ --dest build/installers/ --icon assets/icons/fetch.ico",
-    "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install electron-build"
+    "package:linux": "cd build && electron-builder . --linux deb",
+    "make": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install"
+  },
+  "build": {
+    "icon": "assets/icons",
+    "files": ["*.js", "*.exe", "*.json", "app", "assets/config", "assets/themes"],
+    "linux": {
+      "target": "deb"
+    },
+    "win": {
+      "target": "nsis"
+    }
   },
   "author": "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
   "contributors": [
@@ -26,6 +35,7 @@
     "copyfiles": "^2.2.0",
     "del-cli": "^3.0.0",
     "electron": "^8.0.0",
+    "electron-builder": "^22.3.2",
     "electron-installer-debian": "^3.0.0",
     "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.1",
