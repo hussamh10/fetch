@@ -24,10 +24,10 @@ function initWindow() {
 		},
 		frame: false,
 		transparent: true,
-		resizable: false,
-		skipTaskbar: true
+		resizable: false
 	});
 	
+	window.setSkipTaskbar(true);
 	window.setMenuBarVisibility(false);
 	window.loadFile(config.makePath('app/fetchApp/index.html'));
 	window.setIcon(config.makePath('assets/icons/icon.png'));
