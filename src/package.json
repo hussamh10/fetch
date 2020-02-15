@@ -17,7 +17,14 @@
   },
   "build": {
     "icon": "assets/icons",
-    "files": ["*.js", "*.exe", "*.json", "app", "assets/config", "assets/themes"],
+    "files": [
+      "*.js",
+      "*.exe",
+      "*.json",
+      "app",
+      "assets/config",
+      "assets/themes"
+    ],
     "linux": {
       "target": "deb"
     },
