@@ -17,6 +17,7 @@
   },
   "build": {
     "icon": "assets/icons",
+    "asar": false,
     "files": [
       "!build",
       "!finder",
