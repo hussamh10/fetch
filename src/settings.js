@@ -31,12 +31,12 @@ function show() {
 }
 
 function init() {
-	electron.ipcMain.on('send-config', (event, args) => {
-		event.reply('config', marshalConfig());
+	electron.ipcMain.on('send-config', async(event, args) => {
+		event.reply('config', await marshalConfig());
 	});
 
-	electron.ipcMain.on('save', (event, args) => {
-		config.put(unmarshalConfig(args));
+	electron.ipcMain.on('save', async(event, args) => {
+		await config.put(unmarshalConfig(args));
 		relaunch();
 	});
 
@@ -51,10 +51,10 @@ function close() {
 	}
 }
 
-function marshalConfig() {
-	let cfg = config.get();
-	let configInfo = config.getDefaultConfig();
-	configInfo.theme.options = Object.keys(config.getThemesList());
+async function marshalConfig() {
+	let cfg = await config.get();
+	let configInfo = await config.getDefaultConfig();
+	configInfo.theme.options = Object.keys(await config.getThemesList());
 	
 	for (let key in cfg) {
 		if (configInfo[key]) {

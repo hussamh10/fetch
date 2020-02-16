@@ -16,10 +16,10 @@ let tray;
 
 function init() {
 	// wait for renderer to establish communications
-	electron.ipcMain.on('channel', (event, arg) => {
+	electron.ipcMain.on('channel', async(event, arg) => {
 		channel = event;
 		
-		let cfg = config.get();
+		let cfg = await config.get();
 
 		// launch finder app
 		let finder = exec(config.makePath('main'));
@@ -130,8 +130,8 @@ function initTray() {
 	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
 }
 
-function setTheme(themeName) {
-	let themes = config.getThemesList();
+async function setTheme(themeName) {
+	let themes = await config.getThemesList();
 	
 	// use default theme if invalid selected
 	if (!themes[themeName]) {

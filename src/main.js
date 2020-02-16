@@ -36,12 +36,12 @@ function initWindow() {
 	hideWindow(window);
 }
 
-function configureEvents(window) {
+async function configureEvents(window) {
 	window.on('blur', () => {
 		hideWindow(window);
 	});
 
-	let launchKey = config.get().launchKey;
+	let launchKey = (await config.get()).launchKey;
 	electron.globalShortcut.register(launchKey, () => {
 		if (window.isVisible()) {
 			hideWindow(window);
