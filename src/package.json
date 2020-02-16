@@ -16,18 +16,18 @@
     "make": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install"
   },
   "build": {
+    "icon": "assets/icons/",
     "files": [
       "!build",
       "!finder",
       "!*.spec"
     ],
     "linux": {
-      "target": "deb",
-  	  "icon": "assets/icons/icon.png"
+      "target": "deb"
     },
     "win": {
       "target": "nsis",
-  	  "icon": "assets/icons/icon.ico"
+      "icon": "assets/icons/icon.ico"
     }
   },
   "author": "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
