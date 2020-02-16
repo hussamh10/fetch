@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+	<title>Fetch</title>
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+	<link rel="icon" type="image/png" href="https://github.com/hussamh10/fetch/raw/master/res/logo.png">
+	<style>
+	
+		* {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+		
+		#header {
+			text-align: center;
+			border-bottom: solid 1px #ddd;
+			padding-bottom: 10px;
+		}
+		
+		#header h1, #header h2 {
+			margin: 0;
+			padding: 0;
+		}
+		
+		#header h2 {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.1em;
+			font-weight: normal;
+			color: #666;
+		}
+		
+		#header h2 > a img {
+			width: 36px;
+			margin: 4px;
+		}
+		
+		#content {
+			width: 80%;
+			margin-left: 10%;
+			margin-top: 50px;
+			font-size: 1.2em;
+		}
+		
+		#cheatsheet {
+			max-width: 1000px;
+			width: 100%;
+		}
+				
+		#footer {
+			margin-top: 50px;
+		}
+		
+		.center {
+			text-align: center;
+		}
+		
+		.code {
+			background: #eee;
+			color: #666;
+			padding: 4px;
+			font-family: monospace;
+		}
+		
+	
+	</style>
+</head>
+<body>
+<div id="header">
+	<img src="https://github.com/hussamh10/fetch/raw/master/res/logo.png"  id="logo" />
+	<h1>Fetch</h1>
+	<h2>a fuzzy folder finder powered by <a target="_blank" href="https://python.org"><img src="logos/python.svg"></a> and <a target="_blank" href="https://www.electronjs.org/"><img src="logos/electron.svg"></a></h2>
+</div>
+<div id="content">
+	Fetch allows you to find and open any file or folder on your computer. By indexing your directories and using approximate query matching, Fetch allows you to access your files at a much higher speed than the built-in Windows search. You can also search within subdirectories and for files based on their type.
+	
+	<h2>Features</h2>
+	<ul>
+		<li>Approximate query matching</li>
+		<li>OS wide indexing</li>
+		<li>Periodic indexing</li>
+		<li>Ranked results</li>
+		<li>Subdirectory search</li>
+	</ul>
+	
+	<h2>Usage</h2>
+    <ul>
+		<li>Follow this cheatsheet and you'll know how to use Fetch within seconds.</li>
+	</ul>
+	<div style="text-align: center; width: 100%;">
+		<img id="cheatsheet" src="https://github.com/hussamh10/fetch/raw/master/res/cs.png" />
+	</div>
+
+	<h2>Installation</h2>
+	<ol>
+		<li>Download and install the <a target="_blank" 
+href="https://github.com/hussamh10/fetch/releases/latest">latest release</a> for your OS.</li>
+		<li>Start using <strong>Ctrl+Space</strong> for the first launch.</li>
+		<li>Wait for Fetch to finish indexing the default directories.</li>
+	</ol>
+	
+	<h2>Configuration</h2>
+	<p>To edit the configurations for Fetch, open <strong>Settings</strong> from the tray icon. Below are some configurable settings.</p>
+	<ul>
+		<li>Fetch ships with two themes — light and dark — by default but custom themes can also be applied using CSS. Create a folder named <span class="code">themes</span> inside the application configuration folder (Linux: <span class="code">~/.fetch</span>, Windows: <span class="code">%LOCALAPPDATA%/Fetch</span>). Place the file containing your custom CSS styles inside this folder. For reference, see the <a href="https://github.com/hussamh10/fetch/blob/master/src/assets/themes/default-dark.css">CSS for the dark theme.</a></li>
+		<li>Toggle whether to start Fetch on system boot.</li>
+		<li>Set the launch key for Fetch. (Default: Ctrl+Space)</li>
+		<li>Timeout to wait before re-indexing the system. (Default: one hour)</li>
+		<li>Which directories to include in the index.</li>
+		<li>Regex-based exclusions list.</li>
+	</ul>
+
+	<h2>Project team</h2>
+	<ul>
+		<li><a href="https://github.com/haroon96">Muhammad Haroon (Haroon96)</a></li>
+		<li><a href="https://github.com/hussamh10">Hussam Habib (hussamh10)</a></li>
+	</ul>
+	
+	<h2>Donate</h2>
+	<ul>
+		<li>
+			<b>BTC:</b> <span style="word-wrap: break-word;">1E4yS81wSgFMZ2TVrGLLK2fwpQryr9wqZ3</span>
+		</li>
+	</ul>
+	
+	<div id="footer" class="center">
+		<a target="_blank" href="https://github.com/hussamh10/fetch">
+			<img width="90px" src="logos/github.png" />
+		</a>
+	</div>
+    
+</div>
+</body>
+</html>
