@@ -18,7 +18,7 @@ Fetch allows you to find and open folders on your computer by indexing your dire
 
 ## Installation:
 - Download and install the [latest release](https://github.com/hussamh10/fetch/releases/latest) for your OS.
-- Start using *Ctrl+Space* for the first launch.
+- Start using **Ctrl+Space** for the first launch.
 - Wait for Fetch to finish indexing.
 
 ## Usage:
