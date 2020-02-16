@@ -43,7 +43,5 @@ To edit the configurations for Fetch, open Settings from the tray icon. Below ar
 
 ## Donate:
   **BTC** :1E4yS81wSgFMZ2TVrGLLK2fwpQryr9wqZ3
-
-[![forthebadge](https://forthebadge.com/images/badges/made-with-c-plus-plus.svg)]()
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)]()
+  
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)]()
