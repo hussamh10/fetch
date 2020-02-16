@@ -15,6 +15,9 @@ Fetch allows you to find and open folders on your computer by indexing your dire
 - Periodic indexing
 - Ranked results
 - Subdirectory search
+- Custom themes
+- Inclusions and Exclusions lists
+
 
 ## Installation:
 - Download and install the [latest release](https://github.com/hussamh10/fetch/releases/latest) for your OS.
