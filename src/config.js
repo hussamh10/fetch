@@ -53,7 +53,7 @@ async function get() {
 
 	try {
 		// try loading the saved config
-		config = JSON.parse(await fs.readFile(configFile));		
+		config = JSON.parse(await fs.readFile(configFile));	
 	} catch (e) {
 		// saved config not found, rewrite default config
 		let default_config = await getDefaultConfig();

@@ -17,6 +17,9 @@
             <span ng-bind="cfg.desc"></span>
           </div>
           <div>
+            <!-- for toggle type input -->
+            <input type="checkbox" ng-model="vm.config[key].value" ng-if="cfg.type == 'toggle'">
+
             <!-- for string type input -->
             <input ng-model="vm.config[key].value" ng-if="cfg.type == 'string'" placeholder="{{ cfg.default }}">
       

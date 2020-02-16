@@ -3,6 +3,12 @@ module.exports = { show: show, init: init };
 const electron = require('electron');
 const config = require('./config');
 const { relaunch } = require('./fetch');
+const AutoLaunch = require('auto-launch');
+
+const autoLauncher = new AutoLaunch({
+	name: 'Fetch',
+	isHidden: true
+});
 
 let settingsWindow;
 
@@ -36,7 +42,9 @@ function init() {
 	});
 
 	electron.ipcMain.on('save', async(event, args) => {
-		await config.put(unmarshalConfig(args));
+		let cfg = unmarshalConfig(args);
+		await config.put(cfg);
+		await applyConfig(cfg);
 		relaunch();
 	});
 
@@ -80,4 +88,12 @@ function unmarshalConfig(configInfo) {
 		}
 	}
 	return config;
+}
+
+async function applyConfig(cfg) {
+	if (cfg.launchOnStartup) {
+		autoLauncher.enable();
+	} else {
+		autoLauncher.disable();
+	}
 }

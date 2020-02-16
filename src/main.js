@@ -50,6 +50,15 @@ async function configureEvents(window) {
 			showWindow(window);
 		}
 	});
+
+	const singleInstanceLock = electron.app.requestSingleInstanceLock();
+	if (!singleInstanceLock) {
+		electron.app.quit();
+	} else {
+		electron.app.on('second-instance', () => {
+			showWindow(window);
+		});	
+	}
 }
 
 function adjustWindowPosition(window) {
