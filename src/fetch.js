@@ -6,8 +6,7 @@ module.exports = {
 }
 
 const electron = require('electron');
-const exec = require('child_process').execFile;
-const path = require('path');
+const execFile = require('child_process').execFile;
 const config = require('./config');
 const settings = require('./settings');
 
@@ -17,10 +16,10 @@ let tray;
 
 function init() {
 	// wait for renderer to establish communications
-	electron.ipcMain.on('channel', (event, arg) => {
+	electron.ipcMain.on('channel', async(event, arg) => {
 		channel = event;
 		
-		let cfg = config.get();
+		let cfg = await config.get();
 
 		// launch finder app
 		let finder = exec(config.makePath('main'));
@@ -115,7 +114,7 @@ function hide() {
 }
 
 function initTray() {
-	tray = new electron.Tray(config.makePath('app/res/fetch.png'));
+	tray = new electron.Tray(config.makePath('assets/icons/icon.png'));
 	const trayTemplate = [{
 			label: 'Update index',
 			click: runIndexer
@@ -131,8 +130,8 @@ function initTray() {
 	tray.setContextMenu(electron.Menu.buildFromTemplate(trayTemplate));
 }
 
-function setTheme(themeName) {
-	let themes = config.getThemesList();
+async function setTheme(themeName) {
+	let themes = await config.getThemesList();
 	
 	// use default theme if invalid selected
 	if (!themes[themeName]) {
@@ -145,4 +144,11 @@ function setTheme(themeName) {
 function relaunch() {
 	electron.app.relaunch();
 	electron.app.quit();
+}
+
+function exec(exe) {
+	if (process.platform.includes('win')) {
+		exe = `${exe}.exe`;
+	}
+	return execFile(exe);
 }

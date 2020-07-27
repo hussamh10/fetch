@@ -24,23 +24,24 @@ function initWindow() {
 		},
 		frame: false,
 		transparent: true,
-		// resizable: false
+		resizable: false
 	});
 	
+	window.setSkipTaskbar(true);
 	window.setMenuBarVisibility(false);
 	window.loadFile(config.makePath('app/fetchApp/index.html'));
-	window.setIcon(config.makePath('app/res/fetch.png'));
+	window.setIcon(config.makePath('assets/icons/icon.png'));
 
 	configureEvents(window);
 	hideWindow(window);
 }
 
-function configureEvents(window) {
+async function configureEvents(window) {
 	window.on('blur', () => {
 		hideWindow(window);
 	});
 
-	let launchKey = config.get().launchKey;
+	let launchKey = (await config.get()).launchKey;
 	electron.globalShortcut.register(launchKey, () => {
 		if (window.isVisible()) {
 			hideWindow(window);
@@ -49,6 +50,15 @@ function configureEvents(window) {
 			showWindow(window);
 		}
 	});
+
+	const singleInstanceLock = electron.app.requestSingleInstanceLock();
+	if (!singleInstanceLock) {
+		electron.app.quit();
+	} else {
+		electron.app.on('second-instance', () => {
+			showWindow(window);
+		});	
+	}
 }
 
 function adjustWindowPosition(window) {

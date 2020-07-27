@@ -8,6 +8,11 @@
         "default-dark"
      ]
   },
+  "launchOnStartup":{
+     "desc": "Launch on startup",
+     "type":"toggle",
+     "default":true
+  },
   "launchKey":{
      "desc":"Launch key",
      "type":"string",

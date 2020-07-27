@@ -1,30 +1,51 @@
 {
-  "name": "fetch",
+  "name": "Fetch",
+  "productName": "Fetch",
   "version": "1.0.0",
-  "description": "Fetch",
+  "description": "An OS wide fuzzy folder finder and indexer",
   "main": "main.js",
+  "homepage": "https://hussamh10.github.io/fetch",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "del-cli build",
     "copy": "copyfiles app/**/* *.js finder/*.py assets/**/* package.json build",
     "py-build:main": "pyinstaller finder/main.py --distpath . -F",
     "py-build:index": "pyinstaller finder/index.py --distpath . -F",
-    "electron-build": "electron-packager . --ignore='spec|build|finder|assets/icons' --icon=assets/icons/fetch --executableName=Fetch --asar",
-    "package-install": "npm install",
-    "build": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index package-install electron-build"
+    "npm-install": "npm install",
+    "package": "cd build && electron-builder .",
+    "make": "npm-run-all clean copy && cd build && npm-run-all py-build:main py-build:index npm-install"
   },
-  "author": "Muhammad Haroon",
+  "build": {
+    "icon": "assets/icons/",
+    "files": [
+      "!build",
+      "!finder",
+      "!*.spec"
+    ],
+    "linux": {
+      "target": "deb"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icons/icon.ico"
+    }
+  },
+  "author": "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
+  "contributors": [
+    "Muhammad Haroon <m_haroon96@hotmail.com> (https://haroon96.github.io)",
+    "Hussam Habib <hussamh10@gmail.com> (https://hussamh10.com)"
+  ],
   "license": "ISC",
   "devDependencies": {
     "copyfiles": "^2.2.0",
     "del-cli": "^3.0.0",
     "electron": "^8.0.0",
-    "electron-packager": "^14.2.1",
+    "electron-builder": "^22.3.2",
     "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "angular": "^1.7.9",
+    "auto-launch": "^5.0.5",
     "electron-is-accelerator": "^0.1.2"
   }
 }

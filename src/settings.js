@@ -3,6 +3,12 @@ module.exports = { show: show, init: init };
 const electron = require('electron');
 const config = require('./config');
 const { relaunch } = require('./fetch');
+const AutoLaunch = require('auto-launch');
+
+const autoLauncher = new AutoLaunch({
+	name: 'Fetch',
+	isHidden: true
+});
 
 let settingsWindow;
 
@@ -24,19 +30,21 @@ function show() {
 
 	settingsWindow.setMenuBarVisibility(false);
 	settingsWindow.loadFile(config.makePath('app/settingsApp/index.html'));
-	settingsWindow.setIcon(config.makePath('app/res/fetch.png'));
+	settingsWindow.setIcon(config.makePath('assets/icons/icon.png'));
 	settingsWindow.on('closed', () => {
 		settingsWindow = null;
 	});
 }
 
 function init() {
-	electron.ipcMain.on('send-config', (event, args) => {
-		event.reply('config', marshalConfig());
+	electron.ipcMain.on('send-config', async(event, args) => {
+		event.reply('config', await marshalConfig());
 	});
 
-	electron.ipcMain.on('save', (event, args) => {
-		config.put(unmarshalConfig(args));
+	electron.ipcMain.on('save', async(event, args) => {
+		let cfg = unmarshalConfig(args);
+		await config.put(cfg);
+		await applyConfig(cfg);
 		relaunch();
 	});
 
@@ -51,10 +59,10 @@ function close() {
 	}
 }
 
-function marshalConfig() {
-	let cfg = config.get();
-	let configInfo = config.getDefaultConfig();
-	configInfo.theme.options = Object.keys(config.getThemesList());
+async function marshalConfig() {
+	let cfg = await config.get();
+	let configInfo = await config.getDefaultConfig();
+	configInfo.theme.options = Object.keys(await config.getThemesList());
 	
 	for (let key in cfg) {
 		if (configInfo[key]) {
@@ -80,4 +88,12 @@ function unmarshalConfig(configInfo) {
 		}
 	}
 	return config;
+}
+
+async function applyConfig(cfg) {
+	if (cfg.launchOnStartup) {
+		autoLauncher.enable();
+	} else {
+		autoLauncher.disable();
+	}
 }
